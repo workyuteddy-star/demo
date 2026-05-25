@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FX ProAgent — 代理后台原型图 v1.0</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #eff1f5; color: #161b2a; min-height: 100vh; display: flex; font-size: 13px; }
+
+/* ── SIDEBAR ── */
+.sidebar { width: 220px; min-width: 220px; background: #0e1422; height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; overflow-y: auto; z-index: 100; }
+.sb-brand { display: flex; align-items: center; gap: 10px; padding: 16px 16px 14px; }
+.sb-icon { width: 32px; height: 32px; background: #0c9f72; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; color: #fff; flex-shrink: 0; }
+.sb-name { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.2; }
+.sb-sub { font-size: 10px; color: #9ea6b8; }
+.sb-divider { height: 1px; background: #2e384f; margin: 0 12px; }
+.sb-tier { margin: 12px 16px 8px; }
+.sb-tier-lbl { font-size: 10px; color: #9ea6b8; margin-bottom: 6px; }
+.sb-tier-badge { background: #d1a62b; border-radius: 6px; padding: 6px 10px; font-size: 11px; font-weight: 700; color: #0e1422; display: flex; align-items: center; gap: 4px; }
+.sb-sec { font-size: 9px; font-weight: 600; color: #9ea6b8; text-transform: uppercase; letter-spacing: 0.8px; padding: 12px 16px 4px; }
+.sb-item { display: flex; align-items: center; gap: 9px; padding: 9px 8px 9px 16px; cursor: pointer; font-size: 13px; color: #9ea6b8; border-radius: 6px; margin: 1px 6px; transition: all .12s; }
+.sb-item:hover { background: #1c2535; color: #e2e8f0; }
+.sb-item.active { background: #0c9f72; color: #fff; }
+.sb-dot { width: 12px; height: 12px; border-radius: 3px; background: #616b85; flex-shrink: 0; }
+.sb-item.active .sb-dot { background: rgba(255,255,255,0.7); }
+
+/* ── MAIN ── */
+.main { margin-left: 220px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.topbar { background: #fff; height: 60px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid #e0e4ea; flex-shrink: 0; position: sticky; top: 0; z-index: 50; }
+.topbar-title h1 { font-size: 18px; font-weight: 700; color: #161b2a; line-height: 1.2; }
+.topbar-title p { font-size: 11px; color: #616b85; margin-top: 1px; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.tb-icon-btn { width: 28px; height: 28px; border-radius: 8px; background: #eff1f5; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; color: #616b85; }
+.tb-avatar { width: 28px; height: 28px; border-radius: 50%; background: #0c9f72; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; color: #fff; }
+.tb-user { font-size: 12px; font-weight: 600; color: #161b2a; line-height: 1.3; }
+.tb-uid { font-size: 10px; color: #616b85; }
+
+/* ── PAGE ── */
+.page { display: none; padding: 20px 24px; }
+.page.active { display: block; }
+
+/* ── CARDS ── */
+.kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 16px; }
+.kpi-card { background: #fff; border-radius: 12px; padding: 16px 16px 12px; position: relative; overflow: hidden; }
+.kpi-top { height: 4px; position: absolute; top: 0; left: 0; right: 0; border-radius: 12px 12px 0 0; }
+.kpi-lbl { font-size: 12px; color: #616b85; margin-bottom: 8px; }
+.kpi-val { font-size: 26px; font-weight: 700; color: #161b2a; line-height: 1.1; }
+.kpi-unit { font-size: 9px; color: #616b85; margin-top: 2px; }
+.kpi-badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 9px; padding: 2px 8px; font-size: 10px; font-weight: 600; margin-top: 10px; }
+.kpi-badge.green { background: #e0f6f1; color: #0c9f72; }
+.kpi-badge.red { background: #faebeb; color: #ea463c; }
+
+/* ── ROW LAYOUTS ── */
+.row-2 { display: grid; grid-template-columns: 560px 1fr; gap: 16px; margin-bottom: 16px; }
+.row-3 { display: grid; grid-template-columns: 400px 360px 1fr; gap: 16px; }
+.card { background: #fff; border-radius: 12px; padding: 16px; }
+.card-hd { font-size: 14px; font-weight: 700; color: #161b2a; margin-bottom: 3px; }
+.card-sub { font-size: 11px; color: #616b85; margin-bottom: 12px; }
+
+/* ── CHART ── */
+.chart-wrap { padding: 0 4px; }
+.chart-grid { position: relative; height: 180px; }
+.grid-line { position: absolute; left: 36px; right: 0; height: 1px; background: #edf0f5; display: flex; align-items: center; }
+.grid-lbl { position: absolute; left: 0; font-size: 9px; color: #9ea6b8; transform: translateY(-50%); }
+.chart-bars { position: absolute; bottom: 24px; left: 36px; right: 0; display: flex; align-items: flex-end; gap: 0; height: 152px; }
+.bar-group { flex: 1; display: flex; align-items: flex-end; gap: 2px; padding: 0 8px; }
+.bar-g { border-radius: 4px 4px 0 0; }
+.chart-xlbl { position: absolute; bottom: 0; left: 36px; right: 0; display: flex; }
+.xlbl { flex: 1; text-align: center; font-size: 10px; color: #616b85; }
+.legend { display: flex; gap: 14px; margin-bottom: 10px; }
+.leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.leg-lbl { font-size: 10px; color: #616b85; display: flex; align-items: center; gap: 4px; }
+
+/* ── TABLE ── */
+.wf-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.wf-table th { background: #eff1f5; padding: 7px 10px; text-align: left; font-size: 10px; font-weight: 600; color: #616b85; white-space: nowrap; }
+.wf-table td { padding: 10px 10px; border-bottom: 1px solid #e0e4ea; vertical-align: middle; }
+.wf-table tr:nth-child(even) td { background: #fbfcfe; }
+.wf-table tr:hover td { background: #f5f7fa; }
+.dir-badge { display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
+.dir-buy { background: #e0f6f1; color: #0c9f72; }
+.dir-sell { background: #faebeb; color: #ea463c; }
+.pnl-pos { color: #0c9f72; font-weight: 600; }
+.pnl-neg { color: #ea463c; font-weight: 600; }
+.avatar-sm { width: 24px; height: 24px; border-radius: 12px; background: #e0f6f1; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; color: #0c9f72; vertical-align: middle; margin-right: 6px; }
+
+/* ── RANKING ── */
+.rank-num { font-weight: 700; font-size: 13px; }
+.rank-gold { color: #d1a62b; }
+.rank-other { color: #616b85; }
+
+/* ── PENDING TASKS ── */
+.task-card { border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; cursor: pointer; }
+.task-card:last-child { margin-bottom: 0; }
+.task-red { background: #faebeb; }
+.task-yellow { background: #fef6e0; }
+.task-blue { background: #e6ebfd; }
+.task-green { background: #e0f6f1; }
+.task-icon { font-size: 18px; }
+.task-body { flex: 1; }
+.task-title { font-size: 13px; font-weight: 600; color: #161b2a; }
+.task-link { font-size: 11px; font-weight: 500; margin-top: 2px; }
+.task-red .task-link { color: #ea463c; }
+.task-yellow .task-link { color: #d1a62b; }
+.task-blue .task-link { color: #286cf1; }
+.task-green .task-link { color: #0c9f72; }
+.task-badge { border-radius: 10px; min-width: 30px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; padding: 0 6px; }
+.bg-red { background: #ea463c; }
+.bg-yellow { background: #d1a62b; }
+.bg-blue { background: #286cf1; }
+.bg-green { background: #0c9f72; }
+
+/* ── PROMO STATS ── */
+.pstat { background: #eff1f5; border-radius: 8px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.pstat:last-child { margin-bottom: 0; }
+.pstat-icon { font-size: 16px; }
+.pstat-lbl { font-size: 11px; color: #616b85; }
+.pstat-val { font-size: 18px; font-weight: 700; color: #161b2a; line-height: 1.2; }
+.live-dot { width: 8px; height: 8px; border-radius: 4px; background: #0c9f72; display: inline-block; margin-right: 4px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ── FORM ELEMENTS ── */
+.inp { border: 1px solid #e0e4ea; border-radius: 6px; padding: 7px 10px; font-size: 12px; color: #161b2a; background: #fff; outline: none; font-family: inherit; }
+.inp:focus { border-color: #0c9f72; }
+.sel { border: 1px solid #e0e4ea; border-radius: 6px; padding: 6px 10px; font-size: 12px; color: #161b2a; background: #fff; font-family: inherit; }
+.btn-p { background: #0c9f72; color: #fff; border: none; border-radius: 6px; padding: 7px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-p:hover { background: #0a8c63; }
+.btn-s { background: #fff; color: #161b2a; border: 1px solid #e0e4ea; border-radius: 6px; padding: 7px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-s:hover { background: #f5f7fa; }
+.btn-d { background: #faebeb; color: #ea463c; border: 1px solid #fca5a5; border-radius: 6px; padding: 6px 10px; font-size: 11px; cursor: pointer; font-family: inherit; }
+.lbl { font-size: 11px; font-weight: 600; color: #616b85; margin-bottom: 4px; display: block; }
+
+/* ── BADGES ── */
+.badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+.b-green { background: #e0f6f1; color: #0c9f72; }
+.b-gray { background: #f3f4f6; color: #6b7280; }
+.b-red { background: #faebeb; color: #ea463c; }
+.b-blue { background: #e6ebfd; color: #286cf1; }
+.b-yellow { background: #fef6e0; color: #d1a62b; }
+
+/* ── PROMOTION CONFIG PAGE ── */
+.promo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 16px; }
+.promo-stat { background: #fff; border-radius: 10px; padding: 14px 16px; }
+.link-card { background: #fff; border-radius: 10px; border: 1px solid #e0e4ea; }
+.link-row { padding: 14px 16px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: flex-start; gap: 12px; }
+.link-row:last-child { border-bottom: none; }
+.link-icon { width: 36px; height: 36px; border-radius: 8px; background: #e0f6f1; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.link-url { font-size: 11px; color: #9ea6b8; font-family: monospace; word-break: break-all; margin-top: 2px; }
+.link-stats { display: flex; gap: 14px; margin-top: 6px; }
+.link-stat { font-size: 10px; color: #616b85; }
+.link-stat strong { color: #161b2a; font-size: 12px; display: block; }
+.copy-btn { border: 1px solid #e0e4ea; border-radius: 5px; padding: 3px 8px; font-size: 11px; background: #fff; color: #616b85; cursor: pointer; white-space: nowrap; }
+
+/* ── MATERIALS PAGE ── */
+.mat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.mat-card { background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4ea; }
+.mat-preview { height: 90px; background: #d1d5db; background-image: repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,0,0,.04) 8px,rgba(0,0,0,.04) 16px); display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 11px; position: relative; cursor: pointer; }
+.mat-preview:hover::after { content:'预览'; position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700; }
+.mat-info { padding: 9px 11px; }
+.mat-name { font-size: 12px; font-weight: 600; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mat-meta { font-size: 10px; color: #9ea6b8; }
+.mat-actions { padding: 7px 11px; border-top: 1px solid #f3f4f6; display: flex; gap: 5px; }
+.upload-zone { border: 2px dashed #e0e4ea; border-radius: 10px; padding: 28px; text-align: center; color: #9ea6b8; background: #fff; cursor: pointer; margin-bottom: 16px; transition: border-color .12s; }
+.upload-zone:hover { border-color: #0c9f72; }
+.tabs { display: flex; border-bottom: 1px solid #e0e4ea; margin-bottom: 16px; }
+.tab { padding: 8px 14px; font-size: 12.5px; cursor: pointer; color: #616b85; border-bottom: 2px solid transparent; }
+.tab.on { color: #0c9f72; border-bottom-color: #0c9f72; font-weight: 700; }
+::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-thumb { background: #d0d5e0; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-icon">FX</div>
+    <div><div class="sb-name">ProAgent</div><div class="sb-sub">代理后台</div></div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-tier">
+    <div class="sb-tier-lbl">我的代理层级</div>
+    <div class="sb-tier-badge">★&nbsp; 白金代理&nbsp; IB-00182</div>
+  </div>
+  <div class="sb-sec">主菜单</div>
+  <div class="sb-item active" data-p="dashboard"><div class="sb-dot"></div>仪表板</div>
+  <div class="sb-item" data-p="clients"><div class="sb-dot"></div>客户管理</div>
+  <div class="sb-item" data-p="commission"><div class="sb-dot"></div>佣金报表</div>
+  <div class="sb-item" data-p="review"><div class="sb-dot"></div>出入金审核</div>
+  <div class="sb-sec">推广工具</div>
+  <div class="sb-item" data-p="promo"><div class="sb-dot"></div>推广配置</div>
+  <div class="sb-item" data-p="materials"><div class="sb-dot"></div>营销素材</div>
+  <div class="sb-sec">账户</div>
+  <div class="sb-item" data-p="account"><div class="sb-dot"></div>我的账户</div>
+  <div class="sb-item" data-p="settings"><div class="sb-dot"></div>系统设置</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title">
+      <h1 id="page-title">仪表板</h1>
+      <p id="page-sub">欢迎回来，王代理 | 实时行情更新中...</p>
+    </div>
+    <div class="topbar-right">
+      <div class="tb-icon-btn">🔔</div>
+      <div class="tb-avatar">王</div>
+      <div><div class="tb-user">王代理</div><div class="tb-uid">IB-00182</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ PAGE: DASHBOARD ═══════════ -->
+  <div class="page active" id="pg-dashboard">
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-top" style="background:#0c9f72"></div>
+        <div class="kpi-lbl">本月佣金</div>
+        <div class="kpi-val">$12,480.50</div>
+        <div class="kpi-unit">USD</div>
+        <div class="kpi-badge green">▲ 较上月 +18.3%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top" style="background:#286cf1"></div>
+        <div class="kpi-lbl">管理客户数</div>
+        <div class="kpi-val">347</div>
+        <div class="kpi-badge green">▲ 本月新增 +23</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top" style="background:#d1a62b"></div>
+        <div class="kpi-lbl">客户总净值</div>
+        <div class="kpi-val">$2.84M</div>
+        <div class="kpi-unit">USD</div>
+        <div class="kpi-badge green">▲ 较上月 +5.2%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top" style="background:#ea463c"></div>
+        <div class="kpi-lbl">待审核申请</div>
+        <div class="kpi-val">8</div>
+        <div class="kpi-badge red">▼ 出金 5 / 入金 3</div>
+      </div>
+    </div>
+
+    <!-- ROW 2: CHART + LEADERBOARD -->
+    <div class="row-2">
+      <!-- Commission Trend Chart -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+          <div><div class="card-hd">佣金趋势</div><div class="card-sub">近6个月（USD）</div></div>
+          <div class="legend">
+            <div class="leg-lbl"><div class="leg-dot" style="background:#0c9f72"></div>直属佣金</div>
+            <div class="leg-lbl"><div class="leg-dot" style="background:#d1a62b"></div>层级佣金</div>
+          </div>
+        </div>
+        <div class="chart-grid">
+          <!-- Grid lines -->
+          <div class="grid-line" style="bottom:152px"><span class="grid-lbl">$20K</span></div>
+          <div class="grid-line" style="bottom:114px"><span class="grid-lbl">$15K</span></div>
+          <div class="grid-line" style="bottom:76px"><span class="grid-lbl">$10K</span></div>
+          <div class="grid-line" style="bottom:38px"><span class="grid-lbl">$5K</span></div>
+          <div class="grid-line" style="bottom:0px"><span class="grid-lbl">$0K</span></div>
+          <!-- Bars -->
+          <div class="chart-bars">
+            <div class="bar-group"><div class="bar-g" style="width:18px;height:80px;background:#0c9f72"></div><div class="bar-g" style="width:16px;height:30px;background:#d1a62b"></div></div>
+            <div class="bar-group"><div class="bar-g" style="width:18px;height:95px;background:#0c9f72"></div><div class="bar-g" style="width:16px;height:38px;background:#d1a62b"></div></div>
+            <div class="bar-group"><div class="bar-g" style="width:18px;height:72px;background:#0c9f72"></div><div class="bar-g" style="width:16px;height:28px;background:#d1a62b"></div></div>
+            <div class="bar-group"><div class="bar-g" style="width:18px;height:110px;background:#0c9f72"></div><div class="bar-g" style="width:16px;height:42px;background:#d1a62b"></div></div>
+            <div class="bar-group"><div class="bar-g" style="width:18px;height:130px;background:#0c9f72"></div><div class="bar-g" style="width:16px;height:55px;background:#d1a62b"></div></div>
+            <div class="bar-group"><div class="bar-g" style="width:18px;height:148px;background:#0c9f72"></div><div class="bar-g" style="width:16px;height:60px;background:#d1a62b"></div></div>
+          </div>
+          <!-- X labels -->
+          <div class="chart-xlbl">
+            <div class="xlbl">12月</div><div class="xlbl">1月</div><div class="xlbl">2月</div>
+            <div class="xlbl">3月</div><div class="xlbl">4月</div><div class="xlbl">5月</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-agent Leaderboard -->
+      <div class="card">
+        <div class="card-hd">下级代理表现</div>
+        <div class="card-sub">本月排行</div>
+        <table class="wf-table">
+          <thead><tr><th>排名</th><th>代理</th><th>客户数</th><th>本月佣金</th><th>变化</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="rank-num rank-gold">01</span></td>
+              <td><span class="avatar-sm">李</span>李代理</td>
+              <td>48</td><td style="font-weight:600">$2,840</td>
+              <td style="color:#0c9f72;font-weight:600">▲ +12%</td>
+            </tr>
+            <tr>
+              <td><span class="rank-num rank-other">02</span></td>
+              <td><span class="avatar-sm">张</span>张代理</td>
+              <td>35</td><td style="font-weight:600">$1,920</td>
+              <td style="color:#0c9f72;font-weight:600">▲ +8%</td>
+            </tr>
+            <tr>
+              <td><span class="rank-num rank-other">03</span></td>
+              <td><span class="avatar-sm">陈</span>陈代理</td>
+              <td>29</td><td style="font-weight:600">$1,450</td>
+              <td style="color:#ea463c;font-weight:600">▼ -3%</td>
+            </tr>
+            <tr>
+              <td><span class="rank-num rank-other">04</span></td>
+              <td><span class="avatar-sm">林</span>林代理</td>
+              <td>22</td><td style="font-weight:600">$980</td>
+              <td style="color:#0c9f72;font-weight:600">▲ +5%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ROW 3: TRADES + TASKS + PROMO STATS -->
+    <div class="row-3">
+      <!-- Real-time Trades -->
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+          <div class="card-hd">客户实时交易</div>
+          <span style="font-size:10px;font-weight:600;color:#0c9f72"><span class="live-dot"></span>实时</span>
+        </div>
+        <div class="card-sub" style="margin-bottom:0"></div>
+        <table class="wf-table" style="margin-top:8px">
+          <thead><tr><th>客户</th><th>货币对</th><th>方向</th><th>手数</th><th>盈亏</th></tr></thead>
+          <tbody>
+            <tr><td><span class="avatar-sm">M</span>Mike Chen</td><td style="font-weight:600">EUR/USD</td><td><span class="dir-badge dir-buy">买入</span></td><td style="color:#616b85">2.50</td><td class="pnl-pos">+$320</td></tr>
+            <tr><td><span class="avatar-sm">S</span>Sarah Liu</td><td style="font-weight:600">GBP/JPY</td><td><span class="dir-badge dir-sell">卖出</span></td><td style="color:#616b85">1.00</td><td class="pnl-neg">-$85</td></tr>
+            <tr><td><span class="avatar-sm">王</span>王建国</td><td style="font-weight:600">XAU/USD</td><td><span class="dir-badge dir-buy">买入</span></td><td style="color:#616b85">0.50</td><td class="pnl-pos">+$1,240</td></tr>
+            <tr><td><span class="avatar-sm">张</span>张明</td><td style="font-weight:600">USD/JPY</td><td><span class="dir-badge dir-sell">卖出</span></td><td style="color:#616b85">3.00</td><td class="pnl-pos">+$560</td></tr>
+            <tr><td><span class="avatar-sm">L</span>Lin Fang</td><td style="font-weight:600">USD/CAD</td><td><span class="dir-badge dir-buy">买入</span></td><td style="color:#616b85">1.50</td><td class="pnl-neg">-$220</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pending Tasks -->
+      <div class="card">
+        <div class="card-hd" style="margin-bottom:12px">待处理事项</div>
+        <div class="task-card task-red">
+          <div class="task-icon">💳</div>
+          <div class="task-body"><div class="task-title">出金申请待审核</div><div class="task-link">点击处理 →</div></div>
+          <div class="task-badge bg-red">5</div>
+        </div>
+        <div class="task-card task-yellow">
+          <div class="task-icon">📋</div>
+          <div class="task-body"><div class="task-title">入金申请待确认</div><div class="task-link">点击处理 →</div></div>
+          <div class="task-badge bg-yellow">3</div>
+        </div>
+        <div class="task-card task-blue">
+          <div class="task-icon">✅</div>
+          <div class="task-body"><div class="task-title">新客户KYC待审核</div><div class="task-link">点击处理 →</div></div>
+          <div class="task-badge bg-blue">7</div>
+        </div>
+        <div class="task-card task-green">
+          <div class="task-icon">📨</div>
+          <div class="task-body"><div class="task-title">客户咨询未回复</div><div class="task-link">点击处理 →</div></div>
+          <div class="task-badge bg-green">12</div>
+        </div>
+      </div>
+
+      <!-- Promotion Stats -->
+      <div class="card">
+        <div class="card-hd">推广统计</div>
+        <div class="card-sub">本月</div>
+        <div class="pstat"><div class="pstat-icon">🔗</div><div><div class="pstat-lbl">链接点击</div><div class="pstat-val">4,821</div></div></div>
+        <div class="pstat"><div class="pstat-icon">📝</div><div><div class="pstat-lbl">注册转化</div><div class="pstat-val">127</div></div></div>
+        <div class="pstat"><div class="pstat-icon">💰</div><div><div class="pstat-lbl">首入金</div><div class="pstat-val">89</div></div></div>
+        <div class="pstat"><div class="pstat-icon">📈</div><div><div class="pstat-lbl">转化率</div><div class="pstat-val">18.4%</div></div></div>
+      </div>
+    </div>
+  </div><!-- end dashboard -->
+
+  <!-- ═══════════ PAGE: 推广配置 ═══════════ -->
+  <div class="page" id="pg-promo">
+    <!-- Stats row -->
+    <div class="promo-grid">
+      <div class="promo-stat"><div style="font-size:11px;color:#616b85;margin-bottom:6px">本月链接总点击</div><div style="font-size:26px;font-weight:700">4,821</div><div style="font-size:10px;color:#0c9f72;margin-top:4px">▲ 较上月 +12.3%</div></div>
+      <div class="promo-stat"><div style="font-size:11px;color:#616b85;margin-bottom:6px">注册转化</div><div style="font-size:26px;font-weight:700">127</div><div style="font-size:10px;color:#0c9f72;margin-top:4px">▲ 本月新增 +18</div></div>
+      <div class="promo-stat"><div style="font-size:11px;color:#616b85;margin-bottom:6px">转化率</div><div style="font-size:26px;font-weight:700">18.4%</div><div style="font-size:10px;color:#616b85;margin-top:4px">首入金 89 人</div></div>
+    </div>
+
+    <div style="display:flex;gap:16px">
+      <!-- Link list -->
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:15px;font-weight:700">我的推广链接</div>
+          <button class="btn-p">+ 新建推广链接</button>
+        </div>
+        <div class="link-card">
+          <!-- Link 1 -->
+          <div class="link-row">
+            <div class="link-icon">🔗</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <span style="font-weight:600;font-size:13px">主推广链接 — 注册页</span>
+                <span class="badge b-green">使用中</span>
+              </div>
+              <div class="link-url">https://broker.com/register?ib=IB-00182&utm_source=agent&utm_medium=link&utm_campaign=main</div>
+              <div class="link-stats">
+                <div class="link-stat"><strong>2,841</strong>点击量</div>
+                <div class="link-stat"><strong>68</strong>注册</div>
+                <div class="link-stat"><strong>52</strong>首入金</div>
+                <div class="link-stat"><strong>23.9%</strong>转化率</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
+              <button class="copy-btn">复制链接</button>
+              <button class="copy-btn">查看详情</button>
+            </div>
+          </div>
+          <!-- Link 2 -->
+          <div class="link-row">
+            <div class="link-icon" style="background:#fef6e0">📣</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <span style="font-weight:600;font-size:13px">活动推广链接 — 5月存款活动</span>
+                <span class="badge b-green">使用中</span>
+              </div>
+              <div class="link-url">https://broker.com/promo/may2026?ib=IB-00182&utm_campaign=may_deposit</div>
+              <div class="link-stats">
+                <div class="link-stat"><strong>1,245</strong>点击量</div>
+                <div class="link-stat"><strong>38</strong>注册</div>
+                <div class="link-stat"><strong>28</strong>首入金</div>
+                <div class="link-stat"><strong>22.3%</strong>转化率</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
+              <button class="copy-btn">复制链接</button>
+              <button class="copy-btn">查看详情</button>
+            </div>
+          </div>
+          <!-- Link 3 -->
+          <div class="link-row">
+            <div class="link-icon" style="background:#e6ebfd">📱</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <span style="font-weight:600;font-size:13px">社媒推广链接 — 微信渠道</span>
+                <span class="badge b-gray">已暂停</span>
+              </div>
+              <div class="link-url">https://broker.com/register?ib=IB-00182&utm_source=wechat&utm_medium=social</div>
+              <div class="link-stats">
+                <div class="link-stat"><strong>735</strong>点击量</div>
+                <div class="link-stat"><strong>21</strong>注册</div>
+                <div class="link-stat"><strong>9</strong>首入金</div>
+                <div class="link-stat"><strong>12.2%</strong>转化率</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
+              <button class="copy-btn">复制链接</button>
+              <button class="btn-d">启用</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New link form -->
+      <div style="width:300px;flex-shrink:0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:12px">新建推广配置</div>
+        <div class="card" style="display:flex;flex-direction:column;gap:12px">
+          <div><label class="lbl">链接名称</label><input class="inp" style="width:100%" placeholder="如：5月存款活动推广"></div>
+          <div>
+            <label class="lbl">落地页类型</label>
+            <select class="sel" style="width:100%">
+              <option>注册页</option><option>活动页</option><option>首页</option><option>充值页</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">UTM Campaign</label>
+            <input class="inp" style="width:100%" placeholder="如：may_deposit_2026">
+          </div>
+          <div>
+            <label class="lbl">UTM Medium</label>
+            <select class="sel" style="width:100%">
+              <option>link</option><option>social</option><option>banner</option><option>email</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">生成的推广链接</label>
+            <div style="background:#f8fafc;border:1px solid #e0e4ea;border-radius:6px;padding:8px 10px;font-size:11px;color:#9ea6b8;font-family:monospace;word-break:break-all">
+              https://broker.com/register?ib=IB-00182&utm_source=agent&utm_medium=link&utm_campaign=...
+            </div>
+          </div>
+          <button class="btn-p" style="width:100%">生成并保存链接</button>
+        </div>
+
+        <div style="margin-top:14px;font-size:15px;font-weight:700;margin-bottom:10px">佣金结构说明</div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:12px"><span style="color:#616b85">直属客户佣金</span><span style="font-weight:700;color:#0c9f72">$8.50 / 手</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:12px"><span style="color:#616b85">下级代理层级佣金</span><span style="font-weight:700;color:#d1a62b">$2.00 / 手</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px"><span style="color:#616b85">结算周期</span><span style="font-weight:600">每月15日</span></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end promo -->
+
+  <!-- ═══════════ PAGE: 营销素材 ═══════════ -->
+  <div class="page" id="pg-materials">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div><div style="font-size:15px;font-weight:700">营销素材库</div><div style="font-size:11px;color:#616b85;margin-top:2px">由券商提供，可直接下载用于推广</div></div>
+      <div style="display:flex;gap:8px">
+        <select class="sel"><option>全部类型</option><option>Banner 图</option><option>视频素材</option><option>落地页模板</option><option>品牌素材</option></select>
+        <select class="sel"><option>全部语言</option><option>简体中文</option><option>English</option><option>繁體中文</option></select>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab on">全部素材</div>
+      <div class="tab">Banner 图</div>
+      <div class="tab">视频素材</div>
+      <div class="tab">落地页模板</div>
+      <div class="tab">品牌素材</div>
+    </div>
+
+    <!-- Upload notice -->
+    <div style="background:#e0f6f1;border:1px solid #0c9f72;border-radius:8px;padding:10px 14px;font-size:12px;color:#065f46;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+      ✅ <span>本月新增 <strong>8</strong> 个素材，包含「5月存款活动」全套推广物料</span>
+    </div>
+
+    <div class="mat-grid">
+      <!-- Material cards -->
+      <div class="mat-card">
+        <div class="mat-preview">Banner 图 · 728×90</div>
+        <div class="mat-info">
+          <div class="mat-name">横幅广告_5月存款活动_728x90</div>
+          <div class="mat-meta"><span class="badge b-blue">Banner图</span> · JPG · 128 KB · 简体中文</div>
+          <div class="mat-meta" style="margin-top:3px">尺寸: 728 × 90 px</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-preview">Banner 图 · 300×250</div>
+        <div class="mat-info">
+          <div class="mat-name">方形广告_5月存款活动_300x250</div>
+          <div class="mat-meta"><span class="badge b-blue">Banner图</span> · JPG · 96 KB · 简体中文</div>
+          <div class="mat-meta" style="margin-top:3px">尺寸: 300 × 250 px</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-preview">视频 · 15s</div>
+        <div class="mat-info">
+          <div class="mat-name">开户引导视频_15秒_横版</div>
+          <div class="mat-meta"><span class="badge b-yellow">视频素材</span> · MP4 · 8.2 MB · 简体中文</div>
+          <div class="mat-meta" style="margin-top:3px">时长: 15秒 · 1920×1080</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-preview">落地页模板</div>
+        <div class="mat-info">
+          <div class="mat-name">注册落地页_5月活动_H5</div>
+          <div class="mat-meta"><span class="badge b-green">落地页模板</span> · HTML · 简体中文</div>
+          <div class="mat-meta" style="margin-top:3px">含推广码占位符，可直接使用</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-preview">Banner 图 · 1200×628</div>
+        <div class="mat-info">
+          <div class="mat-name">社媒配图_朋友圈_1200x628</div>
+          <div class="mat-meta"><span class="badge b-blue">Banner图</span> · PNG · 312 KB · 简体中文</div>
+          <div class="mat-meta" style="margin-top:3px">适用: 微信朋友圈 / Facebook</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-preview">视频 · 30s</div>
+        <div class="mat-info">
+          <div class="mat-name">平台优势介绍_30秒_竖版</div>
+          <div class="mat-meta"><span class="badge b-yellow">视频素材</span> · MP4 · 14.5 MB · 简体中文</div>
+          <div class="mat-meta" style="margin-top:3px">时长: 30秒 · 1080×1920（适合短视频）</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-preview">品牌素材</div>
+        <div class="mat-info">
+          <div class="mat-name">品牌LOGO合集_PNG+SVG</div>
+          <div class="mat-meta"><span class="badge b-gray">品牌素材</span> · ZIP · 2.1 MB</div>
+          <div class="mat-meta" style="margin-top:3px">含白底/透明底/深色底 3种版本</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-preview">Banner 图 · 320×50</div>
+        <div class="mat-info">
+          <div class="mat-name">移动端横幅_320x50_简</div>
+          <div class="mat-meta"><span class="badge b-blue">Banner图</span> · JPG · 42 KB · 简体中文</div>
+          <div class="mat-meta" style="margin-top:3px">适用: 移动端 H5 页面</div>
+        </div>
+        <div class="mat-actions"><button class="btn-p" style="flex:1">下载</button><button class="btn-s">预览</button></div>
+      </div>
+    </div>
+
+    <!-- Batch download -->
+    <div style="margin-top:14px;display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn-s">全选本页</button>
+      <button class="btn-p">批量下载所选素材</button>
+    </div>
+  </div><!-- end materials -->
+
+  <!-- ═══════════ PAGE: 客户管理 ═══════════ -->
+  <div class="page" id="pg-clients">
+    <!-- KPI row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+      <div class="kpi-card"><div class="kpi-top" style="background:#286cf1"></div><div class="kpi-lbl">管理客户总数</div><div class="kpi-val">347</div><div class="kpi-badge green">▲ 本月新增 +23</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#0c9f72"></div><div class="kpi-lbl">活跃客户（本月）</div><div class="kpi-val">218</div><div class="kpi-badge green">▲ 较上月 +14</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#d1a62b"></div><div class="kpi-lbl">客户总净值</div><div class="kpi-val">$2.84M</div><div class="kpi-unit">USD</div><div class="kpi-badge green">▲ +5.2%</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#ea463c"></div><div class="kpi-lbl">高风险客户</div><div class="kpi-val">12</div><div class="kpi-badge red">亏损超30% / 需跟进</div></div>
+    </div>
+    <!-- Search & filter -->
+    <div class="card" style="margin-bottom:12px;padding:12px 16px">
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="inp" style="width:220px" placeholder="搜索客户姓名 / UID / 邮箱...">
+        <select class="sel"><option>全部状态</option><option>活跃</option><option>未激活</option><option>高风险</option><option>已休眠</option></select>
+        <select class="sel"><option>全部账户类型</option><option>标准账户</option><option>ECN账户</option><option>伊斯兰账户</option></select>
+        <select class="sel"><option>全部开户时间</option><option>本月</option><option>本季度</option><option>本年</option></select>
+        <button class="btn-p">筛选</button>
+        <button class="btn-s" style="margin-left:auto">导出CSV</button>
+      </div>
+    </div>
+    <!-- Table -->
+    <div class="card" style="padding:0">
+      <table class="wf-table">
+        <thead><tr><th><input type="checkbox"></th><th>客户</th><th>UID</th><th>开户时间</th><th>净值 (USD)</th><th>本月手数</th><th>账户状态</th><th>最后登录</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">M</span>Mike Chen</td><td style="color:#9ea6b8;font-size:11px">CLI-10291</td><td>2025-11-12</td><td style="font-weight:600">$48,320</td><td>124.5</td><td><span class="badge b-green">活跃</span></td><td>2小时前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px">联系</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">S</span>Sarah Liu</td><td style="color:#9ea6b8;font-size:11px">CLI-10282</td><td>2025-10-08</td><td style="font-weight:600">$21,540</td><td>88.0</td><td><span class="badge b-green">活跃</span></td><td>1天前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px">联系</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">王</span>王建国</td><td style="color:#9ea6b8;font-size:11px">CLI-10271</td><td>2025-09-22</td><td style="font-weight:600;color:#ea463c">$6,210</td><td>12.0</td><td><span class="badge b-red">高风险</span></td><td>3天前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px;color:#ea463c">紧急跟进</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">张</span>张明</td><td style="color:#9ea6b8;font-size:11px">CLI-10265</td><td>2025-12-01</td><td style="font-weight:600">$102,800</td><td>310.5</td><td><span class="badge b-green">活跃</span></td><td>4小时前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px">联系</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">L</span>Lin Fang</td><td style="color:#9ea6b8;font-size:11px">CLI-10258</td><td>2026-01-15</td><td style="font-weight:600">$15,620</td><td>0</td><td><span class="badge b-gray">未激活</span></td><td>22天前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px">唤醒</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">陈</span>陈雨薇</td><td style="color:#9ea6b8;font-size:11px">CLI-10244</td><td>2025-08-30</td><td style="font-weight:600">$33,150</td><td>56.0</td><td><span class="badge b-green">活跃</span></td><td>6小时前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px">联系</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">R</span>Rafael Tan</td><td style="color:#9ea6b8;font-size:11px">CLI-10230</td><td>2026-03-08</td><td style="font-weight:600">$9,800</td><td>28.5</td><td><span class="badge b-blue">KYC待审</span></td><td>1天前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px">审核KYC</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">刘</span>刘晓东</td><td style="color:#9ea6b8;font-size:11px">CLI-10218</td><td>2025-07-14</td><td style="font-weight:600">$78,400</td><td>198.0</td><td><span class="badge b-green">活跃</span></td><td>2天前</td><td><div style="display:flex;gap:5px"><button class="btn-s" style="padding:4px 8px;font-size:11px">查看</button><button class="btn-s" style="padding:4px 8px;font-size:11px">联系</button></div></td></tr>
+        </tbody>
+      </table>
+      <div style="padding:10px 16px;display:flex;align-items:center;gap:8px;border-top:1px solid #f3f4f6">
+        <span style="font-size:12px;color:#9ea6b8">共 347 条</span>
+        <div style="margin-left:auto;display:flex;gap:5px">
+          <button class="btn-s" style="padding:4px 8px;font-size:11px">«</button>
+          <button class="btn-p" style="padding:4px 10px;font-size:11px">1</button>
+          <button class="btn-s" style="padding:4px 8px;font-size:11px">2</button>
+          <button class="btn-s" style="padding:4px 8px;font-size:11px">3</button>
+          <span style="padding:4px 6px;font-size:12px;color:#9ea6b8">...</span>
+          <button class="btn-s" style="padding:4px 8px;font-size:11px">44</button>
+          <button class="btn-s" style="padding:4px 8px;font-size:11px">»</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ PAGE: 佣金报表 ═══════════ -->
+  <div class="page" id="pg-commission">
+    <!-- KPI row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+      <div class="kpi-card"><div class="kpi-top" style="background:#0c9f72"></div><div class="kpi-lbl">本月总佣金</div><div class="kpi-val">$12,480.50</div><div class="kpi-unit">USD</div><div class="kpi-badge green">▲ +18.3% vs 上月</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#286cf1"></div><div class="kpi-lbl">直属客户佣金</div><div class="kpi-val">$8,920.00</div><div class="kpi-badge green">▲ +15.1%</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#d1a62b"></div><div class="kpi-lbl">层级佣金</div><div class="kpi-val">$3,560.50</div><div class="kpi-badge green">▲ +25.2%</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#9b59b6"></div><div class="kpi-lbl">本月总手数</div><div class="kpi-val">1,482.5</div><div class="kpi-badge green">▲ +310 手</div></div>
+    </div>
+
+    <div style="display:flex;gap:14px">
+      <!-- Monthly chart -->
+      <div class="card" style="flex:1">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div><div class="card-hd">佣金趋势（近12个月）</div></div>
+          <div style="display:flex;gap:5px">
+            <button class="btn-s" style="font-size:11px;padding:4px 8px">按月</button>
+            <button class="btn-s" style="font-size:11px;padding:4px 8px">按周</button>
+          </div>
+        </div>
+        <div style="height:140px;background:#f8fafc;border-radius:8px;display:flex;align-items:flex-end;padding:12px 8px 24px;gap:6px;position:relative">
+          <div style="position:absolute;bottom:24px;left:8px;right:8px;height:1px;background:#edf0f5"></div>
+          <div style="position:absolute;bottom:62px;left:8px;right:8px;height:1px;background:#edf0f5"></div>
+          <div style="position:absolute;bottom:100px;left:8px;right:8px;height:1px;background:#edf0f5"></div>
+          ${['6月','7月','8月','9月','10月','11月','12月','1月','2月','3月','4月','5月'].map((m,i)=>{
+            const h=[38,42,35,50,58,62,68,55,70,82,91,100][i];
+            return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:${h}px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">${m}</span></div>`;
+          }).join('')}
+        </div>
+        <!-- Legend -->
+        <div style="display:flex;gap:14px;margin-top:8px">
+          <div class="leg-lbl"><div class="leg-dot" style="background:#0c9f72"></div>直属佣金</div>
+          <div class="leg-lbl"><div class="leg-dot" style="background:#d1a62b"></div>层级佣金</div>
+        </div>
+      </div>
+
+      <!-- Commission breakdown -->
+      <div class="card" style="width:280px;flex-shrink:0">
+        <div class="card-hd" style="margin-bottom:12px">佣金来源拆分</div>
+        ${[['直属客户', '8,920.00', '71.5%', '#0c9f72'],['下级代理层级', '3,560.50', '28.5%', '#d1a62b']].map(([n,v,p,c])=>`
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:12px;color:#616b85">${n}</span>
+            <span style="font-size:12px;font-weight:700">$${v}</span>
+          </div>
+          <div style="height:8px;background:#f3f4f6;border-radius:4px"><div style="height:100%;background:${c};border-radius:4px;width:${p}"></div></div>
+          <div style="font-size:10px;color:#9ea6b8;margin-top:2px">${p}</div>
+        </div>`).join('')}
+        <div style="border-top:1px solid #f3f4f6;padding-top:12px">
+          <div style="font-size:12px;color:#616b85;margin-bottom:4px">预计本月结算</div>
+          <div style="font-size:20px;font-weight:700;color:#0c9f72">$12,480.50</div>
+          <div style="font-size:10px;color:#9ea6b8;margin-top:2px">预计结算日：2026-06-15</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail table -->
+    <div class="card" style="margin-top:14px;padding:0">
+      <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f3f4f6">
+        <div style="font-size:14px;font-weight:700">佣金明细</div>
+        <div style="display:flex;gap:6px">
+          <select class="sel"><option>2026年5月</option><option>2026年4月</option><option>2026年3月</option></select>
+          <select class="sel"><option>全部类型</option><option>直属佣金</option><option>层级佣金</option></select>
+          <button class="btn-s" style="font-size:11px">导出报表</button>
+        </div>
+      </div>
+      <table class="wf-table">
+        <thead><tr><th>客户 / 代理</th><th>交易品种</th><th>手数</th><th>佣金单价</th><th>金额 (USD)</th><th>类型</th><th>交易时间</th></tr></thead>
+        <tbody>
+          <tr><td><span class="avatar-sm">张</span>张明</td><td>EUR/USD</td><td>45.00</td><td>$8.50/手</td><td style="font-weight:600;color:#0c9f72">+$382.50</td><td><span class="badge b-green">直属</span></td><td>2026-05-20 09:12</td></tr>
+          <tr><td><span class="avatar-sm">M</span>Mike Chen</td><td>XAU/USD</td><td>32.50</td><td>$8.50/手</td><td style="font-weight:600;color:#0c9f72">+$276.25</td><td><span class="badge b-green">直属</span></td><td>2026-05-20 08:45</td></tr>
+          <tr><td><span class="avatar-sm">李</span>李代理 (下级)</td><td>GBP/USD</td><td>120.00</td><td>$2.00/手</td><td style="font-weight:600;color:#d1a62b">+$240.00</td><td><span class="badge b-yellow">层级</span></td><td>2026-05-19 16:30</td></tr>
+          <tr><td><span class="avatar-sm">S</span>Sarah Liu</td><td>USD/JPY</td><td>28.00</td><td>$8.50/手</td><td style="font-weight:600;color:#0c9f72">+$238.00</td><td><span class="badge b-green">直属</span></td><td>2026-05-19 14:20</td></tr>
+          <tr><td><span class="avatar-sm">张</span>张代理 (下级)</td><td>EUR/USD</td><td>88.00</td><td>$2.00/手</td><td style="font-weight:600;color:#d1a62b">+$176.00</td><td><span class="badge b-yellow">层级</span></td><td>2026-05-19 11:05</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════ PAGE: 出入金审核 ═══════════ -->
+  <div class="page" id="pg-review">
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+      <div class="kpi-card"><div class="kpi-top" style="background:#ea463c"></div><div class="kpi-lbl">待审核出金</div><div class="kpi-val">5</div><div class="kpi-badge red">最长等待 3 天</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#d1a62b"></div><div class="kpi-lbl">待确认入金</div><div class="kpi-val">3</div><div class="kpi-badge green">今日新增 2 笔</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#0c9f72"></div><div class="kpi-lbl">本月已处理</div><div class="kpi-val">142</div><div class="kpi-badge green">平均处理 1.2 天</div></div>
+      <div class="kpi-card"><div class="kpi-top" style="background:#286cf1"></div><div class="kpi-lbl">本月入金总额</div><div class="kpi-val">$284K</div><div class="kpi-unit">USD</div><div class="kpi-badge green">▲ +22.1%</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab on">出金申请 <span class="badge b-red" style="margin-left:4px">5</span></div>
+      <div class="tab">入金确认 <span class="badge b-yellow" style="margin-left:4px">3</span></div>
+      <div class="tab">历史记录</div>
+    </div>
+
+    <!-- Filter -->
+    <div class="card" style="margin-bottom:12px;padding:10px 14px">
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="inp" style="width:200px" placeholder="搜索客户名 / UID...">
+        <select class="sel"><option>全部状态</option><option>待审核</option><option>审核中</option><option>已通过</option><option>已拒绝</option></select>
+        <select class="sel"><option>全部金额</option><option>&lt; $1,000</option><option>$1,000–$10,000</option><option>&gt; $10,000</option></select>
+        <button class="btn-p">筛选</button>
+        <div style="margin-left:auto;display:flex;gap:6px">
+          <button class="btn-s" style="font-size:11px">批量审核通过</button>
+          <button class="btn-d">批量拒绝</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card" style="padding:0">
+      <table class="wf-table">
+        <thead><tr><th><input type="checkbox"></th><th>客户</th><th>申请类型</th><th>金额 (USD)</th><th>申请时间</th><th>等待时长</th><th>出金方式</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">王</span>王建国 <span style="font-size:10px;color:#9ea6b8">CLI-10271</span></td><td>出金</td><td style="font-weight:600;color:#ea463c">$15,000</td><td>2026-05-17 10:22</td><td style="color:#ea463c;font-weight:600">3天</td><td>银行电汇</td><td><span class="badge b-yellow">待审核</span></td><td><div style="display:flex;gap:4px"><button class="btn-p" style="font-size:11px;padding:4px 8px">通过</button><button class="btn-d">拒绝</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">张</span>张明 <span style="font-size:10px;color:#9ea6b8">CLI-10265</span></td><td>出金</td><td style="font-weight:600;color:#ea463c">$8,200</td><td>2026-05-18 14:05</td><td style="color:#d1a62b;font-weight:600">2天</td><td>加密货币</td><td><span class="badge b-yellow">待审核</span></td><td><div style="display:flex;gap:4px"><button class="btn-p" style="font-size:11px;padding:4px 8px">通过</button><button class="btn-d">拒绝</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">S</span>Sarah Liu <span style="font-size:10px;color:#9ea6b8">CLI-10282</span></td><td>出金</td><td style="font-weight:600;color:#ea463c">$3,500</td><td>2026-05-19 09:40</td><td>1天</td><td>银行电汇</td><td><span class="badge b-yellow">待审核</span></td><td><div style="display:flex;gap:4px"><button class="btn-p" style="font-size:11px;padding:4px 8px">通过</button><button class="btn-d">拒绝</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">陈</span>陈雨薇 <span style="font-size:10px;color:#9ea6b8">CLI-10244</span></td><td>出金</td><td style="font-weight:600;color:#ea463c">$1,200</td><td>2026-05-20 08:12</td><td>14小时</td><td>支付宝</td><td><span class="badge b-blue">审核中</span></td><td><div style="display:flex;gap:4px"><button class="btn-p" style="font-size:11px;padding:4px 8px">通过</button><button class="btn-d">拒绝</button></div></td></tr>
+          <tr><td><input type="checkbox"></td><td><span class="avatar-sm">L</span>Lin Fang <span style="font-size:10px;color:#9ea6b8">CLI-10258</span></td><td>出金</td><td style="font-weight:600;color:#ea463c">$5,800</td><td>2026-05-20 11:30</td><td>6小时</td><td>加密货币</td><td><span class="badge b-yellow">待审核</span></td><td><div style="display:flex;gap:4px"><button class="btn-p" style="font-size:11px;padding:4px 8px">通过</button><button class="btn-d">拒绝</button></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════ PAGE: 我的账户 ═══════════ -->
+  <div class="page" id="pg-account">
+    <div style="display:flex;gap:16px">
+      <!-- Left: profile card -->
+      <div style="width:280px;flex-shrink:0">
+        <div class="card" style="margin-bottom:14px;text-align:center;padding:24px 16px">
+          <div style="width:64px;height:64px;border-radius:50%;background:#0c9f72;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;margin:0 auto 12px">王</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px">王代理</div>
+          <div style="font-size:12px;color:#616b85;margin-bottom:8px">IB-00182</div>
+          <div style="background:#d1a62b;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;color:#0e1422;display:inline-block;margin-bottom:14px">★ 白金代理</div>
+          <div style="text-align:left;border-top:1px solid #f3f4f6;padding-top:12px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px"><span style="color:#616b85">注册邮箱</span><span style="font-weight:600">wang***@email.com</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px"><span style="color:#616b85">注册时间</span><span>2024-03-15</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px"><span style="color:#616b85">所属区域</span><span>华南区</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#616b85">上级代理</span><span>总代 IB-00050</span></div>
+          </div>
+        </div>
+        <!-- Tier progress -->
+        <div class="card">
+          <div style="font-size:13px;font-weight:700;margin-bottom:12px">代理层级进度</div>
+          <div style="font-size:11px;color:#616b85;margin-bottom:4px">当前：<strong style="color:#d1a62b">白金代理</strong></div>
+          <div style="font-size:11px;color:#9ea6b8;margin-bottom:8px">距离钻石代理：还需净值 $500K</div>
+          <div style="height:8px;background:#f3f4f6;border-radius:4px;margin-bottom:10px"><div style="height:100%;background:linear-gradient(90deg,#d1a62b,#f59e0b);border-radius:4px;width:72%"></div></div>
+          <div style="font-size:10px;color:#9ea6b8">$2.84M / $3.34M (72%)</div>
+        </div>
+      </div>
+
+      <!-- Right: settings -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:14px">基本资料</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><label class="lbl">显示名称</label><input class="inp" style="width:100%" value="王代理"></div>
+            <div><label class="lbl">联系电话</label><input class="inp" style="width:100%" value="+86 138 *** 8888"></div>
+            <div><label class="lbl">联系邮箱</label><input class="inp" style="width:100%" value="wang@example.com"></div>
+            <div><label class="lbl">所在城市</label><input class="inp" style="width:100%" value="广州"></div>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:flex-end"><button class="btn-p">保存修改</button></div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:14px">安全设置</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">登录密码</div><div style="font-size:11px;color:#9ea6b8">上次修改：2026-03-20</div></div>
+            <button class="btn-s">修改密码</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">两步验证 (2FA)</div><div style="font-size:11px;color:#0c9f72">已启用 — Google Authenticator</div></div>
+            <button class="btn-s">管理</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+            <div><div style="font-size:13px;font-weight:600">登录设备管理</div><div style="font-size:11px;color:#9ea6b8">当前共 3 个活跃设备</div></div>
+            <button class="btn-s">查看设备</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:14px">出金账户</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8fafc;border-radius:8px;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="font-size:20px">🏦</div>
+              <div><div style="font-size:13px;font-weight:600">中国银行 **** 8821</div><div style="font-size:11px;color:#9ea6b8">王 XX · 已验证</div></div>
+            </div>
+            <span class="badge b-green">默认</span>
+          </div>
+          <button class="btn-s" style="font-size:11px">+ 添加出金账户</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ PAGE: 系统设置 ═══════════ -->
+  <div class="page" id="pg-settings">
+    <div style="display:flex;gap:14px">
+      <!-- Left nav -->
+      <div style="width:180px;flex-shrink:0">
+        <div class="card" style="padding:6px 0">
+          ${[['通知设置','🔔'],['语言与时区','🌐'],['显示偏好','🎨'],['API 接入','⚙️'],['操作日志','📋']].map(([n,ic],i)=>`
+          <div style="padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;background:${i===0?'#e0f6f1':''};color:${i===0?'#0c9f72':'#374151'};font-size:13px;font-weight:${i===0?'700':'400'};border-radius:6px;margin:2px 6px">
+            <span>${ic}</span>${n}
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Right content -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:14px">通知设置</div>
+          ${[
+            ['新客户注册通知','有新客户通过您的推广链接注册',true],
+            ['出入金申请通知','客户提交出入金申请时提醒',true],
+            ['KYC审核通知','客户完成或需要补充KYC材料',true],
+            ['客户高风险预警','客户账户亏损超过30%时提醒',true],
+            ['佣金结算通知','每月佣金结算到账时提醒',true],
+            ['系统公告','平台重要公告与维护通知',false],
+          ].map(([t,s,on])=>`
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">${t}</div><div style="font-size:11px;color:#9ea6b8">${s}</div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11px;color:#9ea6b8">站内</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:${on?'#0c9f72':'#d1d5db'};position:relative;cursor:pointer"><div style="position:absolute;top:3px;${on?'right:3px':'left:3px'};width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <span style="font-size:11px;color:#9ea6b8">邮件</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:${on?'#0c9f72':'#d1d5db'};position:relative;cursor:pointer"><div style="position:absolute;top:3px;${on?'right:3px':'left:3px'};width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>`).join('')}
+          <div style="margin-top:12px;display:flex;justify-content:flex-end"><button class="btn-p">保存设置</button></div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px;font-weight:700;margin-bottom:14px">语言与时区</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><label class="lbl">界面语言</label><select class="sel" style="width:100%"><option>简体中文</option><option>繁體中文</option><option>English</option></select></div>
+            <div><label class="lbl">时区</label><select class="sel" style="width:100%"><option>UTC+8 北京/上海</option><option>UTC+0 伦敦</option><option>UTC-5 纽约</option></select></div>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:flex-end"><button class="btn-p">保存</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<script>
+const titles = {
+  dashboard: ['仪表板', '欢迎回来，王代理 | 实时行情更新中...'],
+  clients:   ['客户管理', '管理您旗下的所有客户'],
+  commission:['佣金报表', '查看佣金收入与明细'],
+  review:    ['出入金审核', '处理客户的存取款申请'],
+  promo:     ['推广配置', '管理推广链接与转化追踪'],
+  materials: ['营销素材', '下载并使用券商提供的推广物料'],
+  account:   ['我的账户', '账户信息与安全设置'],
+  settings:  ['系统设置', '偏好与通知设置'],
+};
+
+function nav(p) {
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.toggle('active', el.dataset.p === p));
+  document.querySelectorAll('.page').forEach(el => el.classList.toggle('active', el.id === 'pg-' + p));
+  const [t, s] = titles[p] || [p, ''];
+  document.getElementById('page-title').textContent = t;
+  document.getElementById('page-sub').textContent = s;
+}
+
+document.querySelectorAll('.sb-item').forEach(el => {
+  el.addEventListener('click', () => nav(el.dataset.p));
+});
+
+// Tab clicks (materials page)
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    this.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+    this.classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
