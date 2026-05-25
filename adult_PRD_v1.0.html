@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <title>成人娛樂聚合平台 PRD v1.0</title>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", Arial, sans-serif;
+            color: #1f2937;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            font-size: 13.5px;
+            background-color: #f3f6fb;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 36px 40px;
+            background: #fff;
+            border-top: 6px solid #163b63;
+            box-shadow: 0 10px 32px rgba(31, 41, 55, 0.12);
+        }
+
+        /* 文件頭部 */
+        .doc-header {
+            border-bottom: 2px solid #d8e2ef;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .doc-header h1 {
+            color: #0f2d4d;
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .doc-meta {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            font-size: 12.5px;
+            color: #4b5563;
+        }
+
+        .doc-meta span strong {
+            color: #163b63;
+        }
+
+        /* 版本記錄 */
+        .version-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+            margin-bottom: 12px;
+        }
+
+        .version-table th {
+            background: #163b63;
+            color: #fff;
+            padding: 6px 10px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .version-table td {
+            padding: 5px 10px;
+            border-bottom: 1px solid #e5edf6;
+        }
+
+        .version-table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        /* 章節標題 */
+        h2 {
+            color: #0f2d4d;
+            font-size: 17px;
+            font-weight: 800;
+            margin-top: 28px;
+            margin-bottom: 10px;
+            padding: 6px 12px;
+            border-left: 5px solid #d97706;
+            background: #f3f7fc;
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            color: #163b63;
+            font-size: 14.5px;
+            font-weight: 800;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            padding-left: 10px;
+            border-left: 3px solid #93c5fd;
+        }
+
+        h4 {
+            color: #1f4e79;
+            font-size: 13.5px;
+            font-weight: 700;
+            margin-top: 14px;
+            margin-bottom: 4px;
+        }
+
+        p {
+            margin: 4px 0 10px 0;
+            text-align: justify;
+        }
+
+        ul, ol {
+            padding-left: 22px;
+            margin: 4px 0 10px 0;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        strong {
+            color: #0f2d4d;
+            font-weight: 800;
+        }
+
+        /* 說明框 */
+        .note-box {
+            background: #f8fafc;
+            border-left: 4px solid #b8c7da;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #374151;
+            margin: 8px 0 12px 0;
+        }
+
+        .warn-box {
+            background: #fffbeb;
+            border-left: 4px solid #d97706;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #374151;
+            margin: 8px 0 12px 0;
+        }
+
+        /* 流程圖（文字版） */
+        .flow-box {
+            background: #f0f4ff;
+            border: 1px solid #c7d7f0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #163b63;
+            margin: 10px 0 14px 0;
+            white-space: pre-line;
+            font-family: monospace;
+            line-height: 1.9;
+        }
+
+        /* 功能規格表 */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+            margin: 8px 0 14px 0;
+        }
+
+        .spec-table th {
+            background: #1f4e79;
+            color: #fff;
+            padding: 7px 10px;
+            text-align: left;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .spec-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #e5edf6;
+            vertical-align: top;
+        }
+
+        .spec-table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            margin-right: 4px;
+        }
+
+        .tag-p0 { background: #fee2e2; color: #991b1b; }
+        .tag-p1 { background: #fef3c7; color: #92400e; }
+        .tag-p2 { background: #d1fae5; color: #065f46; }
+        .tag-c { background: #dbeafe; color: #1e3a8a; }
+        .tag-b { background: #ede9fe; color: #4c1d95; }
+        .tag-agent { background: #fce7f3; color: #9d174d; }
+
+        /* 目錄 */
+        .toc {
+            background: #f8fafc;
+            border: 1px solid #e5edf6;
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+        }
+
+        .toc-title {
+            font-weight: 800;
+            color: #0f2d4d;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin-bottom: 3px;
+            font-size: 13px;
+        }
+
+        .toc a {
+            color: #1f4e79;
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e5edf6;
+            margin: 20px 0;
+        }
+
+        @media print {
+            body { background: #fff; }
+            .container { max-width: none; padding: 0; box-shadow: none; border-top: 0; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- 文件頭部 -->
+    <div class="doc-header">
+        <h1>成人娛樂聚合平台 PRD</h1>
+        <div class="doc-meta">
+            <span><strong>文件版本：</strong>v1.1</span>
+            <span><strong>撰寫人：</strong>俞沛辰</span>
+            <span><strong>更新日期：</strong>2026-05-22</span>
+            <span><strong>狀態：</strong>開發中 (互動原型已完成)</span>
+        </div>
+    </div>
+
+    <!-- 版本記錄 -->
+    <table class="version-table">
+        <thead>
+            <tr><th>版本</th><th>日期</th><th>修改人</th><th>摘要</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>v1.0</td><td>2026-05-19</td><td>俞沛辰</td><td>初版建立，涵蓋 C端前台、B端後台、直播聊天室、遊戲廣告跳轉</td></tr>
+            <tr><td>v1.1</td><td>2026-05-22</td><td>俞沛辰</td><td>優化互動體驗，加入全局狀態同步、C端/B端聯動控制、影片/直播互動模擬、推廣碼 UTM 生成器</td></tr>
+        </tbody>
+    </table>
+
+    <!-- 目錄 -->
+    <div class="toc">
+        <div class="toc-title">目錄</div>
+        <ol>
+            <li><a href="#s1">產品概述</a></li>
+            <li><a href="#s2">產品架構與用戶角色</a></li>
+            <li><a href="#s3">整體業務流程</a></li>
+            <li><a href="#s4">C端前台功能需求</a>
+                <ol>
+                    <li>首頁與導覽</li>
+                    <li>免費影片區</li>
+                    <li>遊戲玩家影片區</li>
+                    <li>直播 + 聊天室</li>
+                    <li>遊戲廣告位與跳轉機制</li>
+                    <li>用戶系統（注冊 / 登入 / VIP）</li>
+                </ol>
+            </li>
+            <li><a href="#s5">B端運營後台功能需求</a>
+                <ol>
+                    <li>內容管理</li>
+                    <li>直播管理</li>
+                    <li>廣告與跳轉管理</li>
+                    <li>用戶管理</li>
+                    <li>數據報表</li>
+                </ol>
+            </li>
+            <li><a href="#s6">非功能需求</a></li>
+            <li><a href="#s7">數據指標（KPI）</a></li>
+            <li><a href="#s8">上線排期建議</a></li>
+            <li><a href="#s9">待確認事項 / 開放問題</a></li>
+        </ol>
+    </div>
+
+    <!-- 1. 產品概述 -->
+    <h2 id="s1">1. 產品概述</h2>
+
+    <h3>1.1 產品背景</h3>
+    <p>
+        本平台為成人娛樂聚合站（以下簡稱「色站」），以成人影片內容為核心流量入口，整合直播聊天室、遊戲玩家自製影片（UGC）與遊戲廣告跳轉功能，實現成人內容站與遊戲運營商平台的雙向導流。
+        平台同時支援 C 端訪客 / 會員的內容消費行為，以及 B 端運營人員的內容稽核、廣告配置與數據分析。
+    </p>
+
+    <h3>1.2 產品定位</h3>
+    <div class="note-box">
+        <strong>核心定位：</strong>以成人影片（免費 + UGC）＋直播為留存手段，以遊戲廣告跳轉為主要商業變現路徑，形成「內容消費 → 廣告曝光 → 遊戲站引流 → 遊戲站反哺導流」的流量閉環。
+    </div>
+
+    <h3>1.3 目標用戶</h3>
+    <table class="spec-table">
+        <thead>
+            <tr><th>角色</th><th>描述</th><th>核心訴求</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="tag tag-c">C端</span> 訪客</td>
+                <td>未注冊用戶，以搜索引擎或廣告連結進入</td>
+                <td>快速瀏覽免費影片，無摩擦進入體驗</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-c">C端</span> 一般會員</td>
+                <td>已注冊，可收藏、留言、觀看更多內容</td>
+                <td>個人化內容推薦、社群互動（聊天室）</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-c">C端</span> VIP 會員</td>
+                <td>付費或遊戲站導入的高價值用戶</td>
+                <td>高清無廣告影片、直播互動、專屬福利</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-c">C端</span> 遊戲玩家</td>
+                <td>從遊戲站跳轉進入、或本站上傳影片的玩家</td>
+                <td>上傳 / 分享影片、獲得站內曝光回饋</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-b">B端</span> 運營人員</td>
+                <td>管理內容、廣告、用戶的後台操作人員</td>
+                <td>高效稽核影片、彈性配置廣告位、查看報表</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>1.4 範圍說明</h3>
+    <p>本版本（v1.0）涵蓋 MVP 核心功能，不含打賞禮物系統細節、付費點數商城、推薦算法引擎的詳細設計（後續版本迭代）。</p>
+
+    <hr>
+
+    <!-- 2. 產品架構 -->
+    <h2 id="s2">2. 產品架構與用戶角色</h2>
+
+    <h3>2.1 整體模組架構</h3>
+    <div class="flow-box">┌─────────────────────────────────────────────────────┐
+│                    成人娛樂聚合平台                       │
+├──────────────────────┬──────────────────────────────┤
+│      C 端前台          │         B 端後台               │
+│                      │                              │
+│  ┌────────────────┐  │  ┌──────────────────────┐   │
+│  │  首頁 / 導覽    │  │  │  內容管理（影片稽核）   │   │
+│  ├────────────────┤  │  ├──────────────────────┤   │
+│  │  免費影片區     │  │  │  直播管理（主播 / 房間）│   │
+│  ├────────────────┤  │  ├──────────────────────┤   │
+│  │  玩家影片區(UGC)│  │  │  廣告位配置           │   │
+│  ├────────────────┤  │  ├──────────────────────┤   │
+│  │  直播 + 聊天室  │  │  │  用戶管理             │   │
+│  ├────────────────┤  │  ├──────────────────────┤   │
+│  │  遊戲廣告位     │  │  │  跳轉連結管理         │   │
+│  ├────────────────┤  │  ├──────────────────────┤   │
+│  │  用戶中心       │  │  │  數據報表 / 埋點追蹤   │   │
+│  └────────────────┘  │  └──────────────────────┘   │
+│                      │                              │
+├──────────────────────┴──────────────────────────────┤
+│                  雙向跳轉橋接層                          │
+│   色站 ──[廣告跳轉/推廣碼]──▶ 遊戲站                    │
+│   遊戲站 ──[返回入口/Banner]──▶ 色站                    │
+└─────────────────────────────────────────────────────┘</div>
+
+    <hr>
+
+    <!-- 3. 整體業務流程 -->
+    <h2 id="s3">3. 整體業務流程</h2>
+
+    <h3>3.1 主流程：訪客 → 留存 → 廣告轉化</h3>
+    <div class="flow-box">用戶進入色站（SEO / 廣告連結 / 遊戲站反哺導流）
+    │
+    ▼
+首頁展示：Banner + 熱門影片 + 直播預覽 + 遊戲廣告位
+    │
+    ├──▶ 瀏覽免費影片 ──▶ 播放頁 ──▶ 相關推薦 + 廣告曝光
+    │
+    ├──▶ 遊戲玩家影片區 ──▶ 觀看 / 互動 ──▶ 廣告曝光
+    │
+    ├──▶ 直播間 ──▶ 聊天室互動 ──▶ 打賞 / VIP 升級入口
+    │
+    └──▶ 點擊遊戲廣告 ──▶ 帶推廣碼跳轉至遊戲站
+              │
+              ▼
+         遊戲站（白標 / 包網）
+              │
+              ├── 注冊 / 入金 ──▶ 歸因到色站推廣碼（分潤計算）
+              │
+              └── 遊戲站內 Banner / 入口 ──▶ 跳轉回色站</div>
+
+    <h3>3.2 遊戲玩家影片上傳流程</h3>
+    <div class="flow-box">玩家（來自遊戲站或本站會員）
+    │
+    ▼
+登入本站帳號 ──▶ 進入「上傳影片」入口
+    │
+    ▼
+填寫影片資訊（標題 / 分類 / 封面 / 標籤）
+    │
+    ▼
+上傳影片檔 ──▶ 系統自動轉碼（多清晰度）
+    │
+    ▼
+進入人工 / AI 審核佇列（B端後台稽核）
+    │
+    ├──▶ 審核通過 ──▶ 上架至「玩家影片區」──▶ 計入玩家積分
+    │
+    └──▶ 審核拒絕 ──▶ 通知玩家原因 ──▶ 可修改重新送審</div>
+
+    <hr>
+
+    <!-- 4. C端前台功能需求 -->
+    <h2 id="s4">4. C端前台功能需求</h2>
+
+    <!-- 4.1 首頁 -->
+    <h3>4.1 首頁與導覽</h3>
+
+    <h4>4.1.1 頁面區塊配置</h4>
+    <table class="spec-table">
+        <thead>
+            <tr><th>區塊名稱</th><th>內容說明</th><th>優先級</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>頂部導覽列</td><td>Logo、分類導覽（影片 / 直播 / 玩家影片 / 遊戲）、搜尋框、互動式登入 / 注冊彈窗、語言切換（支援繁簡即時翻譯）</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>主視覺 Banner</td><td>輪播廣告（可配置遊戲站廣告 or 本站活動），支援點擊跳轉，B端可配置</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>熱門影片瀑布流</td><td>最新 / 最熱影片縮圖列表，含播放量、時長、封面圖</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>直播預覽區塊</td><td>當前在線直播主預覽（頭像 + 房間名 + 在線人數），點擊進入直播間</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>遊戲廣告側欄 / 插入式廣告</td><td>遊戲站 Logo + 活動文案 + 跳轉 CTA 按鈕，支援多個廣告位輪播</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>玩家影片推薦區</td><td>遊戲玩家上傳的 UGC 影片精選，單獨卡片樣式區分</td><td><span class="tag tag-p1">P1</span></td></tr>
+            <tr><td>頁尾</td><td>合規聲明、年齡驗證提示、聯繫資訊、友情連結（可配置遊戲站入口）</td><td><span class="tag tag-p1">P1</span></td></tr>
+        </tbody>
+    </table>
+
+    <h4>4.1.2 年齡確認機制</h4>
+    <p>首次進入站點時顯示年齡確認彈窗，用戶確認 18 歲以上方可進入；確認狀態記錄於 Cookie / LocalStorage，7 天內不再重複提示。</p>
+
+    <!-- 4.2 免費影片區 -->
+    <h3>4.2 免費影片區</h3>
+
+    <h4>4.2.1 影片列表頁</h4>
+    <ul>
+        <li><strong>分類篩選：</strong>按標籤 / 類別（可由 B端自定義分類）、時長（短 / 中 / 長）、清晰度、最新 / 最熱排序</li>
+        <li><strong>搜尋功能：</strong>關鍵字搜尋，支援標題、標籤、演員名稱模糊搜尋</li>
+        <li><strong>無限滾動 / 分頁：</strong>支援懶加載，每頁預設 24 部影片</li>
+        <li><strong>縮圖預覽：</strong>滑鼠 hover 顯示動態預覽片段（GIF / 短影片）</li>
+    </ul>
+
+    <h4>4.2.2 影片播放頁</h4>
+    <table class="spec-table">
+        <thead>
+            <tr><th>功能項</th><th>需求描述</th><th>優先級</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>多清晰度播放</td><td>支援 360P / 720P / 1080P 手動切換；訪客限制最高 720P，VIP 狀態即時解鎖 1080P（連動全局狀態）</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>播放控制</td><td>互動式播放列（進度條拖曳、播放/暫停模擬）、全螢幕 / 音量 / 播放速度（0.75x / 1x / 1.25x / 1.5x）</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>廣告插入</td><td>播放前強制廣告（Pre-roll）5 秒可倒數跳過（互動模擬）；廣告內容可設定為遊戲站廣告</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>VIP 去廣告</td><td>VIP 會員即時免廣告打擾（B端/C端全局 VIP 狀態連動切換）</td><td><span class="tag tag-p1">P1</span></td></tr>
+            <tr><td>收藏 / 點讚</td><td>登入後可收藏、互動點讚（即時動畫回饋與數量更新）</td><td><span class="tag tag-p1">P1</span></td></tr>
+            <tr><td>留言區</td><td>即時留言發布模擬（更新至全局狀態）；B端可一鍵刪除違規留言</td><td><span class="tag tag-p1">P1</span></td></tr>
+            <tr><td>相關影片推薦</td><td>播放頁右側 / 底部推薦同標籤影片，穿插遊戲廣告卡片（每 5 筆推薦插入 1 筆廣告）</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>分享功能</td><td>複製連結；不支援第三方社群分享（合規考量）</td><td><span class="tag tag-p2">P2</span></td></tr>
+        </tbody>
+    </table>
+
+    <!-- 4.3 遊戲玩家影片區 -->
+    <h3>4.3 遊戲玩家影片區（UGC）</h3>
+    <div class="note-box">
+        此區塊展示由遊戲玩家（來自遊戲站的用戶）上傳的影片，與免費影片區在視覺上有差異化設計（如加上「玩家上傳」標籤），以強化色站與遊戲站的用戶社群連結。
+    </div>
+
+    <h4>4.3.1 展示邏輯</h4>
+    <ul>
+        <li>列表頁獨立 Tab 或首頁推薦區塊入口</li>
+        <li>展示玩家暱稱（可顯示其遊戲站用戶名或匿名），點擊可查看該玩家其他上傳作品</li>
+        <li>影片卡片標示「玩家上傳」徽章，區別於官方免費影片</li>
+    </ul>
+
+    <h4>4.3.2 上傳流程（C端）</h4>
+    <ul>
+        <li>需登入本站帳號（可用遊戲站帳號 SSO 登入或獨立注冊）</li>
+        <li>上傳限制：單檔最大 2GB，支援 MP4 / MOV 格式，時長 30 秒 ~ 60 分鐘</li>
+        <li>填寫：標題（必填）、封面（可自動截幀或手動上傳）、分類標籤（最多 5 個）、簡介（選填）</li>
+        <li>提交後進入審核，審核通過後自動上架；審核中影片僅上傳者可見</li>
+        <li>上傳成功加入積分（可兌換平台福利，如 VIP 天數）</li>
+    </ul>
+
+    <!-- 4.4 直播 + 聊天室 -->
+    <h3>4.4 直播 + 聊天室</h3>
+
+    <h4>4.4.1 直播列表頁</h4>
+    <ul>
+        <li>展示所有當前在線主播：頭像封面、暱稱、在線人數、標籤分類</li>
+        <li>分類篩選：按內容類型 / 在線人數 / 新主播</li>
+        <li>離線主播可展示預約或精彩回放入口</li>
+    </ul>
+
+    <h4>4.4.2 直播間功能</h4>
+    <table class="spec-table">
+        <thead>
+            <tr><th>功能項</th><th>需求描述</th><th>用戶角色</th><th>優先級</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>直播流播放</td><td>低延遲直播流（目標延遲 ≤ 3 秒），支援自動清晰度適應</td><td>所有訪客</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>即時聊天室</td><td>即時發送與接收訊息模擬；B端可全局禁言特定用戶，即時生效</td><td>登入用戶</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>聊天室訊息規範</td><td>訊息長度 ≤ 100 字；敏感詞過濾（B端可維護敏感詞庫）；連續發言限速（3 秒 / 次）</td><td>系統</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>打賞 / 送禮</td><td>虛擬禮物互動面板 → 點擊送禮即時觸發直播間動畫特效與跑馬燈通知</td><td>登入用戶</td><td><span class="tag tag-p1">P1</span></td></tr>
+            <tr><td>VIP 專屬私密直播</td><td>部分直播間需 VIP 身份方可進入；訪客看到內容模糊 + 升級 VIP 引導</td><td>VIP 會員</td><td><span class="tag tag-p1">P1</span></td></tr>
+            <tr><td>遊戲廣告貼片</td><td>直播間側欄固定廣告位（遊戲站 Banner）；進場彈窗廣告（可設為遊戲站廣告，每次進場顯示一次）</td><td>所有訪客</td><td><span class="tag tag-p0">P0</span></td></tr>
+            <tr><td>舉報功能</td><td>用戶可舉報違規直播內容，B端收到後人工處理</td><td>登入用戶</td><td><span class="tag tag-p1">P1</span></td></tr>
+        </tbody>
+    </table>
+
+    <!-- 4.5 遊戲廣告位與跳轉機制 -->
+    <h3>4.5 遊戲廣告位與跳轉機制</h3>
+    <div class="note-box">
+        <strong>核心商業邏輯：</strong>色站作為流量來源，透過廣告位與跳轉機制將高意願用戶導入遊戲站，並透過推廣碼追蹤歸因，實現分潤結算；遊戲站同樣在其站內設有色站入口，形成雙向流量閉環。
+    </div>
+
+    <h4>4.5.1 廣告位類型</h4>
+    <table class="spec-table">
+        <thead>
+            <tr><th>廣告位名稱</th><th>位置</th><th>尺寸建議</th><th>展示邏輯</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>首頁主 Banner</td><td>首頁頂部輪播</td><td>1200×300px</td><td>輪播 3~5 個廣告，每 5 秒切換，可點擊跳轉</td></tr>
+            <tr><td>影片播放前貼片</td><td>影片播放前</td><td>全螢幕覆蓋</td><td>5 秒強制 + 可跳過，VIP 免除</td></tr>
+            <tr><td>影片播放中插片</td><td>影片播放中（每 15 分鐘）</td><td>全螢幕覆蓋</td><td>強制 3 秒，不可跳過</td></tr>
+            <tr><td>影片推薦列表插卡</td><td>相關推薦影片清單中</td><td>同影片卡片尺寸</td><td>每 5 筆影片插入 1 筆廣告卡片</td></tr>
+            <tr><td>直播間側欄 Banner</td><td>直播間右側固定</td><td>300×250px</td><td>常駐顯示，不影響直播觀看</td></tr>
+            <tr><td>直播間進場彈窗</td><td>進入直播間時</td><td>500×300px</td><td>每次進場顯示一次，3 秒後可關閉</td></tr>
+            <tr><td>頁尾固定廣告列</td><td>所有頁面底部</td><td>全寬 × 60px</td><td>懸浮固定，含遊戲站 Logo + CTA 按鈕</td></tr>
+        </tbody>
+    </table>
+
+    <h4>4.5.2 跳轉機制</h4>
+    <ul>
+        <li><strong>推廣碼帶入：</strong>用戶點擊廣告後，跳轉 URL 自動附帶色站推廣碼（e.g. <code>?ref=xxxx&src=adult_banner</code>），遊戲站讀取後記錄歸因</li>
+        <li><strong>跳轉方式：</strong>預設開新分頁（target="_blank"），確保用戶在色站的瀏覽session不中斷</li>
+        <li><strong>落地頁：</strong>可由 B端配置跳轉至遊戲站的注冊頁 / 活動頁 / 首頁（不同廣告位可配置不同落地頁）</li>
+        <li><strong>遊戲站回導：</strong>遊戲站在其頁面設有色站入口 Banner / 連結，同樣攜帶遊戲站的推廣碼跳轉回色站</li>
+    </ul>
+
+    <h4>4.5.3 廣告追蹤埋點</h4>
+    <ul>
+        <li>廣告曝光次數（Impression）：每次廣告進入可視區域計為一次曝光</li>
+        <li>廣告點擊次數（Click）：記錄來源廣告位 ID + 用戶 ID（或匿名 ID）</li>
+        <li>跳轉至遊戲站次數（Redirect Out）：附帶推廣碼的跳出量</li>
+        <li>由遊戲站回導進入次數（Redirect In）：遊戲站帶推廣碼進入色站的量</li>
+    </ul>
+
+    <!-- 4.6 用戶系統 -->
+    <h3>4.6 用戶系統（注冊 / 登入 / VIP）</h3>
+
+    <h4>4.6.1 注冊 / 登入</h4>
+    <ul>
+        <li>支援 Email + 密碼注冊（無需實名，保護用戶隱私）</li>
+        <li>支援遊戲站帳號 SSO 跳轉登入（可選串接）</li>
+        <li>登入後保留 7 天 Session，可手動登出</li>
+        <li>忘記密碼透過 Email 驗證重設</li>
+    </ul>
+
+    <h4>4.6.2 個人中心</h4>
+    <ul>
+        <li>我的收藏（影片 / 直播間）</li>
+        <li>我的上傳（玩家影片列表 + 審核狀態）</li>
+        <li>積分與 VIP 狀態</li>
+        <li>觀看記錄</li>
+    </ul>
+
+    <h4>4.6.3 VIP 機制</h4>
+    <table class="spec-table">
+        <thead>
+            <tr><th>等級</th><th>獲取方式</th><th>權益</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>訪客</td><td>無需注冊</td><td>觀看免費影片（最高 720P）、看廣告、看直播（不可發言）</td></tr>
+            <tr><td>一般會員</td><td>免費注冊</td><td>收藏 / 留言 / 聊天室發言 / 上傳玩家影片</td></tr>
+            <tr><td>VIP 會員</td><td>付費升級 or 從遊戲站入金後由遊戲站發放 VIP 碼兌換</td><td>1080P 高清、無廣告、私密直播間、專屬內容解鎖</td></tr>
+        </tbody>
+    </table>
+    <div class="warn-box">
+        <strong>關鍵設計：</strong>遊戲站可透過「用戶在遊戲站完成首次入金 → 發放色站 VIP 兌換碼」的機制，激勵色站用戶在遊戲站注冊並入金，形成更強的轉化閉環。
+    </div>
+
+    <hr>
+
+    <!-- 5. B端後台 -->
+    <h2 id="s5">5. B端運營後台功能需求</h2>
+
+    <!-- 5.1 內容管理 -->
+    <h3>5.1 內容管理（影片稽核與即時控制）</h3>
+
+    <h4>5.1.1 影片列表管理</h4>
+    <ul>
+        <li><strong>即時影片狀態控制：</strong>支援在 B端一鍵「上架/下架」影片，C端前台即時同步隱藏/顯示該影片</li>
+        <li>篩選：全部 / 待審核 / 已上架 / 已下架 / 審核拒絕</li>
+        <li>支援批量操作：批量上架 / 下架 / 刪除</li>
+        <li>搜尋：按標題 / 上傳者 / 標籤搜尋</li>
+    </ul>
+
+    <h4>5.1.2 影片審核流程</h4>
+    <div class="flow-box">用戶上傳影片 ──▶ 系統自動轉碼 ──▶ 進入審核佇列
+    │
+    ▼
+B端審核員查看影片 + 封面 + 標籤
+    │
+    ├──▶【通過】──▶ 上架，通知用戶，加入積分
+    │
+    └──▶【拒絕】──▶ 選擇拒絕原因 ──▶ 通知用戶
+              │
+              └── 拒絕原因：含未成年疑慮 / 非成人內容 / 侵權 / 其他</div>
+
+    <h4>5.1.3 官方影片管理</h4>
+    <ul>
+        <li>後台直接上傳官方免費影片（批量上傳）</li>
+        <li>可設定影片上架時間（定時上架）</li>
+        <li>管理標籤分類體系（新增 / 停用 / 合併標籤）</li>
+        <li>設定影片是否含廣告插片</li>
+    </ul>
+
+    <!-- 5.2 直播管理 -->
+    <h3>5.2 直播管理</h3>
+    <ul>
+        <li><strong>主播帳號管理：</strong>新增 / 停用主播帳號，設定串流密鑰（Stream Key），查看主播歷史直播記錄</li>
+        <li><strong>直播間即時控制：</strong>強制開播/下播（C端即時同步顯示直播狀態）、查看當前在線人數、全局禁言特定用戶</li>
+        <li><strong>廣告位配置：</strong>設定直播間內顯示哪個廣告（可覆蓋全站預設廣告）</li>
+        <li><strong>敏感詞庫維護：</strong>新增 / 刪除聊天室敏感詞，觸發後自動攔截</li>
+    </ul>
+
+    <!-- 5.3 廣告與跳轉管理 -->
+    <h3>5.3 廣告與跳轉管理</h3>
+
+    <h4>5.3.1 廣告位配置</h4>
+    <table class="spec-table">
+        <thead>
+            <tr><th>配置項</th><th>說明</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>廣告位選擇</td><td>選擇欲配置的廣告位（首頁 Banner / 貼片 / 插卡 / 直播間等）</td></tr>
+            <tr><td>廣告素材上傳</td><td>上傳圖片 / GIF / 短視頻廣告素材</td></tr>
+            <tr><td>跳轉 URL 設定</td><td>填寫跳轉目標 URL（遊戲站落地頁），推廣碼自動附帶或手動填入</td></tr>
+            <tr><td>展示排期</td><td>設定廣告開始 / 結束時間，到期自動停止展示</td></tr>
+            <tr><td>輪播權重</td><td>多個廣告輪播時，可設定各廣告的曝光比例</td></tr>
+        </tbody>
+    </table>
+
+    <h4>5.3.2 跳轉連結管理</h4>
+    <ul>
+        <li>建立各遊戲站的跳轉連結（含推廣碼），統一管理多個遊戲站合作方</li>
+        <li>支援 UTM 參數自動拼接（包含活動名稱、推廣渠道等參數即時產生器）</li>
+        <li>可設定某廣告位的跳轉目標（從下拉選單選擇已建立的跳轉連結），並在 B端進行即時預覽與測試</li>
+    </ul>
+
+    <!-- 5.4 用戶管理 -->
+    <h3>5.4 用戶管理</h3>
+    <ul>
+        <li><strong>用戶列表：</strong>搜尋用戶（Email / 暱稱）、查看注冊時間、VIP 狀態、上傳數量、最後登入</li>
+        <li><strong>VIP 手動發放與全局控制：</strong>輸入 Email 或用戶 ID 直接升級 VIP，或一鍵切換全局 VIP 測試狀態</li>
+        <li><strong>封禁 / 解封：</strong>封禁違規用戶（C端即時攔截互動），封禁後用戶無法登入；支援永久封禁或指定天數</li>
+        <li><strong>聊天室禁言：</strong>針對特定用戶設定聊天室禁言（C端即時生效），不影響其他功能使用</li>
+    </ul>
+
+    <!-- 5.5 數據報表 -->
+    <h3>5.5 數據報表</h3>
+    <table class="spec-table">
+        <thead>
+            <tr><th>報表類型</th><th>核心指標</th><th>篩選維度</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>流量概覽</td><td>DAU / MAU、PV / UV、平均停留時長、跳出率</td><td>日 / 週 / 月</td></tr>
+            <tr><td>內容表現</td><td>各影片播放量 / 完播率 / 收藏數 / 留言數</td><td>日 / 週，按影片類型</td></tr>
+            <tr><td>直播數據</td><td>各直播間在線峰值人數、打賞金額、觀看時長</td><td>日 / 週，按主播</td></tr>
+            <tr><td>廣告轉化</td><td>各廣告位曝光量（Impression）、點擊量（Click）、CTR、跳轉至遊戲站次數</td><td>日 / 週，按廣告位</td></tr>
+            <tr><td>遊戲站導流</td><td>各遊戲站跳轉量、回導量、預估分潤金額（需遊戲站提供轉換數據）</td><td>日 / 週，按遊戲站</td></tr>
+            <tr><td>用戶增長</td><td>新注冊數、VIP 升級數、兌換碼使用數</td><td>日 / 週 / 月</td></tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- 6. 非功能需求 -->
+    <h2 id="s6">6. 非功能需求</h2>
+
+    <h3>6.1 性能</h3>
+    <ul>
+        <li>首頁 LCP（最大內容渲染）≤ 2.5 秒（CDN 加速）</li>
+        <li>影片秒開率 ≥ 90%（首幀加載 ≤ 1 秒）</li>
+        <li>直播延遲 ≤ 3 秒（採用 HLS 或 RTMP 推流 + 低延遲 CDN）</li>
+        <li>聊天室訊息延遲 ≤ 1 秒（WebSocket 長連接）</li>
+        <li>B端後台報表查詢響應 ≤ 5 秒</li>
+    </ul>
+
+    <h3>6.2 安全</h3>
+    <ul>
+        <li>用戶密碼 bcrypt 加密儲存</li>
+        <li>影片 CDN URL 簽名防盜鏈（Token 有效期 1 小時）</li>
+        <li>上傳影片進行病毒掃描</li>
+        <li>廣告跳轉 URL 防 Open Redirect 驗證（僅允許已授權域名）</li>
+        <li>B端後台角色權限分離（超管 / 審核員 / 廣告管理員 / 只讀報表）</li>
+    </ul>
+
+    <h3>6.3 合規</h3>
+    <div class="warn-box">
+        <strong>注意：</strong>平台應根據目標市場的法規進行合規設計，包含但不限於：年齡驗證機制、違規內容舉報處理流程、隱私政策聲明（Cookie 使用告知）、DMCA 侵權處理程序。具體合規細節依目標市場法規由法務確認後補充。
+    </div>
+    <ul>
+        <li>進站年齡確認彈窗（需用戶主動確認 18 歲以上）</li>
+        <li>頁尾顯示合規聲明文字</li>
+        <li>提供影片下架申請入口（DMCA / 侵權舉報）</li>
+        <li>隱私政策頁面說明 Cookie 收集範圍</li>
+    </ul>
+
+    <h3>6.4 設備支援</h3>
+    <ul>
+        <li>響應式設計（RWD），支援 PC / Mobile H5 / Tablet</li>
+        <li>瀏覽器支援：Chrome 90+、Safari 14+、Firefox 88+、Edge 90+</li>
+        <li>不開發原生 App（v1.0），Mobile 以 H5 為主</li>
+    </ul>
+
+    <hr>
+
+    <!-- 7. 數據指標 KPI -->
+    <h2 id="s7">7. 數據指標（KPI）</h2>
+    <table class="spec-table">
+        <thead>
+            <tr><th>指標類型</th><th>指標名稱</th><th>目標值（上線後 3 個月）</th><th>追蹤工具</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>流量</td><td>DAU</td><td>依投放規模設定基準線</td><td>Google Analytics / 站內埋點</td></tr>
+            <tr><td>留存</td><td>次日留存率</td><td>≥ 25%</td><td>站內埋點</td></tr>
+            <tr><td>內容</td><td>影片平均完播率</td><td>≥ 40%</td><td>播放器埋點</td></tr>
+            <tr><td>直播</td><td>直播間人均停留時長</td><td>≥ 8 分鐘</td><td>站內埋點</td></tr>
+            <tr><td>廣告</td><td>遊戲廣告整體 CTR</td><td>≥ 3%</td><td>廣告系統</td></tr>
+            <tr><td>轉化</td><td>色站 → 遊戲站跳轉後注冊率</td><td>依遊戲站提供數據</td><td>遊戲站後台 + 推廣碼歸因</td></tr>
+            <tr><td>商業</td><td>月跳轉遊戲站總量</td><td>依合作目標設定</td><td>廣告系統</td></tr>
+            <tr><td>質量</td><td>客訴率（內容違規 / 功能異常）</td><td>≤ 1%</td><td>客服工單</td></tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- 8. 上線排期 -->
+    <h2 id="s8">8. 上線排期建議</h2>
+    <table class="spec-table">
+        <thead>
+            <tr><th>階段</th><th>內容</th><th>預估週期</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Phase 0：設計稿確認</td><td>UI 設計稿（首頁 / 影片播放頁 / 直播間 / B端後台）、技術選型確認、CDN / 直播服務選型</td><td>2 週</td></tr>
+            <tr><td>Phase 1：MVP 開發</td><td>首頁 + 免費影片（上傳 / 播放 / 廣告插入）+ 廣告跳轉系統 + B端基礎內容管理 + 用戶注冊登入</td><td>6 週</td></tr>
+            <tr><td>Phase 2：直播 + UGC</td><td>直播系統串接 + 聊天室 + 玩家影片上傳審核流程 + VIP 機制 + 遊戲站 SSO 串接</td><td>4 週</td></tr>
+            <tr><td>Phase 3：數據 + 優化</td><td>B端報表完整化 + 廣告追蹤埋點驗證 + 性能優化 + 安全加固</td><td>3 週</td></tr>
+            <tr><td>Phase 4：灰度上線</td><td>小規模流量測試、廣告轉化漏斗驗證、Bug 修復</td><td>1~2 週</td></tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- 9. 待確認事項 -->
+    <h2 id="s9">9. 待確認事項 / 開放問題</h2>
+    <table class="spec-table">
+        <thead>
+            <tr><th>#</th><th>問題</th><th>影響範圍</th><th>負責確認</th><th>狀態</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>遊戲站 SSO 登入串接：遊戲站是否提供 OAuth 接口？或僅靠推廣碼歸因即可？</td><td>用戶系統 / VIP 兌換</td><td>技術 + 遊戲站窗口</td><td>待確認</td></tr>
+            <tr><td>2</td><td>VIP 兌換碼發放機制：由色站自行管理？還是由遊戲站 API 自動推送？</td><td>VIP 系統</td><td>產品 + 遊戲站窗口</td><td>待確認</td></tr>
+            <tr><td>3</td><td>直播服務選型：自建推流服務 or 串接第三方（如 AWS IVS / 騰訊雲直播）？</td><td>直播系統 / 預算</td><td>技術</td><td>待確認</td></tr>
+            <tr><td>4</td><td>廣告分潤計算基礎：以跳轉量？注冊量？入金量計算分潤？需與遊戲站確認結算規則</td><td>廣告系統 / 報表</td><td>商務 + 遊戲站窗口</td><td>待確認</td></tr>
+            <tr><td>5</td><td>影片 CDN 與儲存：用戶上傳影片的儲存方案（自建 OSS or AWS S3）、CDN 供應商選擇</td><td>性能 / 預算</td><td>技術</td><td>待確認</td></tr>
+            <tr><td>6</td><td>影片審核是否導入 AI 輔助審核（識別未成年 / 非成人內容），以降低人工成本</td><td>內容管理 / 合規</td><td>產品 + 技術</td><td>待確認</td></tr>
+            <tr><td>7</td><td>目標市場與域名策略：IP 封鎖繞過機制是否需要在產品層面設計（鏡像站 / 備用域名）？</td><td>全站</td><td>技術 + 商務</td><td>待確認</td></tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+
+</html>
