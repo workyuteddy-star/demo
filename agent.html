@@ -41,7 +41,7 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
 .page.active { display: block; }
 
 /* ── CARDS ── */
-.kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 16px; }
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 16px; }
 .kpi-card { background: #fff; border-radius: 12px; padding: 16px 16px 12px; position: relative; overflow: hidden; }
 .kpi-top { height: 4px; position: absolute; top: 0; left: 0; right: 0; border-radius: 12px 12px 0 0; }
 .kpi-lbl { font-size: 12px; color: #616b85; margin-bottom: 8px; }
@@ -52,8 +52,8 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
 .kpi-badge.red { background: #faebeb; color: #ea463c; }
 
 /* ── ROW LAYOUTS ── */
-.row-2 { display: grid; grid-template-columns: 560px 1fr; gap: 16px; margin-bottom: 16px; }
-.row-3 { display: grid; grid-template-columns: 400px 360px 1fr; gap: 16px; }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .card { background: #fff; border-radius: 12px; padding: 16px; }
 .card-hd { font-size: 14px; font-weight: 700; color: #161b2a; margin-bottom: 3px; }
 .card-sub { font-size: 11px; color: #616b85; margin-bottom: 12px; }
@@ -140,7 +140,7 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
 .b-yellow { background: #fef6e0; color: #d1a62b; }
 
 /* ── PROMOTION CONFIG PAGE ── */
-.promo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 16px; }
+.promo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px; }
 .promo-stat { background: #fff; border-radius: 10px; padding: 14px 16px; }
 .link-card { background: #fff; border-radius: 10px; border: 1px solid #e0e4ea; }
 .link-row { padding: 14px 16px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: flex-start; gap: 12px; }
@@ -153,7 +153,7 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
 .copy-btn { border: 1px solid #e0e4ea; border-radius: 5px; padding: 3px 8px; font-size: 11px; background: #fff; color: #616b85; cursor: pointer; white-space: nowrap; }
 
 /* ── MATERIALS PAGE ── */
-.mat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.mat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
 .mat-card { background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4ea; }
 .mat-preview { height: 90px; background: #d1d5db; background-image: repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,0,0,.04) 8px,rgba(0,0,0,.04) 16px); display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 11px; position: relative; cursor: pointer; }
 .mat-preview:hover::after { content:'预览'; position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700; }
