@@ -227,7 +227,7 @@ flowchart TD
     T0 -- 已暫停 --> T0E([⛔ 緊急暫停中\n管理員已觸發 pause])
     T0 -- 正常 --> T[⛓️ 智能合約執行\nplaceBet 驗證下注]
     T --> T1{多簽授權?\nGnosis Safe}
-    T1 -- 高風險操作 --> T1A[需 2/3 多簽確認\n[WP-1.2.5] 管理員操作]
+    T1 -- 高風險操作 --> T1A["需 2/3 多簽確認\n[WP-1.2.5] 管理員操作"]
     T1A --> T1B[Gnosis Safe 執行\n合約升級/參數調整]
     T1B --> T
     T1 -- 一般下注 --> U[呼叫 Chainlink VRF\nrequestRandomWords]
