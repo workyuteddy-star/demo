@@ -157,14 +157,14 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; font-size: 13px;
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
 /* MOBILE WAP STYLES - 375px */
-body { flex-direction: column !important; }
+body { flex-direction: column !important; width: 375px !important; height: 100vh !important; margin: 0 auto !important; }
 .sidebar { display: none !important; width: 0 !important; min-width: 0 !important; }
-.viewport { width: 100% !important; flex: 1 !important; }
-.content-area { width: 375px !important; padding: 0 !important; background: #fff !important; overflow-y: auto !important; overflow-x: hidden !important; }
-.page { display: flex !important; justify-content: flex-start !important; align-items: flex-start !important; }
-.page.active { display: flex !important; justify-content: flex-start !important; }
-.page-canvas { width: 375px !important; }
-.page-canvas > * { width: 100% !important; }
+.viewport { width: 375px !important; max-width: 375px !important; flex: 1 !important; display: flex !important; flex-direction: column !important; }
+.vp-header { display: none !important; }
+.content-area { width: 375px !important; max-width: 375px !important; flex: 1 !important; padding: 0 !important; background: #fff !important; overflow-y: auto !important; overflow-x: hidden !important; }
+.page { display: block !important; width: 375px !important; }
+.page.active { display: block !important; width: 375px !important; }
+.page-canvas { width: 375px !important; margin: 0 !important; }
 .wf-navbar { width: 100% !important; }
 
 .vp-header { display: none !important; }
