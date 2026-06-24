@@ -156,6 +156,31 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; font-size: 13px;
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 .chat-msg { animation: fadeIn 0.2s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+  .sidebar { width: 150px; min-width: 150px; }
+}
+
+@media (max-width: 768px) {
+  body { flex-direction: column; }
+  .sidebar { display: none; }
+  .viewport { height: 100vh; }
+  .content-area { padding: 16px; }
+  .page-canvas {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .wf-search { width: auto; }
+}
+
+@media (max-width: 480px) {
+  .page-canvas { max-width: 100%; }
+  .vp-header { padding: 0 8px; }
+  .content-area { padding: 8px; }
+  .wf-navbar { padding: 0 8px; gap: 8px; }
+  .wf-search { display: none; }
+}
 </style>
 </head>
 <body>
