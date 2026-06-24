@@ -681,12 +681,31 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
           <div style="position:absolute;bottom:24px;left:8px;right:8px;height:1px;background:#edf0f5"></div>
           <div style="position:absolute;bottom:62px;left:8px;right:8px;height:1px;background:#edf0f5"></div>
           <div style="position:absolute;bottom:100px;left:8px;right:8px;height:1px;background:#edf0f5"></div>
-          ${['6月','7月','8月','9月','10月','11月','12月','1月','2月','3月','4月','5月'].map((m,i)=>{
-            const h=[38,42,35,50,58,62,68,55,70,82,91,100][i];
-            return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
-              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:${h}px;opacity:0.85"></div>
-              <span style="font-size:9px;color:#9ea6b8">${m}</span></div>`;
-          }).join('')}
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:38px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">6月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:42px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">7月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:35px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">8月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:50px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">9月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:58px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">10月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:62px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">11月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:68px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">12月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:55px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">1月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:70px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">2月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:82px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">3月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:91px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">4月</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:100%;background:#0c9f72;border-radius:3px 3px 0 0;height:100px;opacity:0.85"></div>
+              <span style="font-size:9px;color:#9ea6b8">5月</span></div>
         </div>
         <!-- Legend -->
         <div style="display:flex;gap:14px;margin-top:8px">
@@ -698,15 +717,23 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
       <!-- Commission breakdown -->
       <div class="card" style="width:280px;flex-shrink:0">
         <div class="card-hd" style="margin-bottom:12px">佣金来源拆分</div>
-        ${[['直属客户', '8,920.00', '71.5%', '#0c9f72'],['下级代理层级', '3,560.50', '28.5%', '#d1a62b']].map(([n,v,p,c])=>`
+        
         <div style="margin-bottom:14px">
           <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-            <span style="font-size:12px;color:#616b85">${n}</span>
-            <span style="font-size:12px;font-weight:700">$${v}</span>
+            <span style="font-size:12px;color:#616b85">直属客户</span>
+            <span style="font-size:12px;font-weight:700">$8,920.00</span>
           </div>
-          <div style="height:8px;background:#f3f4f6;border-radius:4px"><div style="height:100%;background:${c};border-radius:4px;width:${p}"></div></div>
-          <div style="font-size:10px;color:#9ea6b8;margin-top:2px">${p}</div>
-        </div>`).join('')}
+          <div style="height:8px;background:#f3f4f6;border-radius:4px"><div style="height:100%;background:#0c9f72;border-radius:4px;width:71.5%"></div></div>
+          <div style="font-size:10px;color:#9ea6b8;margin-top:2px">71.5%</div>
+        </div>
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:12px;color:#616b85">下级代理层级</span>
+            <span style="font-size:12px;font-weight:700">$3,560.50</span>
+          </div>
+          <div style="height:8px;background:#f3f4f6;border-radius:4px"><div style="height:100%;background:#d1a62b;border-radius:4px;width:28.5%"></div></div>
+          <div style="font-size:10px;color:#9ea6b8;margin-top:2px">28.5%</div>
+        </div>
         <div style="border-top:1px solid #f3f4f6;padding-top:12px">
           <div style="font-size:12px;color:#616b85;margin-bottom:4px">预计本月结算</div>
           <div style="font-size:20px;font-weight:700;color:#0c9f72">$12,480.50</div>
@@ -861,10 +888,22 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
       <!-- Left nav -->
       <div style="width:180px;flex-shrink:0">
         <div class="card" style="padding:6px 0">
-          ${[['通知设置','🔔'],['语言与时区','🌐'],['显示偏好','🎨'],['API 接入','⚙️'],['操作日志','📋']].map(([n,ic],i)=>`
-          <div style="padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;background:${i===0?'#e0f6f1':''};color:${i===0?'#0c9f72':'#374151'};font-size:13px;font-weight:${i===0?'700':'400'};border-radius:6px;margin:2px 6px">
-            <span>${ic}</span>${n}
-          </div>`).join('')}
+          
+          <div style="padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;background:#e0f6f1;color:#0c9f72;font-size:13px;font-weight:700;border-radius:6px;margin:2px 6px">
+            <span>🔔</span>通知设置
+          </div>
+          <div style="padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;background:;color:#374151;font-size:13px;font-weight:400;border-radius:6px;margin:2px 6px">
+            <span>🌐</span>语言与时区
+          </div>
+          <div style="padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;background:;color:#374151;font-size:13px;font-weight:400;border-radius:6px;margin:2px 6px">
+            <span>🎨</span>显示偏好
+          </div>
+          <div style="padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;background:;color:#374151;font-size:13px;font-weight:400;border-radius:6px;margin:2px 6px">
+            <span>⚙️</span>API 接入
+          </div>
+          <div style="padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;background:;color:#374151;font-size:13px;font-weight:400;border-radius:6px;margin:2px 6px">
+            <span>📋</span>操作日志
+          </div>
         </div>
       </div>
 
@@ -872,23 +911,61 @@ body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; backg
       <div style="flex:1;display:flex;flex-direction:column;gap:14px">
         <div class="card">
           <div style="font-size:14px;font-weight:700;margin-bottom:14px">通知设置</div>
-          ${[
-            ['新客户注册通知','有新客户通过您的推广链接注册',true],
-            ['出入金申请通知','客户提交出入金申请时提醒',true],
-            ['KYC审核通知','客户完成或需要补充KYC材料',true],
-            ['客户高风险预警','客户账户亏损超过30%时提醒',true],
-            ['佣金结算通知','每月佣金结算到账时提醒',true],
-            ['系统公告','平台重要公告与维护通知',false],
-          ].map(([t,s,on])=>`
+          
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
-            <div><div style="font-size:13px;font-weight:600">${t}</div><div style="font-size:11px;color:#9ea6b8">${s}</div></div>
+            <div><div style="font-size:13px;font-weight:600">新客户注册通知</div><div style="font-size:11px;color:#9ea6b8">有新客户通过您的推广链接注册</div></div>
             <div style="display:flex;gap:8px;align-items:center">
               <span style="font-size:11px;color:#9ea6b8">站内</span>
-              <div style="width:36px;height:20px;border-radius:10px;background:${on?'#0c9f72':'#d1d5db'};position:relative;cursor:pointer"><div style="position:absolute;top:3px;${on?'right:3px':'left:3px'};width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
               <span style="font-size:11px;color:#9ea6b8">邮件</span>
-              <div style="width:36px;height:20px;border-radius:10px;background:${on?'#0c9f72':'#d1d5db'};position:relative;cursor:pointer"><div style="position:absolute;top:3px;${on?'right:3px':'left:3px'};width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
             </div>
-          </div>`).join('')}
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">出入金申请通知</div><div style="font-size:11px;color:#9ea6b8">客户提交出入金申请时提醒</div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11px;color:#9ea6b8">站内</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <span style="font-size:11px;color:#9ea6b8">邮件</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">KYC审核通知</div><div style="font-size:11px;color:#9ea6b8">客户完成或需要补充KYC材料</div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11px;color:#9ea6b8">站内</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <span style="font-size:11px;color:#9ea6b8">邮件</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">客户高风险预警</div><div style="font-size:11px;color:#9ea6b8">客户账户亏损超过30%时提醒</div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11px;color:#9ea6b8">站内</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <span style="font-size:11px;color:#9ea6b8">邮件</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">佣金结算通知</div><div style="font-size:11px;color:#9ea6b8">每月佣金结算到账时提醒</div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11px;color:#9ea6b8">站内</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <span style="font-size:11px;color:#9ea6b8">邮件</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#0c9f72;position:relative;cursor:pointer"><div style="position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6">
+            <div><div style="font-size:13px;font-weight:600">系统公告</div><div style="font-size:11px;color:#9ea6b8">平台重要公告与维护通知</div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:11px;color:#9ea6b8">站内</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#d1d5db;position:relative;cursor:pointer"><div style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+              <span style="font-size:11px;color:#9ea6b8">邮件</span>
+              <div style="width:36px;height:20px;border-radius:10px;background:#d1d5db;position:relative;cursor:pointer"><div style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>
           <div style="margin-top:12px;display:flex;justify-content:flex-end"><button class="btn-p">保存设置</button></div>
         </div>
 
