@@ -708,7 +708,7 @@ function clickAd(adId) {
       if (state.currentUser) {
         state.currentUser.pts += 200;
       }
-      window.location.href = 'index.html';
+      window.location.href = 'casino.html';
     }, 1500);
   }
 }
@@ -719,7 +719,7 @@ function adminTop(title){
 }
 const adMenu=[['acontent','📋 内容管理'],['alive','🎙 直播管理'],['aads','📢 广告配置'],['apromo','🔗 推广配置'],['amats','🖼 营销素材'],['ausers','👥 用户管理'],['areports','📊 数据报表']];
 function adminSide(active){
-  return `<div class="adm-sidebar">${adMenu.map(([id,lbl])=>`<div class="adm-mi ${active===id?'on':''}" onclick="nav('${id}')">${t(lbl)}</div>`).join('')}</div>`;
+  return '';
 }
 
 // ─── RENDER VIDEO CARDS ──────────────────────────────────────────────────────
