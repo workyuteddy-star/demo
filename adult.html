@@ -1,0 +1,3046 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成人娱乐聚合平台 — 产品原型图 v1.0</title>
+<style>
+:root {
+  --red: #e84040; --bg: #f0f2f5; --border: #dde1e7;
+  --text: #1f2937; --muted: #9ca3af; --sub: #6b7280;
+  --sidebar: #1a2332; --card: #ffffff;
+  --page-canvas-width: 100%;
+  --page-canvas-height: auto;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; font-size: 13px; background: var(--bg); color: var(--text); height: 100vh; display: flex; overflow: hidden; }
+
+/* SIDEBAR */
+.sidebar { width: 196px; min-width: 196px; background: var(--sidebar); color: #94a3b8; display: flex; flex-direction: column; overflow-y: auto; }
+.sb-header { padding: 14px 14px 10px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.sb-logo { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.sb-ver { font-size: 10px; color: #475569; }
+.sb-sec { padding: 10px 14px 3px; font-size: 10px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+.sb-item { display: flex; align-items: center; gap: 7px; padding: 8px 14px; cursor: pointer; font-size: 12.5px; color: #94a3b8; border-left: 3px solid transparent; transition: all .12s; }
+.sb-item:hover { background: #243447; color: #e2e8f0; }
+.sb-item.active { background: #1e3a5c; color: #fff; border-left-color: var(--red); }
+
+/* VIEWPORT */
+.viewport { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.vp-header { background: #fff; border-bottom: 1px solid var(--border); padding: 0 16px; height: 44px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.brow-btns { display: flex; gap: 5px; }
+.brow-btn { width: 11px; height: 11px; border-radius: 50%; background: #d1d5db; }
+.brow-btn:nth-child(1){background:#ef4444} .brow-btn:nth-child(2){background:#f59e0b} .brow-btn:nth-child(3){background:#22c55e}
+.brow-url { flex: 1; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 5px; padding: 4px 10px; font-size: 11px; color: #6b7280; font-family: monospace; }
+.pg-label { font-size: 11px; color: var(--sub); background: #f3f4f6; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); white-space: nowrap; }
+.content-area { flex: 1; overflow-y: auto; overflow-x: hidden; background: #e7ebf1; padding: 24px; }
+.page { display: none; min-width: 0; }
+.page.active { display: block; }
+.page-canvas {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  overflow: hidden;
+}
+.page-canvas > .wf-navbar:first-child,
+.page-canvas > .adm-topbar:first-child {
+  width: 100%;
+}
+
+/* WIREFRAME COMMONS */
+.ph { background: #d1d5db; background-image: repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(0,0,0,.04) 7px,rgba(0,0,0,.04) 14px); display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 11px; }
+.card { background: #fff; border: 1px solid var(--border); border-radius: 7px; }
+.card-hd { padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: space-between; }
+.card-bd { padding: 12px 14px; }
+.wf-navbar { background: #111827; color: #fff; height: 50px; display: flex; align-items: center; padding: 0 14px; gap: 16px; font-size: 12.5px; flex-shrink: 0; }
+.wf-logo { font-size: 15px; font-weight: 700; color: var(--red); margin-right: 4px; }
+.nav-lk { color: #9ca3af; cursor: pointer; } .nav-lk:hover,.nav-lk.on { color: #fff; }
+.wf-search { background: #1f2937; border: 1px solid #374151; border-radius: 4px; padding: 5px 10px; color: #9ca3af; font-size: 12px; display: flex; align-items: center; gap: 5px; margin-left: auto; width: 240px; }
+.btn { border: 1px solid var(--border); background: #fff; color: var(--sub); padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+.btn-p { background: var(--red); color: #fff; border-color: var(--red); }
+.btn-b { background: #dbeafe; color: #1e40af; border-color: #93c5fd; }
+.btn-d { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+.btn-sm { padding: 3px 7px; font-size: 11px; border-radius: 3px; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--sub); }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.b-red{background:#fee2e2;color:#991b1b} .b-green{background:#d1fae5;color:#065f46} .b-yellow{background:#fef3c7;color:#92400e} .b-blue{background:#dbeafe;color:#1e40af} .b-gray{background:#f3f4f6;color:#6b7280} .b-vip{background:linear-gradient(90deg,#f59e0b,#ef4444);color:#fff}
+.wf-input { border: 1px solid var(--border); border-radius: 4px; padding: 6px 9px; font-size: 12px; color: var(--text); width: 100%; background: #fff; }
+.wf-sel { border: 1px solid var(--border); border-radius: 4px; padding: 5px 8px; font-size: 12px; color: var(--text); background: #fff; }
+.wf-label { font-size: 11px; font-weight: 600; color: var(--sub); margin-bottom: 3px; display: block; }
+.wf-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.wf-table th { background: #f8f9fa; padding: 7px 10px; text-align: left; font-weight: 700; color: var(--sub); border-bottom: 2px solid var(--border); white-space: nowrap; }
+.wf-table td { padding: 7px 10px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+.wf-table tr:hover td { background: #fafafa; }
+.tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.tab { padding: 7px 12px; font-size: 12.5px; cursor: pointer; color: var(--sub); border-bottom: 2px solid transparent; }
+.tab.on { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+.ftag { padding: 3px 10px; border: 1px solid var(--border); border-radius: 20px; font-size: 11.5px; cursor: pointer; color: var(--sub); background: #fff; }
+.ftag.on { background: var(--red); color: #fff; border-color: var(--red); }
+.avatar { border-radius: 50%; background: #d1d5db; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-weight: 700; flex-shrink: 0; }
+.prog { height: 3px; background: #e5e7eb; border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--red); border-radius: 2px; }
+.upload-zone { border: 2px dashed #d1d5db; border-radius: 7px; padding: 24px; text-align: center; color: var(--muted); background: #fafafa; cursor: pointer; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.modal-overlay.hidden { display: none; }
+.modal-box { background: #fff; border-radius: 10px; padding: 28px 32px; width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+
+/* C-SIDE */
+.vid-card { background: #fff; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; }
+.vid-thumb { width: 100%; position: relative; }
+.vid-dur { position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,.7); color: #fff; font-size: 10px; padding: 1px 4px; border-radius: 2px; }
+.vid-info { padding: 7px 9px; }
+.vid-title { font-size: 12px; font-weight: 600; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vid-meta { font-size: 11px; color: var(--muted); }
+.live-card { background: #fff; border-radius: 7px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; flex: 1; }
+.live-badge { position: absolute; top: 5px; left: 5px; background: #ef4444; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 3px; }
+.online-cnt { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,.6); color: #fff; font-size: 9px; padding: 2px 5px; border-radius: 3px; }
+.game-ad { background: linear-gradient(135deg,#1a1a2e,#16213e); border: 1px solid #0f3460; border-radius: 6px; padding: 10px; color: #fff; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.game-ad-logo { width: 36px; height: 36px; background: rgba(255,255,255,.1); border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #94a3b8; }
+.game-ad-cta { background: var(--red); color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.bot-ad { background: #111827; color: #fff; padding: 7px 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; border-top: 1px solid #374151; }
+.chat-area { display: flex; flex-direction: column; height: 100%; }
+.chat-msgs { flex: 1; overflow-y: auto; padding: 8px; background: #0d1117; display: flex; flex-direction: column; gap: 5px; }
+.chat-msg { font-size: 12px; line-height: 1.5; }
+.chat-u { color: #60a5fa; font-weight: 600; margin-right: 3px; }
+.chat-t { color: #e2e8f0; }
+.chat-inp { flex: 1; background: #21262d; border: 1px solid #30363d; border-radius: 4px; padding: 5px 8px; color: #e2e8f0; font-size: 12px; }
+.ann { position: relative; }
+.ann-lbl { position: absolute; top: -9px; right: 4px; background: #f59e0b; color: #fff; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 2px; z-index: 5; }
+
+/* ADMIN */
+.adm-layout { display: flex; min-height: calc(100vh - 94px); }
+.adm-sidebar { width: 160px; min-width: 160px; background: var(--sidebar); color: #94a3b8; padding: 12px 0; }
+.adm-mi { padding: 8px 14px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.adm-mi:hover { background: #243447; color: #e2e8f0; }
+.adm-mi.on { background: #1e3a5c; color: #fff; border-left: 3px solid var(--red); }
+.adm-main { flex: 1; padding: 18px; background: #f4f5f7; overflow-y: auto; }
+.adm-topbar { background: #fff; border-bottom: 1px solid var(--border); padding: 9px 18px; display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; }
+.adm-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 14px; }
+.stat-card { background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 12px 14px; }
+.stat-lbl { font-size: 11px; color: var(--sub); margin-bottom: 5px; }
+.stat-val { font-size: 21px; font-weight: 700; }
+.stat-chg { font-size: 11px; color: #22c55e; margin-top: 2px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
+.sec-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.sec-more { font-size: 11px; color: var(--red); font-weight: 400; cursor: pointer; margin-left: auto; }
+.material-card { background: #fff; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.mat-info { padding: 7px 9px; }
+.mat-name { font-size: 12px; font-weight: 600; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mat-meta { font-size: 10px; color: var(--muted); }
+.mat-actions { padding: 5px 9px; border-top: 1px solid #f3f4f6; display: flex; gap: 5px; }
+
+/* TOAST & NEW MODALS STYLES */
+#toast-container { transition: all 0.3s; }
+.vip-plan-card { transition: all 0.2s; border: 1px solid var(--border); padding: 10px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; margin-bottom: 8px; }
+.vip-plan-card:hover { border-color: var(--red); background: #fffcfc; }
+.vip-plan-card.active { border-color: var(--red); background: #fff5f5; border-width: 2px; }
+.pay-method { border: 1px solid var(--border); border-radius: 4px; padding: 8px; text-align: center; cursor: pointer; background: #fafafa; transition: all 0.2s; }
+.pay-method:hover { border-color: var(--red); }
+.pay-method.active { border-color: var(--red); background: #fff5f5; font-weight: bold; }
+.wf-search-input { width: 100%; border: none; background: transparent; color: #fff; font-size: 12px; outline: none; }
+.wf-search-input::placeholder { color: #9ca3af; }
+.vid-card, .live-card, .game-ad, .sb-item, .btn, .btn-sm, .ftag, .tab { transition: all 0.15s ease-in-out; }
+.vid-card:hover, .live-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.game-ad:hover { transform: scale(1.01); filter: brightness(1.1); }
+.btn:active, .btn-sm:active, .btn-p:active { transform: scale(0.96); }
+.gift-overlay-msg { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.75); color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 11px; z-index: 10; font-weight: bold; border: 1px solid #f59e0b; display: flex; align-items: center; gap: 6px; pointer-events: none; animation: slideInLeft 0.3s ease-out, fadeOut 0.5s ease-in 2.5s forwards; }
+@keyframes slideInLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+.chat-msg { animation: fadeIn 0.2s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-header">
+    <div class="sb-logo">🎬 娱乐聚合平台</div>
+    <div class="sb-ver">产品原型图 v1.0</div>
+  </div>
+  <div class="sb-sec">C端前台</div>
+  <div class="sb-item active" data-p="home"><span>🏠</span> 首页</div>
+  <div class="sb-item" data-p="vlist"><span>🎞</span> 影片列表</div>
+  <div class="sb-item" data-p="vplay"><span>▶</span> 影片播放页</div>
+  <div class="sb-item" data-p="llist"><span>📡</span> 直播列表</div>
+  <div class="sb-item" data-p="lroom"><span>💬</span> 直播间</div>
+  <div class="sb-item" data-p="ugc"><span>👾</span> 玩家影片区</div>
+  <div class="sb-item" data-p="ucenter"><span>👤</span> 用户中心</div>
+  <div class="sb-sec">B端后台</div>
+  <div class="sb-item" data-p="acontent"><span>📋</span> 内容管理</div>
+  <div class="sb-item" data-p="alive"><span>🎙</span> 直播管理</div>
+  <div class="sb-item" data-p="aads"><span>📢</span> 广告配置</div>
+  <div class="sb-item" data-p="apromo"><span>🔗</span> 推广配置</div>
+  <div class="sb-item" data-p="amats"><span>🖼</span> 营销素材</div>
+  <div class="sb-item" data-p="ausers"><span>👥</span> 用户管理</div>
+  <div class="sb-item" data-p="areports"><span>📊</span> 数据报表</div>
+</div>
+
+<!-- VIEWPORT -->
+<div class="viewport">
+  <div class="vp-header">
+    <div class="brow-btns"><div class="brow-btn"></div><div class="brow-btn"></div><div class="brow-btn"></div></div>
+    <div class="brow-url" id="url-bar">https://example.com/</div>
+    <div class="pg-label" id="pg-label">首页</div>
+  </div>
+  <div class="content-area" id="ca"></div>
+</div>
+
+<!-- AGE MODAL -->
+<div class="modal-overlay" id="age-modal">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:32px;margin-bottom:10px">⚠️</div>
+    <div style="font-size:17px;font-weight:700;margin-bottom:8px">年龄确认</div>
+    <div style="font-size:12px;color:var(--sub);margin-bottom:18px;line-height:1.7">本网站含有成人内容，仅供 <strong>18 岁以上</strong>成年人浏览。<br>请确认您已满 18 岁并了解所在地区相关法律法规。</div>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn btn-p" style="padding:9px 22px;font-size:13px" onclick="document.getElementById('age-modal').className='modal-overlay hidden'">我已满 18 岁，进入</button>
+      <button class="btn" style="padding:9px 22px;font-size:13px">离开</button>
+    </div>
+    <div style="font-size:10px;color:var(--muted);margin-top:10px">确认后 7 天内不再提示</div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container" style="position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;"></div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay hidden" id="login-modal">
+  <div class="modal-box">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px;text-align:center">登录账户</div>
+    <div style="margin-bottom:10px">
+      <label class="wf-label">邮箱地址</label>
+      <input type="email" id="login-email" class="wf-input" placeholder="example@mail.com" value="user_test@mail.com">
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="wf-label">密码</label>
+      <input type="password" id="login-pass" class="wf-input" placeholder="输入密码" value="123456">
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('login-modal')">取消</button>
+      <button class="btn btn-p" onclick="submitLogin()">登录</button>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center">没有账号？<a href="javascript:void(0)" onclick="openRegisterModal()" style="color:var(--red)">立即注册</a></div>
+  </div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div class="modal-overlay hidden" id="register-modal">
+  <div class="modal-box">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px;text-align:center">用户注册</div>
+    <div style="margin-bottom:10px">
+      <label class="wf-label">昵称</label>
+      <input type="text" id="reg-name" class="wf-input" placeholder="输入您的昵称">
+    </div>
+    <div style="margin-bottom:10px">
+      <label class="wf-label">邮箱</label>
+      <input type="email" id="reg-email" class="wf-input" placeholder="example@mail.com">
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="wf-label">密码</label>
+      <input type="password" id="reg-pass" class="wf-input" placeholder="设置您的密码">
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('register-modal')">取消</button>
+      <button class="btn btn-p" onclick="submitRegister()">注册</button>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;text-align:center">已有账号？<a href="javascript:void(0)" onclick="openLoginModal()" style="color:var(--red)">返回登录</a></div>
+  </div>
+</div>
+
+<!-- VIP MODAL -->
+<div class="modal-overlay hidden" id="vip-modal">
+  <div class="modal-box" style="width: 420px">
+    <div style="font-size:18px;font-weight:700;margin-bottom:6px;text-align:center;color:#ef4444">👑 升级 VIP 会员</div>
+    <div style="font-size:12px;color:var(--sub);text-align:center;margin-bottom:14px">解锁 1080P 超清、无广告、私密直播间</div>
+    
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div class="vip-plan-card active" onclick="selectVipPlan(this, 1)">
+        <div><span style="font-weight:700">月度 VIP 会员</span><br><span style="font-size:11px;color:var(--muted)">每月自动续订</span></div>
+        <div style="color:var(--red);font-weight:700;font-size:16px">¥ 58 / 月</div>
+      </div>
+      <div class="vip-plan-card" onclick="selectVipPlan(this, 3)">
+        <div><span style="font-weight:700">季度 VIP 会员</span> <span class="badge b-yellow">省15%</span><br><span style="font-size:11px;color:var(--muted)">每3个月续订</span></div>
+        <div style="color:var(--red);font-weight:700;font-size:16px">¥ 148 / 季</div>
+      </div>
+      <div class="vip-plan-card" onclick="selectVipPlan(this, 12)">
+        <div><span style="font-weight:700">年度 VIP 会员</span> <span class="badge b-red">超值!</span><br><span style="font-size:11px;color:var(--muted)">享尊贵特权 365 天</span></div>
+        <div style="color:var(--red);font-weight:700;font-size:16px">¥ 488 / 年</div>
+      </div>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div class="pay-method active" onclick="selectPayMethod(this, 'wechat')">🟢 微信支付</div>
+      <div class="pay-method" onclick="selectPayMethod(this, 'alipay')">🔵 支付宝</div>
+    </div>
+    
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn" style="width:100%" onclick="closeModal('vip-modal')">取消</button>
+      <button class="btn btn-p" style="width:100%" onclick="submitVipPay()">立即支付</button>
+    </div>
+  </div>
+</div>
+
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay hidden" id="upload-modal">
+  <div class="modal-box" style="width: 440px">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px;text-align:center">🤖 上传玩家视频</div>
+    <div style="margin-bottom:10px">
+      <label class="wf-label">视频标题</label>
+      <input type="text" id="up-title" class="wf-input" placeholder="输入视频标题，如：我的COS自拍完整版">
+    </div>
+    <div style="margin-bottom:10px">
+      <label class="wf-label">分类标签</label>
+      <select class="wf-sel" id="up-tag" style="width:100%">
+        <option value="制服">制服</option>
+        <option value="清纯">清纯</option>
+        <option value="丝袜">丝袜</option>
+        <option value="熟女">熟女</option>
+        <option value="自制">自制</option>
+      </select>
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="wf-label">视频文件</label>
+      <div class="upload-zone" id="up-dropzone" onclick="simulateFileUploadSelection()" style="padding: 20px;">
+        <span id="up-file-label">📁 点击选择或拖拽 MP4 文件</span>
+        <div id="up-progress-bar-container" style="display:none;margin-top:10px;background:#e5e7eb;height:6px;border-radius:3px;overflow:hidden">
+          <div id="up-progress-bar" style="background:var(--red);height:100%;width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('upload-modal')">取消</button>
+      <button class="btn btn-p" id="btn-start-upload" onclick="startSimulatedUpload()">开始上传</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal-overlay hidden" id="report-modal">
+  <div class="modal-box">
+    <div style="font-size:17px;font-weight:700;margin-bottom:12px;text-align:center">⚠️ 视频举报</div>
+    <label class="wf-label">举报类型</label>
+    <select class="wf-sel" id="report-reason" style="width:100%;margin-bottom:12px">
+      <option>版权侵权 (DMCA)</option>
+      <option>违法违规内容</option>
+      <option>虚假广告/欺诈</option>
+      <option>视频损坏/画质极差</option>
+      <option>其他原因</option>
+    </select>
+    <label class="wf-label">详细说明</label>
+    <textarea class="wf-input" id="report-desc" style="height:60px;margin-bottom:14px" placeholder="请输入详情描述..."></textarea>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('report-modal')">取消</button>
+      <button class="btn btn-p" onclick="submitReport()">提交</button>
+    </div>
+  </div>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay hidden" id="preview-modal">
+  <div class="modal-box" style="text-align:center;width:480px">
+    <div style="font-size:16px;font-weight:700;margin-bottom:10px" id="preview-title">素材预览</div>
+    <div style="background:#ddd;border-radius:6px;overflow:hidden;margin-bottom:14px;height:240px;display:flex;align-items:center;justify-content:center" id="preview-body"></div>
+    <button class="btn" style="width:100%" onclick="closeModal('preview-modal')">关闭</button>
+  </div>
+</div>
+
+<!-- PROMO GAMES MODAL -->
+<div class="modal-overlay hidden" id="promo-games-modal">
+  <div class="modal-box" style="width: 460px">
+    <div style="font-size:18px;font-weight:700;margin-bottom:6px;text-align:center">🎮 热门合作游戏推荐</div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px">进入游戏完成入金即可赠送色站 VIP 体验券！</div>
+    <div id="promo-games-list" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;margin-bottom:14px"></div>
+    <button class="btn" style="width:100%" onclick="closeModal('promo-games-modal')">关闭</button>
+  </div>
+</div>
+
+<script>
+// ─── INITIAL MOCK DATA & STATE ──────────────────────────────────────────────────
+const initialVideos = [
+  { id: 'v1', title: '示例影片标题 1 — 少妇精选完整版', duration: '28:15', category: '少妇', views: 125430, likes: 4230, favorites: 520, commentsCount: 2, uploader: '官方管理员', type: 'official', status: '已上架', uploadTime: '2026-05-10' },
+  { id: 'v2', title: '示例影片标题 2 — 诱惑制服第一弹', duration: '14:22', category: '制服', views: 89400, likes: 3105, favorites: 412, commentsCount: 0, uploader: '官方管理员', type: 'official', status: '已上架', uploadTime: '2026-05-12' },
+  { id: 'v3', title: '示例影片标题 3 — 清纯学妹初体验', duration: '45:10', category: '清纯', views: 245000, likes: 9812, favorites: 1205, commentsCount: 0, uploader: '官方管理员', type: 'official', status: '已上架', uploadTime: '2026-05-14' },
+  { id: 'v4', title: '示例影片标题 4 — 欧美激情热辣派对', duration: '1:12:30', category: '欧美', views: 310452, likes: 11023, favorites: 2012, commentsCount: 0, uploader: '官方管理员', type: 'official', status: '已上架', uploadTime: '2026-05-15' },
+  { id: 'v5', title: '示例影片标题 5 — 黑丝OL办公室诱惑', duration: '18:50', category: '丝袜', views: 156400, likes: 5821, favorites: 894, commentsCount: 0, uploader: '官方管理员', type: 'official', status: '已上架', uploadTime: '2026-05-16' },
+  { id: 'v6', title: '示例影片标题 6 — 熟女风韵连绵不断', duration: '35:40', category: '熟女', views: 98450, likes: 2901, favorites: 382, commentsCount: 0, uploader: '官方管理员', type: 'official', status: '已上架', uploadTime: '2026-05-18' },
+  { id: 'v7', title: '玩家自制 #1001 — 游戏女角色COS精选', duration: '08:45', category: '自制', views: 24500, likes: 890, favorites: 145, commentsCount: 0, uploader: '测试小助手', type: 'ugc', status: '已上架', uploadTime: '2026-05-19' },
+  { id: 'v8', title: '玩家自制 #1002 — JK制服短片自拍', duration: '05:30', category: '制服', views: 18900, likes: 742, favorites: 88, commentsCount: 0, uploader: '测试小助手', type: 'ugc', status: '已上架', uploadTime: '2026-05-20' },
+  { id: 'v9', title: '玩家自制 #1003 — 极品尤物丝袜热舞', duration: '12:15', category: '丝袜', views: 42100, likes: 1823, favorites: 320, commentsCount: 0, uploader: 'VIP老王', type: 'ugc', status: '待审核', uploadTime: '2026-05-21' },
+];
+
+const initialStreamers = [
+  { id: 's1', name: '小红', key: 'sk-xiao_hong_88', status: '直播中', onlineCount: 1540, sessions: 84, lastLive: '2026-05-22', tags: ['性感', '互动'], isVipOnly: false },
+  { id: 's2', name: 'Annie', key: 'sk-annie_live_99', status: '直播中', onlineCount: 4820, sessions: 142, lastLive: '2026-05-22', tags: ['清纯', '性感'], isVipOnly: false },
+  { id: 's3', name: '曼曼', key: 'sk-man_man_vip', status: '直播中', onlineCount: 2310, sessions: 98, lastLive: '2026-05-22', tags: ['熟女', '互动'], isVipOnly: true },
+  { id: 's4', name: 'Yuki', key: 'sk-yuki_chan_77', status: '已下线', onlineCount: 0, sessions: 201, lastLive: '2026-05-21', tags: ['清纯', '可爱'], isVipOnly: false },
+  { id: 's5', name: '夏夏', key: 'sk-xia_xia_show', status: '已下线', onlineCount: 0, sessions: 35, lastLive: '2026-05-20', tags: ['性感', '御姐'], isVipOnly: true }
+];
+
+const initialAds = [
+  { id: 'ad1', position: '首页主Banner', name: '🎮 大型游戏站 · 首充立返 100%', url: 'https://workyuteddy-star.github.io/demo/casino.html', code: 'AD_HOME_BANNER', schedule: '05/20–06/20', status: '投放中', weight: 50 },
+  { id: 'ad2', position: '播放前贴片', name: '🎮 XX 电子游戏 — 首充送 200%', url: 'https://workyuteddy-star.github.io/demo/casino.html', code: 'AD_PREROLL_TIEPIAN', schedule: '05/15–06/15', status: '投放中', weight: 80 },
+  { id: 'ad3', position: '推荐插卡', name: '🃏 YY 棋牌游戏 — 注册即送 300 积分', url: 'https://workyuteddy-star.github.io/demo/casino.html', code: 'AD_REC_CARD', schedule: '05/10–06/10', status: '投放中', weight: 60 },
+  { id: 'ad4', position: '底部固定栏', name: '🎮 XX 游戏站 · 首充返利 · 完成入金即得色站 VIP 兑换码', url: 'https://workyuteddy-star.github.io/demo/casino.html', code: 'AD_BOT_BAR', schedule: '05/01–05/31', status: '投放中', weight: 100 },
+  { id: 'ad5', position: '直播间侧栏', name: '🎮 XX 电子游戏侧边栏横幅', url: 'https://workyuteddy-star.github.io/demo/casino.html', code: 'AD_LIVE_SIDEBAR', schedule: '05/20–06/20', status: '投放中', weight: 40 },
+  { id: 'ad6', position: '进场弹窗', name: '🎰 YY 棋牌 - 新手首充福利大礼包', url: 'https://workyuteddy-star.github.io/demo/casino.html', code: 'AD_LIVE_ENTRY_POP', schedule: '05/18–06/18', status: '投放中', weight: 50 }
+];
+
+const initialPromos = [
+  { name: 'XX电子游戏_主推广', gameSite: 'XX电子游戏', landingPage: 'https://workyuteddy-star.github.io/demo/casino.html', promoCode: 'ADULT_MAIN_001', utmSource: 'adult_platform', utmCampaign: 'may_banner_2026', utmMedium: 'banner', clicks: 2450, conversions: 124, status: '投放中', payoutType: 'CPA' },
+  { name: 'YY棋牌_注册推广', gameSite: 'YY棋牌', landingPage: 'https://workyuteddy-star.github.io/demo/casino.html', promoCode: 'ADULT_CARDS_002', utmSource: 'adult_platform', utmCampaign: 'may_sidebar_2026', utmMedium: 'sidebar', clicks: 1280, conversions: 68, status: '投放中', payoutType: 'CPA' },
+  { name: 'ZZ体育_首充推广', gameSite: 'ZZ体育', landingPage: 'https://workyuteddy-star.github.io/demo/casino.html', promoCode: 'ADULT_SPORTS_003', utmSource: 'adult_platform', utmCampaign: 'may_preroll_2026', utmMedium: 'preroll', clicks: 3410, conversions: 142, status: '投放中', payoutType: 'CPS' }
+];
+
+const initialMaterials = [
+  { id: 'm1', name: '首页主Banner大图_5月活动', type: 'Banner图', size: '1200×300', fileSize: '342KB', useCase: '首页顶部轮播广告' },
+  { id: 'm2', name: '贴片视频素材_性感女角', type: '贴片视频', size: '1920×1080', fileSize: '12.4MB', useCase: '播放前贴片广告' },
+  { id: 'm3', name: '首存返利推广海报', type: '活动海报', size: '800×600', fileSize: '185KB', useCase: '侧栏活动宣传' },
+  { id: 'm4', name: '直播间游艇礼物动效', type: '礼物图标', size: '128×128', fileSize: '48KB', useCase: '直播间送礼动效' },
+  { id: 'm5', name: 'XX电子游戏官方LOGO', type: '游戏LOGO', size: '200×80', fileSize: '15KB', useCase: '广告标志展示' }
+];
+
+const initialComments = {
+  'v1': [
+    { username: '老司机_99', time: '5分钟前', text: '这部戏真的绝了，演技在线，画质也非常清晰，推荐！', likes: 142 },
+    { username: '绅士风度', time: '15分钟前', text: '良心平台，支持一波！', likes: 85 }
+  ]
+};
+
+const defaultUsers = [
+  { id: 10001, name: '测试小助手', email: 'user_test@mail.com', regDate: '2026-05-15', isVip: false, vipExpiry: '', pts: 1280, uploadsCount: 2, lastLogin: '1小时前', status: '正常', password: '123456', favorites: ['v1', 'v3'] },
+  { id: 10002, name: 'VIP老王', email: 'laowang@mail.com', regDate: '2026-04-20', isVip: true, vipExpiry: '2026-08-20', pts: 5600, uploadsCount: 5, lastLogin: '3小时前', status: '正常', password: '123456', favorites: ['v2', 'v4'] },
+  { id: 10003, name: '灌水大师', email: 'guanshui@mail.com', regDate: '2026-05-01', isVip: false, vipExpiry: '', pts: 120, uploadsCount: 0, lastLogin: '12小时前', status: '已封禁', password: '123456', favorites: [] }
+];
+
+const state = {
+  currentUser: null,
+  language: 'zh-CN',
+  videos: initialVideos,
+  streamers: initialStreamers,
+  comments: initialComments,
+  liveChat: [],
+  ads: initialAds,
+  promos: initialPromos,
+  materials: initialMaterials,
+  users: defaultUsers,
+  mutedUsers: ['灌水大师'],
+  mutedUsersDetails: [
+    { username: '灌水大师', reason: '频繁发送垃圾广告', expiry: '永久' }
+  ],
+  sensitiveWords: ['违禁词1', '敏感词2', '色情广告', '外挂', '博彩'],
+  activePage: 'home',
+  activeVideoId: 'v1',
+  activeStreamerId: 's1',
+  homeVideoTab: '最新',
+  vlistCategory: '全部',
+  vlistDuration: '全部',
+  vlistSortBy: '最新上传',
+  vlistResolution: '清晰度：全部',
+  vlistPage: 1,
+  llistTab: '全部',
+  llistSortBy: '人气最高',
+  ucenterTab: '我的收藏',
+  aadsTab: '首页主Banner',
+  amatsTab: '全部素材',
+  areportsTab: '今日',
+  bottomAdClosed: false,
+  prerollCountdown: 5,
+  prerollSkipped: false,
+  entryAdCountdown: 3,
+  entryAdClosed: false,
+  videoProgress: 35,
+  activeResolution: '720P',
+  selectedVipMonths: 1,
+  selectedPayMethod: 'wechat',
+  userReports: []
+};
+
+// ─── TRANSLATION SYSTEM ────────────────────────────────────────────────────────
+const s2t_map = {
+  '登': '登', '录': '錄', '注': '註', '册': '冊', '简': '簡', '体': '體',
+  '影': '影', '片': '片', '戏': '戲', '广': '廣', '告': '告', '热': '熱',
+  '门': '門', '观': '觀', '看': '看', '历': '歷', '史': '史', '收': '收',
+  '藏': '藏', '上': '上', '传': '傳', '积': '積', '分': '分', '兑': '兌',
+  '换': '換', '续': '續', '费': '費', '账': '帳', '户': '戶', '设': '設',
+  '置': '置', '退': '退', '出': '出', '搜': '搜', '索': '索', '播': '播',
+  '线': '線', '专': '專', '属': '屬', '点': '點', '赞': '贊', '举': '舉',
+  '报': '報', '审': '審', '核': '核', '管': '管', '理': '理', '资': '資',
+  '源': '源', '数': '數', '据': '據', '表': '表', '推': '推', '广': '廣',
+  '配': '配', '营': '營', '销': '銷', '素': '素', '材': '材', '用': '用',
+  '内': '內', '容': '容', '选': '選', '项': '項', '确': '確', '认': '認',
+  '年': '年', '龄': '齡', '级': '級', '会': '會', '员': '員', '优': '優',
+  '惠': '惠', '礼': '禮', '金': '金', '立': '立', '即': '即', '前': '前',
+  '往': '往', '游': '遊', '玩': '玩', '家': '家', '自': '自', '制': '製',
+  '弹': '彈', '窗': '窗', '悬': '懸', '浮': '浮', '关': '關', '闭': '閉',
+  '提': '提', '交': '交', '请': '請', '输': '輸', '入': '入', '密': '密',
+  '码': '碼', '邮': '郵', '箱': '箱', '地': '地', '址': '址', '昵': '暱',
+  '称': '稱', '开': '開', '始': '始', '进': '進', '场': '場', '详': '詳',
+  '细': '細', '说': '說', '明': '明', '解': '解', '除': '除', '禁': '禁',
+  '言': '言', '操': '操', '作': '作', '时': '時', '长': '長', '流': '流',
+  '量': '量', '预': '預', '览': '覽', '下': '下', '架': '架', '封': '封',
+  '权': '權', '重': '重', '排': '排', '期': '期', '类': '類', '型': '型',
+  '标': '標', '签': '籤', '状': '狀', '态': '態', '批': '批', '拒': '拒',
+  '绝': '絕', '间': '間', '新': '新', '增': '增', '强': '強', '图': '圖',
+  '伙': '夥', '伴': '伴', '转': '轉', '化': '化', '总': '總', '活': '活',
+  '跃': '躍', '留': '留', '存': '存', '发': '發', '放': '放', '批': '批',
+  '量': '量', '常': '常', '线': '線', '违': '違', '禁': '禁', '词': '詞',
+  '库': '庫', '敏': '敏', '感': '感', '编': '編', '辑': '輯', '停': '停',
+  '止': '止', '复': '複', '链': '鏈', '接': '接', '合': '合', '分': '分',
+  '润': '潤'
+};
+
+function t(str) {
+  if (!str) return '';
+  if (state.language !== 'zh-TW') return str;
+  return str.split('').map(c => s2t_map[c] || c).join('');
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function ph(w,h,label=''){return`<div class="ph" style="width:${w};height:${h}px">${label}</div>`}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function pad(n){return String(n).padStart(2,'0')}
+function fmt(n){return n>=10000?(n/10000).toFixed(1)+'万':n.toLocaleString()}
+
+// ─── MODAL CONTROLS ──────────────────────────────────────────────────────────
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('hidden');
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('hidden');
+}
+
+// ─── TOAST SYSTEM ────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.style.background = 'rgba(17, 24, 39, 0.95)';
+  toast.style.color = '#fff';
+  toast.style.padding = '10px 18px';
+  toast.style.borderRadius = '6px';
+  toast.style.fontSize = '12px';
+  toast.style.fontWeight = '600';
+  toast.style.borderLeft = '4px solid var(--red)';
+  toast.style.boxShadow = '0 10px 25px -5px rgba(0,0,0,0.5)';
+  toast.style.opacity = '0';
+  toast.style.transform = 'translateY(-12px)';
+  toast.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+  toast.textContent = t(msg);
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+  }, 30);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-12px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// ─── USER SESSION ────────────────────────────────────────────────────────────
+function openLoginModal() {
+  closeModal('register-modal');
+  openModal('login-modal');
+}
+function openRegisterModal() {
+  closeModal('login-modal');
+  openModal('register-modal');
+}
+function submitLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value.trim();
+  if (!email || !pass) {
+    showToast('请输入邮箱和密码');
+    return;
+  }
+  const user = state.users.find(u => u.email === email);
+  if (!user || user.password !== pass) {
+    showToast('邮箱或密码错误，请重新输入');
+    return;
+  }
+  if (user.status === '已封禁') {
+    showToast('该账号已被管理员封禁，无法登录！');
+    return;
+  }
+  state.currentUser = user;
+  showToast(`欢迎回来，${user.name}！`);
+  closeModal('login-modal');
+  renderPage(state.activePage);
+}
+function submitRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-pass').value.trim();
+  if (!name || !email || !pass) {
+    showToast('所有字段均必填，请完整填写');
+    return;
+  }
+  if (state.users.some(u => u.email === email)) {
+    showToast('该邮箱已被注册');
+    return;
+  }
+  const newUser = {
+    id: 10000 + state.users.length + 1,
+    name: name,
+    email: email,
+    regDate: new Date().toISOString().split('T')[0],
+    isVip: false,
+    vipExpiry: '',
+    pts: 100,
+    uploadsCount: 0,
+    lastLogin: '刚刚',
+    status: '正常',
+    password: pass,
+    favorites: []
+  };
+  state.users.push(newUser);
+  state.currentUser = newUser;
+  showToast('注册成功！已自动登录，获赠 100 初始积分！');
+  closeModal('register-modal');
+  renderPage(state.activePage);
+}
+function logout() {
+  state.currentUser = null;
+  showToast('您已成功退出登录。');
+  nav('home');
+}
+function toggleLanguage() {
+  state.language = state.language === 'zh-CN' ? 'zh-TW' : 'zh-CN';
+  showToast(state.language === 'zh-CN' ? '已切换为简体中文' : '已切換為繁體中文');
+  renderPage(state.activePage);
+}
+
+// ─── NAV BAR ─────────────────────────────────────────────────────────────────
+function renderNavbar(activeTab) {
+  const user = state.currentUser;
+  let authButtons = '';
+  if (user) {
+    authButtons = `
+      <div class="avatar" id="nav-avatar" style="width:30px;height:30px;font-size:11px;background:#2e4a6e;color:#60a5fa;cursor:pointer;border:${user.isVip ? '2px solid #f59e0b' : 'none'}" onclick="nav('ucenter')">
+        ${user.name.slice(0, 2).toUpperCase()}
+      </div>
+      ${user.isVip ? '<span class="badge b-vip" style="margin-left:-8px;z-index:2">VIP</span>' : ''}
+      <button class="btn" style="border-color:#374151;color:#9ca3af;margin-left:8px" onclick="logout()">${t('退出')}</button>
+    `;
+  } else {
+    authButtons = `
+      <button class="btn" style="border-color:#374151;color:#9ca3af" onclick="openLoginModal()">${t('登录')}</button>
+      <button class="btn btn-p" onclick="openRegisterModal()">${t('注册')}</button>
+    `;
+  }
+  const langText = state.language === 'zh-CN' ? '简体' : '繁體';
+  return `
+    <div class="wf-navbar">
+      <div class="wf-logo" style="cursor:pointer" onclick="nav('home')">🎬 XXX ${t('成人')}</div>
+      <span class="nav-lk ${activeTab === 'vlist' ? 'on' : ''}" onclick="nav('vlist')">${t('影片')}</span>
+      <span class="nav-lk ${activeTab === 'llist' ? 'on' : ''}" onclick="nav('llist')">${t('直播')}</span>
+      <span class="nav-lk ${activeTab === 'ugc' ? 'on' : ''}" onclick="nav('ugc')">${t('玩家影片')}</span>
+      <span class="nav-lk" onclick="openPromoGamesModal()">${t('游戏广告')}</span>
+      <div class="wf-search">
+        🔍 <input type="text" id="navbar-search-input" class="wf-search-input" placeholder="${t('搜索影片、演员、标签...')}" value="${state.searchQuery || ''}" onkeydown="handleNavbarSearch(event)">
+      </div>
+      ${authButtons}
+      <button class="btn" style="border-color:#374151;color:#9ca3af" onclick="toggleLanguage()">${langText}</button>
+    </div>
+  `;
+}
+
+// ─── AD CLICKING ─────────────────────────────────────────────────────────────
+function clickAd(adId) {
+  const ad = state.ads.find(a => a.id === adId);
+  if (ad) {
+    if (!ad.clicks) ad.clicks = 0;
+    ad.clicks++;
+    showToast('[demo 联动] 正在跳转回 demo 娱乐城大厅...');
+    setTimeout(() => {
+      if (!ad.conversions) ad.conversions = 0;
+      ad.conversions++;
+      if (state.currentUser) {
+        state.currentUser.pts += 200;
+      }
+      window.location.href = 'casino.html';
+    }, 1500);
+  }
+}
+
+// ─── ADMIN HEADER ────────────────────────────────────────────────────────────
+function adminTop(title){
+  return `<div class="adm-topbar"><div style="font-weight:700">${t(title)}</div><div style="display:flex;align-items:center;gap:10px;font-size:12px"><span class="badge b-gray">${t('运营人员')}</span><span style="color:var(--sub)">admin@example.com</span><a style="color:var(--red);cursor:pointer" onclick="logout()">${t('退出')}</a></div></div>`;
+}
+const adMenu=[['acontent','📋 内容管理'],['alive','🎙 直播管理'],['aads','📢 广告配置'],['apromo','🔗 推广配置'],['amats','🖼 营销素材'],['ausers','👥 用户管理'],['areports','📊 数据报表']];
+function adminSide(active){
+  return '';
+}
+
+// ─── RENDER VIDEO CARDS ──────────────────────────────────────────────────────
+function getVidCardHtml(v) {
+  return `
+    <div class="vid-card" onclick="playVideo('${v.id}')">
+      <div style="position:relative">
+        <div class="ph" style="width:100%;height:100px;background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold">${t(v.title.slice(0, 4))}</div>
+        <span class="vid-dur">${v.duration}</span>
+      </div>
+      <div class="vid-info">
+        <div class="vid-title">${t(v.title)}</div>
+        <div class="vid-meta">${fmt(v.views)}次播放 · ${t(v.category)}</div>
+      </div>
+    </div>
+  `;
+}
+function getLiveCardHtml(s) {
+  return `
+    <div class="live-card" onclick="enterLiveRoom('${s.id}')">
+      <div style="position:relative">
+        <div class="ph" style="width:100%;height:90px;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold">${t(s.name)}</div>
+        <span class="live-badge">● LIVE</span>
+        <span class="online-cnt">👁 ${fmt(s.onlineCount)}</span>
+      </div>
+      <div style="padding:7px 9px">
+        <div style="font-size:12px;font-weight:700">${t(s.name)}的直播间</div>
+        <div style="font-size:11px;color:var(--muted)">${s.tags.map(x=>t(x)).join(' · ')}</div>
+      </div>
+    </div>
+  `;
+}
+function getUgcCardHtml(v) {
+  return `
+    <div class="vid-card ann" onclick="playVideo('${v.id}')">
+      <span class="ann-lbl">${t('玩家上传')}</span>
+      <div style="position:relative">
+        <div class="ph" style="width:100%;height:100px;background:#065f46;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold">${t(v.title.slice(0, 4))}</div>
+        <span class="vid-dur">${v.duration}</span>
+      </div>
+      <div class="vid-info">
+        <div class="vid-title">${t(v.title)}</div>
+        <div class="vid-meta"><span class="badge b-blue">${t('玩家上传')}</span> ${fmt(v.views)}次播放</div>
+      </div>
+    </div>
+  `;
+}
+
+// ─── C-SIDE HOME RENDERER ────────────────────────────────────────────────────
+function renderPage_home() {
+  const container = document.getElementById('pg-home');
+  const activeBanners = state.ads.filter(a => a.position === '首页主Banner' && a.status === '投放中');
+  const banner = activeBanners.length > 0 ? activeBanners[0] : null;
+  const bannerHtml = banner ? `
+    <div class="ann" style="position:relative;background:linear-gradient(90deg,#1e3a5f,#2d1b69);height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <span class="ann-lbl">首页主Banner — ${banner.code}</span>
+      <div style="text-align:center;color:#fff;cursor:pointer" onclick="clickAd('${banner.id}')">
+        <div style="font-size:20px;font-weight:700;margin-bottom:6px">${t(banner.name)}</div>
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:12px">合作专场 | 首充立赠体验码</div>
+        <button class="btn btn-p" style="padding:7px 20px">${t('立即前往游戏站')} →</button>
+      </div>
+    </div>
+  ` : `
+    <div class="ann" style="position:relative;background:#374151;height:200px;display:flex;align-items:center;justify-content:center;color:#fff">
+      暂无投放广告
+    </div>
+  `;
+  const homeTab = state.homeVideoTab || '最新';
+  let filteredVideos = state.videos.filter(v => v.status === '已上架' && v.type === 'official');
+  if (homeTab === '最新') {
+    filteredVideos.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+  } else if (homeTab === '最热') {
+    filteredVideos.sort((a, b) => b.views - a.views);
+  }
+  const videoCardsHtml = filteredVideos.slice(0, 8).map(v => getVidCardHtml(v)).join('');
+  const onlineStreamers = state.streamers.filter(s => s.status === '直播中');
+  const liveCardsHtml = onlineStreamers.slice(0, 4).map(s => getLiveCardHtml(s)).join('');
+  const ugcVideos = state.videos.filter(v => v.status === '已上架' && v.type === 'ugc');
+  const ugcCardsHtml = ugcVideos.slice(0, 4).map(v => getUgcCardHtml(v)).join('');
+  const sideAds = state.ads.filter(a => a.position === '推荐插卡' && a.status === '投放中');
+  const sideAdsHtml = sideAds.slice(0, 2).map(ad => `
+    <div class="game-ad" onclick="clickAd('${ad.id}')">
+      <div class="game-ad-logo">AD</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:12px;margin-bottom:2px">${t(ad.name)}</div>
+        <div style="font-size:11px;color:#94a3b8">${ad.code}</div>
+      </div>
+      <button class="game-ad-cta">前往 →</button>
+    </div>
+  `).join('');
+  let bottomAdHtml = '';
+  if (!state.bottomAdClosed) {
+    const bottomAd = state.ads.find(a => a.position === '底部固定栏' && a.status === '投放中');
+    if (bottomAd) {
+      bottomAdHtml = `
+        <div class="bot-ad" id="home-bot-ad">
+          <span>🎮</span>
+          <span style="flex:1;cursor:pointer" onclick="clickAd('${bottomAd.id}')">${t(bottomAd.name)}</span>
+          <button class="btn btn-p" onclick="clickAd('${bottomAd.id}')">立即注册 →</button>
+          <span style="color:#4b5563;cursor:pointer;margin-left:8px" onclick="closeBottomAd(event)">✕</span>
+        </div>
+      `;
+    }
+  }
+  container.innerHTML = `
+    ${renderNavbar('home')}
+    ${bannerHtml}
+    <div style="padding:14px;display:flex;gap:14px">
+      <div style="flex:1;min-width:0">
+        <div class="sec-title">${t('热门影片')}
+          <div style="display:flex;gap:6px;margin-left:8px">
+            <span class="ftag ${homeTab === '最新' ? 'on' : ''}" onclick="setHomeVideoTab('最新')">${t('最新')}</span>
+            <span class="ftag ${homeTab === '最热' ? 'on' : ''}" onclick="setHomeVideoTab('最热')">${t('最热')}</span>
+          </div>
+          <span class="sec-more" onclick="nav('vlist')">${t('查看全部')} →</span>
+        </div>
+        <div class="grid-4" style="margin-bottom:18px">${videoCardsHtml || '<div style="grid-column:span 4;text-align:center;color:var(--muted);padding:20px;">暂无影片</div>'}</div>
+        <div class="sec-title">${t('正在直播')} <span class="badge b-red">LIVE</span><span class="sec-more" onclick="nav('llist')">${t('查看全部')} →</span></div>
+        <div style="display:flex;gap:10px;margin-bottom:18px">${liveCardsHtml || '<div style="text-align:center;color:var(--muted);width:100%;padding:20px;">暂无直播</div>'}</div>
+        <div class="sec-title">${t('玩家上传精选')} <span style="font-size:11px;color:var(--muted);font-weight:400">${t('来自游戏玩家的自制内容')}</span><span class="sec-more" onclick="nav('ugc')">${t('查看全部')} →</span></div>
+        <div class="grid-4">${ugcCardsHtml || '<div style="grid-column:span 4;text-align:center;color:var(--muted);padding:20px;">暂无玩家视频</div>'}</div>
+      </div>
+      <div style="width:210px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">
+        ${sideAdsHtml}
+        <div style="background:linear-gradient(135deg,#f59e0b,#ef4444);border-radius:7px;padding:12px;color:#fff">
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">👑 升级 VIP</div>
+          <ul style="font-size:11px;padding-left:14px;margin-bottom:10px;line-height:1.9;color:rgba(255,255,255,.9)">
+            <li>1080P 超清画质</li>
+            <li>免除全部广告</li>
+            <li>私密直播间</li>
+            <li>专属内容解锁</li>
+          </ul>
+          <button onclick="openModal('vip-modal')" style="width:100%;background:#fff;color:#ef4444;border:none;padding:6px;border-radius:4px;font-weight:700;font-size:12px;cursor:pointer">立即升级 VIP</button>
+        </div>
+      </div>
+    </div>
+    ${bottomAdHtml}
+    <div style="background:#0d1117;color:#4b5563;padding:12px;font-size:11px;text-align:center;line-height:2">
+      本站所有内容仅供 18 岁以上成年人浏览 · 隐私政策 · DMCA 侵权申诉 · 联系我们 · 友情链接: <a href="javascript:void(0)" onclick="openPromoGamesModal()" style="color:#4b5563;text-decoration:underline;">[游戏站入口]</a>
+    </div>
+  `;
+}
+function setHomeVideoTab(tab) {
+  state.homeVideoTab = tab;
+  renderPage('home');
+}
+function closeBottomAd(e) {
+  if (e) e.stopPropagation();
+  state.bottomAdClosed = true;
+  const botAd = document.getElementById('home-bot-ad');
+  if (botAd) botAd.remove();
+}
+
+// ─── C-SIDE VIDEO LIST RENDERER ──────────────────────────────────────────────
+function renderPage_vlist() {
+  const container = document.getElementById('pg-vlist');
+  const activeCat = state.vlistCategory || '全部';
+  const activeDur = state.vlistDuration || '全部';
+  const sortBy = state.vlistSortBy || '最新上传';
+  const resolutionFilter = state.vlistResolution || '清晰度：全部';
+  const page = state.vlistPage || 1;
+  let filtered = state.videos.filter(v => v.status === '已上架' && v.type === 'official');
+  if (state.searchQuery) {
+    const q = state.searchQuery.toLowerCase();
+    filtered = filtered.filter(v => v.title.toLowerCase().includes(q) || v.category.toLowerCase().includes(q));
+  }
+  if (activeCat !== '全部') {
+    filtered = filtered.filter(v => v.category === activeCat);
+  }
+  if (activeDur !== '全部') {
+    filtered = filtered.filter(v => {
+      const mins = parseInt(v.duration.split(':')[0]) || 0;
+      if (activeDur === '< 10分钟') return mins < 10;
+      if (activeDur === '10–30分钟') return mins >= 10 && mins <= 30;
+      if (activeDur === '> 30分钟') return mins > 30;
+      return true;
+    });
+  }
+  if (sortBy === '最新上传') {
+    filtered.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
+  } else if (sortBy === '最多播放') {
+    filtered.sort((a, b) => b.views - a.views);
+  } else if (sortBy === '最多收藏') {
+    filtered.sort((a, b) => b.favorites - a.favorites);
+  }
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+  const startIdx = (page - 1) * itemsPerPage;
+  const paginated = filtered.slice(startIdx, startIdx + itemsPerPage);
+  const categories = ['全部','少妇','学生','制服','丝袜','亚裔','欧美','动漫','3P','自制'];
+  const durTags = ['全部', '< 10分钟', '10–30分钟', '> 30分钟'];
+  const categoryTabsHtml = categories.map(c => `
+    <div class="tab ${activeCat === c ? 'on' : ''}" onclick="setVlistCategory('${c}')">${t(c)}</div>
+  `).join('');
+  const durTagsHtml = durTags.map(d => `
+    <span class="ftag ${activeDur === d ? 'on' : ''}" onclick="setVlistDuration('${d}')">${t(d)}</span>
+  `).join('');
+  const videoCardsHtml = paginated.map(v => getVidCardHtml(v)).join('');
+  let pagHtml = `<button class="btn-sm" onclick="setVlistPage(${Math.max(1, page - 1)})">«</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    pagHtml += `<button class="btn-sm ${page === i ? 'btn-p' : ''}" onclick="setVlistPage(${i})">${i}</button>`;
+  }
+  pagHtml += `<button class="btn-sm" onclick="setVlistPage(${Math.min(totalPages, page + 1)})">»</button>`;
+  const bottomAd = state.ads.find(a => a.position === '底部固定栏' && a.status === '投放中');
+  const bottomAdHtml = bottomAd ? `
+    <div class="bot-ad">
+      <span>🎮</span>
+      <span style="flex:1;cursor:pointer" onclick="clickAd('${bottomAd.id}')">${t(bottomAd.name)}</span>
+      <button class="btn btn-p" onclick="clickAd('${bottomAd.id}')">立即注册 →</button>
+    </div>
+  ` : '';
+  container.innerHTML = `
+    ${renderNavbar('vlist')}
+    <div style="padding:14px">
+      <div class="tabs">${categoryTabsHtml}</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
+        <span style="font-size:12px;color:var(--sub)">时长：</span>
+        ${durTagsHtml}
+        <span style="margin-left:auto;font-size:12px;color:var(--sub)">排序：</span>
+        <select class="wf-sel" onchange="setVlistSort(this.value)">
+          <option value="最新上传" ${sortBy === '最新上传' ? 'selected' : ''}>最新上传</option>
+          <option value="最多播放" ${sortBy === '最多播放' ? 'selected' : ''}>最多播放</option>
+          <option value="最多收藏" ${sortBy === '最多收藏' ? 'selected' : ''}>最多收藏</option>
+        </select>
+        <select class="wf-sel" onchange="setVlistResolution(this.value)">
+          <option value="清晰度：全部" ${resolutionFilter === '清晰度：全部' ? 'selected' : ''}>清晰度：全部</option>
+          <option value="1080P" ${resolutionFilter === '1080P' ? 'selected' : ''}>1080P</option>
+          <option value="720P" ${resolutionFilter === '720P' ? 'selected' : ''}>720P</option>
+        </select>
+      </div>
+      <div class="grid-5" style="margin-bottom:16px">${videoCardsHtml || '<div style="grid-column:span 5;text-align:center;color:var(--muted);padding:40px 0;">没有找到匹配的视频</div>'}</div>
+      <div style="display:flex;justify-content:center;gap:5px;padding:8px 0">${pagHtml}</div>
+    </div>
+    ${bottomAdHtml}
+  `;
+}
+function setVlistCategory(cat) {
+  state.vlistCategory = cat;
+  state.vlistPage = 1;
+  renderPage('vlist');
+}
+function setVlistDuration(dur) {
+  state.vlistDuration = dur;
+  state.vlistPage = 1;
+  renderPage('vlist');
+}
+function setVlistSort(val) {
+  state.vlistSortBy = val;
+  renderPage('vlist');
+}
+function setVlistResolution(val) {
+  state.vlistResolution = val;
+  renderPage('vlist');
+}
+function setVlistPage(page) {
+  state.vlistPage = page;
+  renderPage('vlist');
+}
+
+// ─── C-SIDE VIDEO PLAY RENDERER ──────────────────────────────────────────────
+function renderPage_vplay() {
+  const container = document.getElementById('pg-vplay');
+  let video = state.videos.find(v => v.id === state.activeVideoId);
+  if (!video) {
+    video = state.videos[0];
+    state.activeVideoId = video.id;
+  }
+  if (!state.countedViews) state.countedViews = {};
+  if (!state.countedViews[video.id]) {
+    video.views++;
+    state.countedViews[video.id] = true;
+  }
+  const isVip = state.currentUser && state.currentUser.isVip;
+  let prerollAdHtml = '';
+  if (!isVip && !state.prerollSkipped) {
+    const prerollAd = state.ads.find(a => a.position === '播放前贴片' && a.status === '投放中') || {
+      id: 'default-preroll', name: '🎮 XX 电子游戏 — 首充送 200%', code: 'AD_DEFAULT_PREROLL'
+    };
+    prerollAdHtml = `
+      <div id="preroll" style="position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:#fff;z-index:5">
+        <div class="ann-lbl" style="position:absolute;top:6px;right:6px">播放前贴片广告</div>
+        <div style="font-size:10px;color:#94a3b8">广告 · ${state.prerollCountdown}秒后可跳过</div>
+        <div style="background:rgba(255,255,255,.1);padding:10px 20px;border-radius:5px;text-align:center;cursor:pointer" onclick="clickAd('${prerollAd.id}')">
+          <div style="font-weight:700;margin-bottom:4px">${t(prerollAd.name)}</div>
+          <div style="font-size:11px;color:#94a3b8">点击前往游戏站注册</div>
+        </div>
+        <button id="skip-preroll-btn" onclick="skipPrerollAd()" style="position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:4px 8px;border-radius:3px;font-size:11px;cursor:${state.prerollCountdown === 0 ? 'pointer' : 'not-allowed'}" ${state.prerollCountdown === 0 ? '' : 'disabled'}>
+          ${state.prerollCountdown === 0 ? '跳过广告' : `跳过广告 (${state.prerollCountdown})`}
+        </button>
+      </div>
+    `;
+  }
+  const related = state.videos.filter(v => v.id !== video.id && v.status === '已上架').slice(0, 8);
+  const relatedHtml = related.map(v => `
+    <div style="display:flex;gap:7px;cursor:pointer;margin-bottom:8px" onclick="playVideo('${v.id}')">
+      <div style="width:80px;flex-shrink:0;position:relative;border-radius:4px;overflow:hidden">
+        <div class="ph" style="width:80px;height:52px;background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px">${t(v.title.slice(0,2))}</div>
+        <span class="vid-dur">${v.duration}</span>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;margin-bottom:3px;line-height:1.4">${t(v.title)}</div>
+        <div style="font-size:10px;color:var(--muted)">${fmt(v.views)}次播放</div>
+      </div>
+    </div>
+  `).join('');
+  const resolutionOption = state.activeResolution || '720P';
+  const resolutionSelectorHtml = `
+    <span style="background:${resolutionOption === '720P' ? 'var(--red)' : 'rgba(255,255,255,.2)'};padding:2px 5px;border-radius:3px;cursor:pointer" onclick="setResolution('720P')">720P</span>
+    <span style="background:${resolutionOption === '1080P' ? 'var(--red)' : 'rgba(255,255,255,.15)'};padding:2px 5px;border-radius:3px;cursor:pointer" onclick="setResolution('1080P')">
+      1080P ${isVip ? '✓' : '🔒VIP'}
+    </span>
+  `;
+  const isLiked = state.likedVideos && state.likedVideos[video.id];
+  const isFavorited = state.currentUser && state.currentUser.favorites && state.currentUser.favorites.includes(video.id);
+  const videoComments = state.comments[video.id] || [];
+  const commentsListHtml = videoComments.map((c, idx) => `
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <div class="avatar" style="width:26px;height:26px;font-size:10px;background:#64748b;color:#fff">${c.username.slice(0,2).toUpperCase()}</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:2px">
+          ${c.username} <span style="font-size:10px;color:var(--muted);font-weight:400">${c.time}</span>
+        </div>
+        <div style="font-size:12px;color:#374151">${t(c.text)}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;cursor:pointer" onclick="likeComment('${video.id}', ${idx})">👍 ${c.likes} ${t('回复')}</div>
+      </div>
+    </div>
+  `).join('');
+  const midAd = state.ads.find(a => a.position === '推荐插卡' && a.status === '投放中');
+  const midAdHtml = midAd ? `
+    <div class="game-ad ann" style="margin-bottom:10px" onclick="clickAd('${midAd.id}')">
+      <span class="ann-lbl">合作推荐</span>
+      <div class="game-ad-logo">AD</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:12px;margin-bottom:2px">${t(midAd.name)}</div>
+        <div style="font-size:11px;color:#94a3b8">${midAd.code}</div>
+      </div>
+      <button class="game-ad-cta">立即领取 →</button>
+    </div>
+  ` : '';
+  const bottomAd = state.ads.find(a => a.position === '底部固定栏' && a.status === '投放中');
+  const bottomAdHtml = bottomAd ? `
+    <div class="bot-ad">
+      <span>🎮</span>
+      <span style="flex:1;cursor:pointer" onclick="clickAd('${bottomAd.id}')">${t(bottomAd.name)}</span>
+      <button class="btn btn-p" onclick="clickAd('${bottomAd.id}')">立即注册 →</button>
+    </div>
+  ` : '';
+  container.innerHTML = `
+    ${renderNavbar('vlist')}
+    <div style="padding:12px;display:flex;gap:12px">
+      <div style="flex:1;min-width:0">
+        <div style="position:relative;background:#000;border-radius:6px;overflow:hidden;margin-bottom:10px">
+          <div class="ph" style="width:100%;height:320px;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <span style="font-size:40px;margin-bottom:10px;cursor:pointer">▶</span>
+            <span style="font-size:14px;font-weight:bold">${t(video.title)}</span>
+            <span style="font-size:11px;color:var(--muted);margin-top:6px">正在以 ${resolutionOption} 分辨率播放</span>
+          </div>
+          ${prerollAdHtml}
+          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));padding:7px 10px">
+            <div class="prog" style="margin-bottom:5px;cursor:pointer" onclick="seekVideo(event)">
+              <div class="prog-fill" style="width:${state.videoProgress}%"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;color:#fff;font-size:11px">
+              <span>▶ ${video.duration}</span><span>🔊</span>
+              ${resolutionSelectorHtml}
+              <span style="background:rgba(255,255,255,.2);padding:2px 5px;border-radius:3px">1.0x</span>
+              <span style="margin-left:auto;cursor:pointer" onclick="toggleFullscreen()">⛶</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:10px">
+          <div style="font-size:14px;font-weight:700;margin-bottom:5px">${t(video.title)}</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:12px;color:var(--muted)">播放量 ${fmt(video.views)} · 上传于 ${video.uploadTime}</span>
+            <div style="margin-left:auto;display:flex;gap:6px">
+              <button class="btn-sm" style="${isLiked ? 'background:var(--red);color:#fff;' : ''}" onclick="likeVideo('${video.id}')">👍 点赞 ${fmt(video.likes)}</button>
+              <button class="btn-sm" style="${isFavorited ? 'background:#f59e0b;color:#fff;' : ''}" onclick="favoriteVideo('${video.id}')">⭐ 收藏</button>
+              <button class="btn-sm" onclick="copyVideoLink('${video.id}')">🔗 复制链接</button>
+              <button class="btn-sm btn-d" onclick="openReportModal('${video.id}')">⚠ 举报</button>
+            </div>
+          </div>
+          <div style="margin-top:7px;display:flex;gap:5px;flex-wrap:wrap">
+            <span class="badge b-gray">#${t(video.category)}</span>
+            <span class="badge b-gray">#高清</span>
+            <span class="badge b-gray">#完整版</span>
+          </div>
+        </div>
+        ${midAdHtml}
+        <div class="card">
+          <div class="card-hd">留言区 <span style="color:var(--muted);font-weight:400;font-size:11px">共 ${videoComments.length} 条</span></div>
+          <div class="card-bd">
+            <div style="display:flex;gap:7px;margin-bottom:12px">
+              <div class="avatar" style="width:26px;height:26px;font-size:10px">我</div>
+              <input class="wf-input" id="comment-input" placeholder="输入你想说的话...">
+              <button class="btn btn-p" style="flex-shrink:0" onclick="submitComment('${video.id}')">发送</button>
+            </div>
+            <div id="comments-list">${commentsListHtml || '<div style="text-align:center;color:var(--muted);padding:10px;">暂无评论，快来抢沙发！</div>'}</div>
+          </div>
+        </div>
+      </div>
+      <div style="width:210px;flex-shrink:0">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px">相关推荐</div>
+        <div style="display:flex;flex-direction:column;gap:8px">${relatedHtml}</div>
+      </div>
+    </div>
+    ${bottomAdHtml}
+  `;
+  if (document.getElementById('preroll') && !state.prerollInterval) {
+    state.prerollInterval = setInterval(() => {
+      if (state.prerollCountdown > 0) {
+        state.prerollCountdown--;
+        const skipBtn = document.getElementById('skip-preroll-btn');
+        if (skipBtn) skipBtn.textContent = `跳过广告 (${state.prerollCountdown})`;
+      } else {
+        clearInterval(state.prerollInterval);
+        state.prerollInterval = null;
+        const skipBtn = document.getElementById('skip-preroll-btn');
+        if (skipBtn) {
+          skipBtn.textContent = '跳过广告';
+          skipBtn.style.cursor = 'pointer';
+          skipBtn.removeAttribute('disabled');
+        }
+      }
+    }, 1000);
+  }
+}
+function playVideo(id) {
+  state.activeVideoId = id;
+  state.prerollCountdown = 5;
+  state.prerollSkipped = false;
+  state.videoProgress = 0;
+  nav('vplay');
+}
+function skipPrerollAd() {
+  if (state.prerollCountdown > 0) {
+    showToast('倒计时结束后方可跳过广告');
+    return;
+  }
+  state.prerollSkipped = true;
+  if (state.prerollInterval) {
+    clearInterval(state.prerollInterval);
+    state.prerollInterval = null;
+  }
+  renderPage('vplay');
+}
+function setResolution(res) {
+  if (res === '1080P') {
+    if (!state.currentUser || !state.currentUser.isVip) {
+      showToast('切换失败！1080P 超清需要 VIP 会员权限');
+      openModal('vip-modal');
+      return;
+    }
+  }
+  state.activeResolution = res;
+  showToast(`成功切换分辨率为 ${res}`);
+  renderPage('vplay');
+}
+function seekVideo(e) {
+  const bar = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  state.videoProgress = Math.round((clickX / rect.width) * 100);
+  showToast(`已定位到视频 ${state.videoProgress}% 处`);
+  renderPage('vplay');
+}
+function toggleFullscreen() {
+  showToast('已模拟全屏播放');
+}
+function likeVideo(id) {
+  if (!state.likedVideos) state.likedVideos = {};
+  const v = state.videos.find(item => item.id === id);
+  if (!v) return;
+  if (state.likedVideos[id]) {
+    v.likes--;
+    delete state.likedVideos[id];
+    showToast('取消点赞');
+  } else {
+    v.likes++;
+    state.likedVideos[id] = true;
+    showToast('点赞成功！');
+  }
+  renderPage('vplay');
+}
+function favoriteVideo(id) {
+  if (!state.currentUser) {
+    showToast('请先登录账号');
+    openModal('login-modal');
+    return;
+  }
+  const user = state.currentUser;
+  if (!user.favorites) user.favorites = [];
+  const v = state.videos.find(item => item.id === id);
+  if (!v) return;
+  if (user.favorites.includes(id)) {
+    user.favorites = user.favorites.filter(x => x !== id);
+    v.favorites--;
+    showToast('取消收藏');
+  } else {
+    user.favorites.push(id);
+    v.favorites++;
+    showToast('收藏成功！已保存到个人中心。');
+  }
+  renderPage('vplay');
+}
+function copyVideoLink(id) {
+  const url = `https://example.com/videos/${id}`;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('分享链接已复制！');
+  }).catch(() => {
+    showToast('分享链接: ' + url);
+  });
+}
+function openReportModal(targetId) {
+  state.reportTargetId = targetId;
+  openModal('report-modal');
+}
+function submitReport() {
+  const desc = document.getElementById('report-desc').value.trim();
+  if (!desc) {
+    showToast('请输入举报详细说明');
+    return;
+  }
+  state.userReports.push({
+    id: 'rep_' + Date.now(),
+    targetId: state.reportTargetId,
+    reason: document.getElementById('report-reason').value,
+    desc: desc,
+    status: '未处理',
+    time: new Date().toISOString().split('T')[0]
+  });
+  showToast('举报提交成功，感谢反馈！');
+  document.getElementById('report-desc').value = '';
+  closeModal('report-modal');
+}
+function submitComment(videoId) {
+  if (!state.currentUser) {
+    showToast('请先登录');
+    openModal('login-modal');
+    return;
+  }
+  const input = document.getElementById('comment-input');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) {
+    showToast('留言内容不能为空');
+    return;
+  }
+  let containsSensitive = false;
+  let filteredText = text;
+  state.sensitiveWords.forEach(word => {
+    if (text.includes(word)) {
+      containsSensitive = true;
+      filteredText = filteredText.replaceAll(word, '*'.repeat(word.length));
+    }
+  });
+  if (containsSensitive) {
+    showToast('警告：您的留言中含有违禁词，已被过滤！');
+  }
+  if (!state.comments[videoId]) state.comments[videoId] = [];
+  state.comments[videoId].unshift({
+    username: state.currentUser.name,
+    time: '刚刚',
+    text: filteredText,
+    likes: 0
+  });
+  const video = state.videos.find(v => v.id === videoId);
+  if (video) video.commentsCount++;
+  showToast('留言发表成功！');
+  renderPage('vplay');
+}
+function likeComment(videoId, idx) {
+  const list = state.comments[videoId];
+  if (list && list[idx]) {
+    list[idx].likes++;
+    showToast('点赞成功');
+    renderPage('vplay');
+  }
+}
+
+// ─── C-SIDE LIVE LIST RENDERER ───────────────────────────────────────────────
+function renderPage_llist() {
+  const container = document.getElementById('pg-llist');
+  const activeTab = state.llistTab || '全部';
+  const sortBy = state.llistSortBy || '人气最高';
+  let filtered = state.streamers;
+  if (activeTab === '性感' || activeTab === '清纯' || activeTab === '熟女') {
+    filtered = filtered.filter(s => s.tags.includes(activeTab));
+  } else if (activeTab === 'VIP专属 🔒') {
+    filtered = filtered.filter(s => s.isVipOnly);
+  }
+  if (sortBy === '人气最高') {
+    filtered.sort((a, b) => b.onlineCount - a.onlineCount);
+  } else if (sortBy === '最新开播') {
+    filtered.sort((a, b) => new Date(b.lastLive) - new Date(a.lastLive));
+  }
+  const tabList = ['全部','性感','清纯','熟女','VIP专属 🔒'];
+  const tabsHtml = tabList.map(tTab => `
+    <div class="tab ${activeTab === tTab ? 'on' : ''}" onclick="setLlistTab('${tTab}')">${t(tTab)}</div>
+  `).join('');
+  const liveCardsHtml = filtered.map(s => `
+    <div class="live-card" onclick="enterLiveRoom('${s.id}')">
+      <div style="position:relative">
+        <div class="ph" style="width:100%;height:110px;background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold">${t(s.name)}</div>
+        <span class="live-badge">● LIVE</span>
+        <span class="online-cnt">👁 ${fmt(s.onlineCount)}</span>
+        ${s.isVipOnly ? `<span style="position:absolute;bottom:5px;right:5px;background:linear-gradient(90deg,#f59e0b,#ef4444);color:#fff;font-size:9px;padding:2px 5px;border-radius:3px">VIP专属</span>` : ''}
+      </div>
+      <div style="padding:8px 9px">
+        <div style="font-size:12px;font-weight:700;margin-bottom:2px">${t(s.name)}的直播间</div>
+        <div style="font-size:11px;color:var(--muted)">${s.tags.map(x=>t(x)).join(' · ')} · <span style="color:#22c55e">进入直播间</span></div>
+      </div>
+    </div>
+  `).join('');
+  const bottomAd = state.ads.find(a => a.position === '底部固定栏' && a.status === '投放中');
+  const bottomAdHtml = bottomAd ? `
+    <div class="bot-ad">
+      <span>🎮</span>
+      <span style="flex:1;cursor:pointer" onclick="clickAd('${bottomAd.id}')">${t(bottomAd.name)}</span>
+      <button class="btn btn-p" onclick="clickAd('${bottomAd.id}')">立即注册 →</button>
+    </div>
+  ` : '';
+  container.innerHTML = `
+    ${renderNavbar('llist')}
+    <div style="padding:14px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="tabs" style="margin-bottom:0;border:none">${tabsHtml}</div>
+        <div style="margin-left:auto">
+          <select class="wf-sel" onchange="setLlistSort(this.value)">
+            <option value="人气最高" ${sortBy === '人气最高' ? 'selected' : ''}>人气最高</option>
+            <option value="最新开播" ${sortBy === '最新开播' ? 'selected' : ''}>最新开播</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:8px;font-size:12px;color:var(--muted)">当前在线：<strong style="color:var(--text)">${filtered.length} 位主播</strong></div>
+      <div class="grid-4">${liveCardsHtml || '<div style="grid-column:span 4;text-align:center;color:var(--muted);padding:40px 0;">当前没有符合条件的主播</div>'}</div>
+    </div>
+    ${bottomAdHtml}
+  `;
+}
+function setLlistTab(tab) {
+  if (tab === 'VIP专属 🔒' && (!state.currentUser || !state.currentUser.isVip)) {
+    showToast('该分类为 VIP 专属，请先升级 VIP 会员！');
+    openModal('vip-modal');
+    return;
+  }
+  state.llistTab = tab;
+  renderPage('llist');
+}
+function setLlistSort(val) {
+  state.llistSortBy = val;
+  renderPage('llist');
+}
+
+// ─── C-SIDE LIVE ROOM RENDERER ───────────────────────────────────────────────
+function renderPage_lroom() {
+  const container = document.getElementById('pg-lroom');
+  let streamer = state.streamers.find(s => s.id === state.activeStreamerId);
+  if (!streamer) {
+    streamer = state.streamers[0];
+    state.activeStreamerId = streamer.id;
+  }
+  if (streamer.isVipOnly && (!state.currentUser || !state.currentUser.isVip)) {
+    setTimeout(() => {
+      showToast('该直播间为 VIP 专属，已拦截进入！');
+      openModal('vip-modal');
+      nav('llist');
+    }, 100);
+    return;
+  }
+  const isVip = state.currentUser && state.currentUser.isVip;
+  let entryAdOverlayHtml = '';
+  if (!isVip && !state.entryAdClosed) {
+    const entryAd = state.ads.find(a => a.position === '进场弹窗' && a.status === '投放中') || {
+      id: 'default-entry-ad', name: '🎮 XX 电子游戏 - 首充 1000 返 2000', code: 'AD_DEFAULT_ENTRY'
+    };
+    entryAdOverlayHtml = `
+      <div id="live-entry" style="position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;display:flex;align-items:center;justify-content:center">
+        <div style="background:#1a2332;border:1px solid #2e4a6e;border-radius:9px;padding:18px;width:460px;color:#fff;position:relative">
+          <div class="ann-lbl" style="position:absolute;top:-10px;right:6px">进场弹窗广告</div>
+          <div id="entry-ad-timer" style="font-size:10px;color:#64748b;margin-bottom:7px">
+            ${state.entryAdCountdown > 0 ? `广告 · ${state.entryAdCountdown}秒后可关闭` : '广告 · 点击✕关闭'}
+          </div>
+          <div style="background:linear-gradient(135deg,#1e3a5f,#2d1b69);border-radius:7px;padding:18px;text-align:center;margin-bottom:12px;cursor:pointer" onclick="window.open('https://workyuteddy-star.github.io/demo/casino.html', '_blank')">
+            <div style="font-size:19px;font-weight:700;margin-bottom:5px">${t(entryAd.name)}</div>
+            <div style="color:#94a3b8;margin-bottom:10px;font-size:12px">合作赞助：立即注册送彩金</div>
+            <button class="btn btn-p" style="padding:7px 22px">立即前往</button>
+          </div>
+          <button id="close-entry-ad-btn" onclick="closeEntryAd()" style="position:absolute;top:10px;right:12px;background:none;border:none;color:#94a3b8;font-size:17px;cursor:${state.entryAdCountdown === 0 ? 'pointer' : 'not-allowed'}" ${state.entryAdCountdown === 0 ? '' : 'disabled'}>✕</button>
+        </div>
+      </div>
+    `;
+  }
+  const gifts = [
+    { name: '🌹 玫瑰', cost: 1, label: '玫瑰 ¥1' },
+    { name: '💝 爱心', cost: 5, label: '爱心 ¥5' },
+    { name: '🚀 火箭', cost: 50, label: '火箭 ¥50' },
+    { name: '🏎 跑车', cost: 100, label: '跑车 ¥100' },
+    { name: '🛥 游艇', cost: 500, label: '游艇 ¥500' }
+  ];
+  const giftsHtml = gifts.map(g => `
+    <button onclick="sendGift('${streamer.id}', '${g.name}', ${g.cost})" style="background:#21262d;color:#e2e8f0;border:1px solid #30363d;padding:5px 9px;border-radius:4px;font-size:11px;cursor:pointer;white-space:nowrap">
+      ${t(g.label)}
+    </button>
+  `).join('');
+  const sideAds = state.ads.filter(a => a.position === '直播间侧栏' && a.status === '投放中');
+  const sideAdsHtml = sideAds.slice(0, 2).map(ad => `
+    <div style="background:#1a2332;border:1px solid #2e4a6e;border-radius:6px;padding:9px;color:#fff;margin-bottom:8px;cursor:pointer" onclick="clickAd('${ad.id}')">
+      <div style="font-size:11px;font-weight:700;margin-bottom:6px">${t(ad.name)}</div>
+      <div class="ph" style="width:100%;height:70px;background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px">${ad.code}</div>
+      <button class="game-ad-cta" style="width:100%;margin-top:7px">立即前往</button>
+    </div>
+  `).join('');
+  const chatMessagesHtml = (state.liveChat || []).map(m => `
+    <div class="chat-msg">
+      <span class="chat-u" style="${m.isSystem ? 'color:#f59e0b;' : ''}">${t(m.username)}:</span>
+      <span class="chat-t">${t(m.text)}</span>
+    </div>
+  `).join('');
+  container.innerHTML = `
+    ${renderNavbar('llist')}
+    ${entryAdOverlayHtml}
+    <div style="display:flex;height:calc(100vh - 94px)">
+      <div style="flex:1;background:#0d1117;display:flex;flex-direction:column;min-width:0">
+        <div style="flex:1;position:relative;min-height:0">
+          <div class="ph" style="width:100%;height:100%;background:#090d16;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <span style="font-size:48px;animation: pulse 1.5s infinite">📡</span>
+            <span style="font-weight:bold;font-size:14px;margin-top:8px">${t(streamer.name)} ${t('正在直播中')}...</span>
+            <span style="font-size:11px;color:var(--muted);margin-top:4px">推流密钥: ${streamer.key}</span>
+          </div>
+          <div id="gift-animation-container" style="position:absolute;inset:0;pointer-events:none;z-index:9"></div>
+          <div style="position:absolute;top:8px;left:8px;display:flex;gap:5px;align-items:center">
+            <span class="badge b-red">● LIVE</span>
+            <span style="background:rgba(0,0,0,.5);color:#fff;font-size:10px;padding:2px 6px;border-radius:3px">👁 ${fmt(streamer.onlineCount)} 在线</span>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.55));padding:8px 10px;display:flex;gap:7px;align-items:center">
+            <div class="avatar" style="width:30px;height:30px;font-size:10px;border:2px solid gold;background:#f39c12;color:#fff;display:flex;align-items:center;justify-content:center">主</div>
+            <div>
+              <div style="color:#fff;font-size:12.5px;font-weight:700">${t(streamer.name)} ${streamer.isVipOnly ? '<span class="badge b-vip">VIP专属</span>' : ''}</div>
+              <div style="color:#94a3b8;font-size:10px">状态: 直播中</div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:5px">
+              <button class="btn-sm" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2)" onclick="openReportModal('live_${streamer.id}')">⚠ 举报</button>
+            </div>
+          </div>
+        </div>
+        <div style="background:#161b22;padding:7px 10px;display:flex;gap:7px;border-top:1px solid #30363d;overflow-x:auto">
+          ${giftsHtml}
+        </div>
+      </div>
+      <div style="width:250px;flex-shrink:0;background:#161b22;display:flex;flex-direction:column;border-left:1px solid #30363d">
+        <div style="padding:7px 10px;border-bottom:1px solid #30363d;color:#e2e8f0;font-size:12px;font-weight:700">聊天室</div>
+        <div class="chat-msgs" id="chat-messages-container" style="flex:1;overflow-y:auto;min-height:0;max-height: calc(100vh - 200px);">
+          ${chatMessagesHtml}
+        </div>
+        <div style="padding:7px;background:#161b22;border-top:1px solid #30363d;display:flex;gap:5px">
+          <input class="chat-inp" id="chat-input-field" placeholder="说点什么吧..." onkeydown="handleChatSendKey(event)">
+          <button class="btn btn-p" style="padding:5px 9px" onclick="sendChatMessage()">发送</button>
+        </div>
+      </div>
+      <div style="width:170px;flex-shrink:0;background:#0d1117;padding:9px;display:flex;flex-direction:column;gap:8px;border-left:1px solid #1f2937">
+        <div style="font-size:10px;color:#4b5563;text-align:center">— 广告 —</div>
+        ${sideAdsHtml || '<div style="text-align:center;color:var(--muted);font-size:11px;">暂无广告</div>'}
+      </div>
+    </div>
+  `;
+  const chatBox = document.getElementById('chat-messages-container');
+  if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+  if (document.getElementById('live-entry') && !state.entryAdInterval) {
+    state.entryAdInterval = setInterval(() => {
+      if (state.entryAdCountdown > 0) {
+        state.entryAdCountdown--;
+        const timerText = document.getElementById('entry-ad-timer');
+        if (timerText) timerText.textContent = `广告 · ${state.entryAdCountdown}秒后可关闭`;
+      } else {
+        clearInterval(state.entryAdInterval);
+        state.entryAdInterval = null;
+        const timerText = document.getElementById('entry-ad-timer');
+        if (timerText) timerText.textContent = '广告 · 点击✕关闭';
+        const closeBtn = document.getElementById('close-entry-ad-btn');
+        if (closeBtn) {
+          closeBtn.removeAttribute('disabled');
+          closeBtn.style.cursor = 'pointer';
+        }
+      }
+    }, 1000);
+  }
+  if (!state.viewerChatInterval) {
+    state.viewerChatInterval = setInterval(simulateViewerChat, 2500);
+  }
+}
+function enterLiveRoom(id) {
+  state.activeStreamerId = id;
+  state.entryAdCountdown = 3;
+  state.entryAdClosed = false;
+  state.liveChat = [
+    { username: '系统公告', text: '欢迎来到本直播间，请文明聊天。', isSystem: true },
+    { username: '游客912', text: '主播好漂亮！', isSystem: false },
+    { username: '萌妹小优', text: '主播么么哒', isSystem: false }
+  ];
+  nav('lroom');
+}
+function closeEntryAd() {
+  if (state.entryAdCountdown > 0) {
+    showToast('倒计时结束后方可关闭广告');
+    return;
+  }
+  state.entryAdClosed = true;
+  if (state.entryAdInterval) {
+    clearInterval(state.entryAdInterval);
+    state.entryAdInterval = null;
+  }
+  renderPage('lroom');
+}
+function handleChatSendKey(e) {
+  if (e.key === 'Enter') sendChatMessage();
+}
+function sendChatMessage() {
+  const input = document.getElementById('chat-input-field');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  if (!state.currentUser) {
+    showToast('请先登录后发表留言');
+    openLoginModal();
+    return;
+  }
+  const isMuted = state.mutedUsers && state.mutedUsers.includes(state.currentUser.name);
+  if (isMuted) {
+    showToast('您已被管理员禁言，无法发送消息！');
+    return;
+  }
+  let filteredText = text;
+  let containsSensitive = false;
+  state.sensitiveWords.forEach(word => {
+    if (text.includes(word)) {
+      containsSensitive = true;
+      filteredText = filteredText.replaceAll(word, '*'.repeat(word.length));
+    }
+  });
+  if (containsSensitive) showToast('警告：含有违禁词已自动屏蔽过滤！');
+  state.liveChat.push({
+    username: state.currentUser.name,
+    text: filteredText,
+    isSystem: false
+  });
+  input.value = '';
+  renderPage('lroom');
+}
+function sendGift(streamerId, giftName, cost) {
+  if (!state.currentUser) {
+    showToast('请先登录');
+    openLoginModal();
+    return;
+  }
+  if (state.currentUser.pts < cost) {
+    showToast('积分不足！体验合作游戏或升级 VIP 均可获取丰厚积分！');
+    openPromoGamesModal();
+    return;
+  }
+  state.currentUser.pts -= cost;
+  showToast(`成功赠送 ${giftName}，扣除 ${cost} 积分`);
+  state.liveChat.push({
+    username: '系统通知',
+    text: `${state.currentUser.name} 赠送了主播 ${giftName} !`,
+    isSystem: true
+  });
+  const container = document.getElementById('gift-animation-container');
+  if (container) {
+    const el = document.createElement('div');
+    el.className = 'gift-overlay-msg';
+    el.innerHTML = `<span>👑 ${state.currentUser.name}</span> 送出 ${giftName}`;
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  }
+  renderPage('lroom');
+}
+function simulateViewerChat() {
+  const viewerNames = ['老司机99', '萌妹小优', '秋风扫叶', '深夜寂寞', 'VIP尊贵会员'];
+  const messages = ['主播太棒了！', '点赞关注走一波！', '今晚播到几点？', '支持主播！', '大火箭送起来！'];
+  const randName = viewerNames[Math.floor(Math.random() * viewerNames.length)];
+  const randMsg = messages[Math.floor(Math.random() * messages.length)];
+  state.liveChat.push({
+    username: randName,
+    text: randMsg,
+    isSystem: false
+  });
+  if (state.liveChat.length > 20) state.liveChat.shift();
+  const chatBox = document.getElementById('chat-messages-container');
+  if (chatBox) {
+    chatBox.innerHTML = state.liveChat.map(m => `
+      <div class="chat-msg">
+        <span class="chat-u" style="${m.isSystem ? 'color:#f59e0b;' : ''}">${t(m.username)}:</span>
+        <span class="chat-t">${t(m.text)}</span>
+      </div>
+    `).join('');
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+}
+
+// ─── C-SIDE UGC VIDEOS AREA RENDERER ─────────────────────────────────────────
+function renderPage_ugc() {
+  const container = document.getElementById('pg-ugc');
+  const filtered = state.videos.filter(v => v.status === '已上架' && v.type === 'ugc');
+  const cardsHtml = filtered.map(v => getUgcCardHtml(v)).join('');
+  container.innerHTML = `
+    ${renderNavbar('ugc')}
+    <div style="padding:14px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div>
+          <div style="font-size:15px;font-weight:700">👾 玩家上传影片区</div>
+          <div style="font-size:11px;color:var(--muted)">由游戏玩家自制上传，审核通过后展示</div>
+        </div>
+        <button class="btn btn-p" style="margin-left:auto;padding:7px 14px" onclick="openModal('upload-modal')">+ 上传我的影片</button>
+      </div>
+      <div style="background:linear-gradient(90deg,#1a2332,#2d1b69);border-radius:7px;padding:14px;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:14px">
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:3px">上传自制影片，赢取高额积分换 VIP！</div>
+          <div style="font-size:11px;color:#94a3b8">上传影片送 50 积分奖励，通过后台审核即可全站播放！</div>
+        </div>
+        <button class="btn btn-p" style="flex-shrink:0;padding:7px 14px" onclick="openModal('upload-modal')">立即上传 →</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <span class="ftag on">最新</span>
+        <span class="ftag" onclick="showToast('最热筛选已生效')">最热</span>
+      </div>
+      <div class="grid-4">${cardsHtml || '<div style="grid-column:span 4;text-align:center;color:var(--muted);padding:40px 0;">当前没有已上架的玩家视频</div>'}</div>
+    </div>
+  `;
+}
+function simulateFileUploadSelection() {
+  if (!state.currentUser) {
+    showToast('请先登录');
+    openLoginModal();
+    return;
+  }
+  state.selectedFile = {
+    name: 'user_cos_self_' + Date.now().toString().slice(-4) + '.mp4',
+    size: '18.5 MB'
+  };
+  const label = document.getElementById('up-file-label');
+  if (label) label.textContent = `✅ 已选: ${state.selectedFile.name} (${state.selectedFile.size})`;
+  showToast('文件选择成功！');
+}
+function startSimulatedUpload() {
+  if (!state.currentUser) {
+    showToast('请先登录');
+    openLoginModal();
+    return;
+  }
+  const titleInput = document.getElementById('up-title');
+  if (!titleInput || !titleInput.value.trim()) {
+    showToast('请输入视频标题');
+    return;
+  }
+  if (!state.selectedFile) {
+    showToast('请先选择要上传的 MP4 文件');
+    return;
+  }
+  const progressBarContainer = document.getElementById('up-progress-bar-container');
+  const progressBar = document.getElementById('up-progress-bar');
+  const startBtn = document.getElementById('btn-start-upload');
+  if (progressBarContainer) progressBarContainer.style.display = 'block';
+  if (startBtn) startBtn.setAttribute('disabled', 'true');
+  let pct = 0;
+  state.uploadInterval = setInterval(() => {
+    pct += 10;
+    if (progressBar) progressBar.style.width = pct + '%';
+    if (pct >= 100) {
+      clearInterval(state.uploadInterval);
+      state.uploadInterval = null;
+      const title = titleInput.value.trim();
+      const tag = document.getElementById('up-tag').value || '自制';
+      state.videos.push({
+        id: 'v_ugc_' + Date.now(),
+        title: title,
+        duration: '12:00',
+        category: tag,
+        views: 0, likes: 0, favorites: 0, commentsCount: 0,
+        uploader: state.currentUser.name,
+        type: 'ugc', status: '待审核',
+        uploadTime: new Date().toISOString().split('T')[0]
+      });
+      state.currentUser.pts += 50;
+      showToast('上传成功，已提交后台审核！赠送 50 积分奖励。');
+      titleInput.value = '';
+      if (progressBarContainer) progressBarContainer.style.display = 'none';
+      if (progressBar) progressBar.style.width = '0%';
+      if (startBtn) startBtn.removeAttribute('disabled');
+      const label = document.getElementById('up-file-label');
+      if (label) label.textContent = '📁 点击选择或拖拽 MP4 文件';
+      state.selectedFile = null;
+      closeModal('upload-modal');
+      if (state.activePage === 'ugc') renderPage('ugc');
+    }
+  }, 150);
+}
+
+// ─── C-SIDE USER CENTER RENDERER ─────────────────────────────────────────────
+function renderPage_ucenter() {
+  const container = document.getElementById('pg-ucenter');
+  if (!state.currentUser) {
+    setTimeout(() => {
+      showToast('请先登录');
+      openLoginModal();
+      nav('home');
+    }, 100);
+    return;
+  }
+  const user = state.currentUser;
+  const activeTab = state.ucenterTab || '我的收藏';
+  const userFavorites = state.videos.filter(v => user.favorites && user.favorites.includes(v.id));
+  const userUploads = state.videos.filter(v => v.uploader === user.name);
+  let tabContentHtml = '';
+  if (activeTab === '我的收藏') {
+    tabContentHtml = `
+      <div class="grid-4">
+        ${userFavorites.map(v => getVidCardHtml(v)).join('') || '<div style="grid-column:span 4;text-align:center;color:var(--muted);padding:20px;">暂无收藏</div>'}
+      </div>
+    `;
+  } else if (activeTab === '观看历史') {
+    const historyVideos = state.videos.slice(0, 4);
+    tabContentHtml = `
+      <div class="grid-4">
+        ${historyVideos.map(v => getVidCardHtml(v)).join('')}
+      </div>
+    `;
+  } else if (activeTab === '我的上传') {
+    tabContentHtml = `
+      <div class="grid-4">
+        ${userUploads.map(v => `
+          <div class="vid-card ann">
+            <span class="ann-lbl ${v.status === '已上架' ? 'b-green' : v.status === '待审核' ? 'b-yellow' : 'b-red'}">${t(v.status)}</span>
+            <div style="position:relative">
+              <div class="ph" style="width:100%;height:100px;background:#065f46;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold">${t(v.title.slice(0, 4))}</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">${t(v.title)}</div>
+              <div class="vid-meta">标签: ${t(v.category)} · 播放: ${v.views}</div>
+            </div>
+          </div>
+        `).join('') || '<div style="grid-column:span 4;text-align:center;color:var(--muted);padding:20px;">暂无上传记录</div>'}
+      </div>
+    `;
+  } else if (activeTab === '积分 & VIP') {
+    tabContentHtml = `
+      <div class="card">
+        <div class="card-hd">我的账户权益</div>
+        <div class="card-bd">
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:13px">
+            <span>当前积分余额: <strong>${user.pts} pts</strong></span>
+            <button class="btn btn-p" onclick="openPromoGamesModal()">赚取积分 / 获取免费 VIP</button>
+          </div>
+          <hr style="border:none;border-top:1px solid var(--border);margin-bottom:12px">
+          <div style="font-size:12px;line-height:1.7">
+            <p><strong>积分获取途径:</strong></p>
+            <ul>
+              <li>· 上传自制视频并通过审核: +50 积分</li>
+              <li>· 参与合作游戏站首充/活动: +2000 积分</li>
+            </ul>
+            <p style="margin-top:10px"><strong>VIP 特权介绍:</strong></p>
+            <ul>
+              <li>· 1080P 超清分辨率解锁</li>
+              <li>· 自动跳过视频前贴片与中插广告</li>
+              <li>· 无限制进入 VIP 直播间</li>
+            </ul>
+          </div>
+          <button class="btn btn-p" style="width:100%;margin-top:14px;padding:8px" onclick="openModal('vip-modal')">充值续费 VIP 会员</button>
+        </div>
+      </div>
+    `;
+  }
+  const tabList = ['我的收藏','观看历史','我的上传','积分 & VIP'];
+  const tabsHtml = tabList.map(tTab => `
+    <div class="tab ${activeTab === tTab ? 'on' : ''}" onclick="setUcenterTab('${tTab}')">${t(tTab)}</div>
+  `).join('');
+  container.innerHTML = `
+    ${renderNavbar('ucenter')}
+    <div style="padding:14px;display:flex;gap:14px">
+      <div style="width:190px;flex-shrink:0">
+        <div class="card" style="margin-bottom:10px">
+          <div style="padding:14px;text-align:center;border-bottom:1px solid var(--border)">
+            <div class="avatar" style="width:54px;height:54px;font-size:16px;margin:0 auto 8px;background:#2e4a6e;color:#60a5fa">
+              ${user.name.slice(0, 2).toUpperCase()}
+            </div>
+            <div style="font-weight:700;margin-bottom:3px">${user.name}</div>
+            <div style="font-size:11px;color:var(--muted)">${user.email}</div>
+            <div style="margin-top:7px">
+              ${user.isVip ? '<span class="badge b-vip">👑 VIP 会员</span>' : '<span class="badge b-gray">普通会员</span>'}
+            </div>
+            ${user.isVip ? `<div style="font-size:11px;color:var(--muted);margin-top:3px">有效至：${user.vipExpiry}</div>` : ''}
+          </div>
+          <div style="padding:9px 12px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px">
+              <span style="color:var(--sub)">积分</span>
+              <span style="font-weight:700;color:#f59e0b">${user.pts} pts</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px">
+              <span style="color:var(--sub)">收藏</span>
+              <span style="font-weight:700">${userFavorites.length}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px">
+              <span style="color:var(--sub)">上传</span>
+              <span style="font-weight:700">${userUploads.length}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="padding:6px 0">
+            ${tabList.map(item => `
+              <div onclick="setUcenterTab('${item}')" style="padding:8px 12px;font-size:12.5px;cursor:pointer;color:${activeTab === item ? 'var(--red)' : '#374151'};background:${activeTab === item ? '#fef2f2' : ''};border-left:${activeTab === item ? '3px solid var(--red)' : '3px solid transparent'}">
+                ${t(item)}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="tabs">${tabsHtml}</div>
+        ${tabContentHtml}
+      </div>
+    </div>
+  `;
+}
+function setUcenterTab(tab) {
+  state.ucenterTab = tab;
+  renderPage('ucenter');
+}
+
+// ─── VIP PAYMENT ─────────────────────────────────────────────────────────────
+function selectVipPlan(el, months) {
+  document.querySelectorAll('.vip-plan-card').forEach(card => card.classList.remove('active'));
+  el.classList.add('active');
+  state.selectedVipMonths = months;
+}
+function selectPayMethod(el, method) {
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
+  el.classList.add('active');
+  state.selectedPayMethod = method;
+}
+function submitVipPay() {
+  if (!state.currentUser) {
+    showToast('请先登录账号');
+    openLoginModal();
+    closeModal('vip-modal');
+    return;
+  }
+  state.currentUser.isVip = true;
+  const d = new Date();
+  d.setMonth(d.getMonth() + state.selectedVipMonths);
+  state.currentUser.vipExpiry = d.toISOString().split('T')[0];
+  showToast(`升级成功！已开通 ${state.selectedVipMonths} 个月 VIP 尊贵会员！`);
+  closeModal('vip-modal');
+  renderPage(state.activePage);
+}
+
+// ─── PARTNER PROMO MODAL ──────────────────────────────────────────────────────
+function openPromoGamesModal() {
+  const listEl = document.getElementById('promo-games-list');
+  if (listEl) {
+    listEl.innerHTML = state.promos.map(p => `
+      <div class="game-ad" onclick="visitPromoLink('${p.promoCode}')" style="justify-content:space-between;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="game-ad-logo">${p.gameSite.slice(0,2)}</div>
+          <div>
+            <div style="font-weight:700;font-size:12px">${t(p.name)}</div>
+            <div style="font-size:10px;color:#94a3b8">活动结算: ${p.payoutType}</div>
+          </div>
+        </div>
+        <button class="game-ad-cta">立即前往 →</button>
+      </div>
+    `).join('');
+  }
+  openModal('promo-games-modal');
+}
+function visitPromoLink(code) {
+  const promo = state.promos.find(p => p.promoCode === code);
+  if (promo) {
+    promo.clicks++;
+    showToast('[demo 联动] 正在跳转回 demo 娱乐城大厅...');
+    setTimeout(() => {
+      promo.conversions++;
+      if (state.currentUser) {
+        state.currentUser.isVip = true;
+        const d = new Date();
+        d.setDate(d.getDate() + 7);
+        state.currentUser.vipExpiry = d.toISOString().split('T')[0];
+      }
+      closeModal('promo-games-modal');
+      window.location.href = 'index.html';
+    }, 1500);
+  }
+}
+
+// ─── B-SIDE CONTENT MANAGEMENT ───────────────────────────────────────────────
+function renderPage_acontent() {
+  const container = document.getElementById('pg-acontent');
+  const activeStatus = state.acontentStatus || '全部状态';
+  const activeType = state.acontentType || '全部类型';
+  const searchQ = state.acontentSearch || '';
+  let filtered = state.videos;
+  if (activeStatus !== '全部状态') {
+    filtered = filtered.filter(v => v.status === activeStatus);
+  }
+  if (activeType !== '全部类型') {
+    const typeKey = activeType === '官方影片' ? 'official' : 'ugc';
+    filtered = filtered.filter(v => v.type === typeKey);
+  }
+  if (searchQ) {
+    filtered = filtered.filter(v => v.title.toLowerCase().includes(searchQ.toLowerCase()) || v.uploader.toLowerCase().includes(searchQ.toLowerCase()));
+  }
+  const statsPending = state.videos.filter(v => v.status === '待审核').length;
+  const statsApproved = state.videos.filter(v => v.status === '已上架').length;
+  const statsTakedown = state.videos.filter(v => v.status === '已下架').length;
+  const statsRejected = state.videos.filter(v => v.status === '审核拒绝').length;
+  const rowsHtml = filtered.map(v => {
+    let statusClass = 'b-gray';
+    if (v.status === '待审核') statusClass = 'b-yellow';
+    if (v.status === '已上架') statusClass = 'b-green';
+    if (v.status === '审核拒绝') statusClass = 'b-red';
+    let actionButtons = '';
+    if (v.status === '待审核') {
+      actionButtons = `
+        <button class="btn-sm btn-b" onclick="approveVideo('${v.id}')">上架</button>
+        <button class="btn-sm btn-d" onclick="rejectVideo('${v.id}')">拒绝</button>
+      `;
+    } else if (v.status === '已上架') {
+      actionButtons = `<button class="btn-sm btn-d" onclick="takedownVideo('${v.id}')">下架</button>`;
+    } else {
+      actionButtons = `<button class="btn-sm btn-b" onclick="approveVideo('${v.id}')">重新上架</button>`;
+    }
+    return `
+      <tr>
+        <td><input type="checkbox" class="acontent-checkbox" data-id="${v.id}"></td>
+        <td>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="ph" style="width:60px;height:38px;background:#1e293b;color:#fff;font-size:9px;font-weight:bold">${t(v.title.slice(0, 2))}</div>
+            <div>
+              <div style="font-weight:600">${t(v.title)}</div>
+              <div style="font-size:10px;color:var(--muted)">时长: ${v.duration} · 播放: ${v.views}</div>
+            </div>
+          </div>
+        </td>
+        <td>${v.uploader}</td>
+        <td><span class="badge ${v.type === 'ugc' ? 'b-blue' : 'b-gray'}">${v.type === 'ugc' ? '玩家上传' : '官方'}</span></td>
+        <td><span class="badge b-gray">${t(v.category)}</span></td>
+        <td><span class="badge ${statusClass}">${t(v.status)}</span></td>
+        <td>${v.uploadTime}</td>
+        <td><div style="display:flex;gap:4px">${actionButtons}</div></td>
+      </tr>
+    `;
+  }).join('');
+  container.innerHTML = `
+    ${adminTop('内容管理 — 影片审核')}
+    <div class="adm-layout">
+      ${adminSide('acontent')}
+      <div class="adm-main">
+        <div class="adm-title">影片内容管理</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-lbl">待审核</div><div class="stat-val" style="color:#f59e0b">${statsPending}</div></div>
+          <div class="stat-card"><div class="stat-lbl">已上架</div><div class="stat-val" style="color:#22c55e">${statsApproved}</div></div>
+          <div class="stat-card"><div class="stat-lbl">已下架</div><div class="stat-val" style="color:#ef4444">${statsTakedown}</div></div>
+          <div class="stat-card"><div class="stat-lbl">审核拒绝</div><div class="stat-val">${statsRejected}</div></div>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-bd" style="display:flex;gap:7px;align-items:center">
+            <select class="wf-sel" onchange="setAcontentFilter('status', this.value)">
+              <option value="全部状态" ${activeStatus === '全部状态' ? 'selected' : ''}>全部状态</option>
+              <option value="待审核" ${activeStatus === '待审核' ? 'selected' : ''}>待审核</option>
+              <option value="已上架" ${activeStatus === '已上架' ? 'selected' : ''}>已上架</option>
+              <option value="已下架" ${activeStatus === '已下架' ? 'selected' : ''}>已下架</option>
+              <option value="审核拒绝" ${activeStatus === '审核拒绝' ? 'selected' : ''}>审核拒绝</option>
+            </select>
+            <select class="wf-sel" onchange="setAcontentFilter('type', this.value)">
+              <option value="全部类型" ${activeType === '全部类型' ? 'selected' : ''}>全部类型</option>
+              <option value="官方影片" ${activeType === '官方影片' ? 'selected' : ''}>官方影片</option>
+              <option value="玩家上传" ${activeType === '玩家上传' ? 'selected' : ''}>玩家上传</option>
+            </select>
+            <input class="wf-input" id="acontent-search-input" style="width:200px" placeholder="搜索标题/上传者..." value="${searchQ}" onkeydown="handleAcontentSearch(event)">
+            <button class="btn btn-p" onclick="triggerAcontentSearch()">搜索</button>
+            <div style="margin-left:auto;display:flex;gap:6px">
+              <button class="btn btn-b" onclick="bulkApproveVideos()">批量上架</button>
+              <button class="btn btn-d" onclick="bulkTakedownVideos()">批量下架</button>
+              <button class="btn btn-p" onclick="openAddOfficialVideoModal()">+ 上传官方影片</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <table class="wf-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="acontent-select-all" onclick="toggleSelectAllContent(this)"></th>
+                <th>封面/标题</th>
+                <th>上传者</th>
+                <th>类型</th>
+                <th>标签</th>
+                <th>状态</th>
+                <th>上传时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml || '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">没有匹配的数据</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function setAcontentFilter(field, val) {
+  if (field === 'status') state.acontentStatus = val;
+  if (field === 'type') state.acontentType = val;
+  renderPage('acontent');
+}
+function handleAcontentSearch(e) {
+  if (e.key === 'Enter') triggerAcontentSearch();
+}
+function triggerAcontentSearch() {
+  const input = document.getElementById('acontent-search-input');
+  if (input) {
+    state.acontentSearch = input.value.trim();
+    renderPage('acontent');
+  }
+}
+function handleNavbarSearch(e) {
+  if (e.key === 'Enter') {
+    const input = document.getElementById('navbar-search-input');
+    if (input) {
+      state.searchQuery = input.value.trim();
+      nav('vlist');
+    }
+  }
+}
+function toggleSelectAllContent(master) {
+  document.querySelectorAll('.acontent-checkbox').forEach(cb => cb.checked = master.checked);
+}
+function approveVideo(id) {
+  const v = state.videos.find(x => x.id === id);
+  if (v) {
+    v.status = '已上架';
+    showToast(`视频《${v.title}》已成功上架！`);
+    renderPage('acontent');
+  }
+}
+function rejectVideo(id) {
+  const v = state.videos.find(x => x.id === id);
+  if (v) {
+    v.status = '审核拒绝';
+    showToast(`视频《${v.title}》审核拒绝已提交！`);
+    renderPage('acontent');
+  }
+}
+function takedownVideo(id) {
+  const v = state.videos.find(x => x.id === id);
+  if (v) {
+    v.status = '已下架';
+    showToast(`视频《${v.title}》已下架！`);
+    renderPage('acontent');
+  }
+}
+function getSelectedContentIds() {
+  const ids = [];
+  document.querySelectorAll('.acontent-checkbox').forEach(cb => {
+    if (cb.checked) ids.push(cb.dataset.id);
+  });
+  return ids;
+}
+function bulkApproveVideos() {
+  const ids = getSelectedContentIds();
+  if (ids.length === 0) {
+    showToast('请先选择要操作的视频');
+    return;
+  }
+  ids.forEach(id => {
+    const v = state.videos.find(x => x.id === id);
+    if (v) v.status = '已上架';
+  });
+  showToast(`批量审核上架 ${ids.length} 个视频成功！`);
+  renderPage('acontent');
+}
+function bulkTakedownVideos() {
+  const ids = getSelectedContentIds();
+  if (ids.length === 0) {
+    showToast('请先选择要操作的视频');
+    return;
+  }
+  ids.forEach(id => {
+    const v = state.videos.find(x => x.id === id);
+    if (v) v.status = '已下架';
+  });
+  showToast(`批量审核下架 ${ids.length} 个视频成功！`);
+  renderPage('acontent');
+}
+function openAddOfficialVideoModal() {
+  const title = prompt('请输入官方影片标题:');
+  if (!title || !title.trim()) return;
+  const cat = prompt('请输入分类标签 (少妇/制服/清纯/欧美/丝袜/熟女/自制):', '少妇');
+  const dur = prompt('请输入视频时长:', '35:00');
+  state.videos.unshift({
+    id: 'v_off_' + Date.now(),
+    title: title,
+    duration: dur || '25:10',
+    category: cat || '少妇',
+    views: rnd(100, 5000), likes: 0, favorites: 0, commentsCount: 0,
+    uploader: '官方管理员',
+    type: 'official', status: '已上架',
+    uploadTime: new Date().toISOString().split('T')[0]
+  });
+  showToast(`官方影片《${title}》上架成功！`);
+  renderPage('acontent');
+}
+
+// ─── B-SIDE LIVE STREAM MANAGEMENT ───────────────────────────────────────────
+function renderPage_alive() {
+  const container = document.getElementById('pg-alive');
+  const streamersRowsHtml = state.streamers.map(s => {
+    const isOnline = s.status === '直播中';
+    return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="avatar" style="width:24px;height:24px;font-size:10px;background:#65a30d;color:#fff">${s.name.slice(0,1)}</div>
+            ${t(s.name)}
+          </div>
+        </td>
+        <td><code style="font-size:10px;color:var(--sub)">${s.key}</code></td>
+        <td><span class="badge ${isOnline ? 'b-green' : 'b-gray'}">${t(s.status)}</span></td>
+        <td>${isOnline ? fmt(s.onlineCount) : '-'}</td>
+        <td>${s.sessions} 场</td>
+        <td>${s.lastLive}</td>
+        <td>
+          <div style="display:flex;gap:4px">
+            ${isOnline ? `<button class="btn-sm btn-d" onclick="forceStopLive('${s.id}')">强制下播</button>` : `<button class="btn-sm btn-b" onclick="startLiveSimulated('${s.id}')">开启直播</button>`}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+  const mutedRowsHtml = (state.mutedUsersDetails || []).map(mu => `
+    <tr>
+      <td>${mu.username}</td>
+      <td>${t(mu.reason)}</td>
+      <td>${mu.expiry}</td>
+      <td><button class="btn-sm btn-b" onclick="unmuteUser('${mu.username}')">解除</button></td>
+    </tr>
+  `).join('');
+  const wordsHtml = state.sensitiveWords.map(w => `
+    <span class="badge b-gray" style="display:inline-flex;align-items:center;gap:4px;margin: 2px;">
+      ${t(w)} <span style="cursor:pointer;color:#ef4444;font-weight:bold" onclick="removeSensitiveWord('${w}')">✕</span>
+    </span>
+  `).join('');
+  container.innerHTML = `
+    ${adminTop('直播管理')}
+    <div class="adm-layout">
+      ${adminSide('alive')}
+      <div class="adm-main">
+        <div class="adm-title">直播管理</div>
+        <div style="display:flex;gap:12px">
+          <div style="flex:1">
+            <div class="card" style="margin-bottom:12px">
+              <div class="card-hd">主播账号管理 <button class="btn btn-p" onclick="openAddStreamerModal()">+ 新增主播</button></div>
+              <div style="padding:0">
+                <table class="wf-table">
+                  <thead>
+                    <tr><th>主播</th><th>推流密钥</th><th>状态</th><th>当前在线</th><th>累计场次</th><th>上次直播</th><th>操作</th></tr>
+                  </thead>
+                  <tbody>${streamersRowsHtml}</tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd">聊天室禁言管理</div>
+              <div class="card-bd">
+                <div style="display:flex;gap:7px;margin-bottom:9px">
+                  <input class="wf-input" id="mute-username-input" style="width:190px" placeholder="输入用户昵称">
+                  <select class="wf-sel" id="mute-duration-select">
+                    <option value="1天">禁言 1天</option>
+                    <option value="7天">禁言 7天</option>
+                    <option value="永久">永久禁言</option>
+                  </select>
+                  <button class="btn btn-p" onclick="addMuteUser()">添加禁言</button>
+                </div>
+                <table class="wf-table">
+                  <thead><tr><th>用户</th><th>禁言原因</th><th>禁言至</th><th>操作</th></tr></thead>
+                  <tbody>${mutedRowsHtml || '<tr><td colspan="4" style="text-align:center;padding:10px;">当前无禁言记录</td></tr>'}</tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div style="width:230px;flex-shrink:0">
+            <div class="card">
+              <div class="card-hd">敏感词库 <span class="badge b-gray">共 ${state.sensitiveWords.length} 条</span></div>
+              <div class="card-bd">
+                <div style="display:flex;gap:5px;margin-bottom:8px">
+                  <input class="wf-input" id="add-sensitive-word-input" placeholder="新增敏感词..." onkeydown="handleSensitiveWordKey(event)">
+                  <button class="btn btn-p" onclick="addSensitiveWord()">+</button>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px">${wordsHtml}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function forceStopLive(id) {
+  const s = state.streamers.find(x => x.id === id);
+  if (s) {
+    s.status = '已下线';
+    s.onlineCount = 0;
+    showToast(`已强制断开主播 ${s.name} 的直播流！`);
+    renderPage('alive');
+  }
+}
+function startLiveSimulated(id) {
+  const s = state.streamers.find(x => x.id === id);
+  if (s) {
+    s.status = '直播中';
+    s.onlineCount = rnd(500, 3000);
+    s.sessions++;
+    s.lastLive = new Date().toISOString().split('T')[0];
+    showToast(`主播 ${s.name} 已重新开播！`);
+    renderPage('alive');
+  }
+}
+function openAddStreamerModal() {
+  const name = prompt('请输入新主播昵称:');
+  if (!name || !name.trim()) return;
+  state.streamers.push({
+    id: 's_' + Date.now(),
+    name: name,
+    key: 'sk-' + Math.random().toString(36).slice(2, 10),
+    status: '已下线', onlineCount: 0, sessions: 0, lastLive: '-',
+    tags: ['性感', '互动'], isVipOnly: false
+  });
+  showToast(`主播 ${name} 账号配置成功！`);
+  renderPage('alive');
+}
+function addMuteUser() {
+  const usernameInput = document.getElementById('mute-username-input');
+  if (!usernameInput) return;
+  const username = usernameInput.value.trim();
+  if (!username) {
+    showToast('请输入要封禁禁言的用户名');
+    return;
+  }
+  const dur = document.getElementById('mute-duration-select').value;
+  state.mutedUsers.push(username);
+  state.mutedUsersDetails.push({
+    username: username,
+    reason: '直播间言语违规',
+    expiry: dur
+  });
+  usernameInput.value = '';
+  showToast(`禁言用户 ${username} 成功，有效期 ${dur}`);
+  renderPage('alive');
+}
+function unmuteUser(username) {
+  state.mutedUsers = state.mutedUsers.filter(u => u !== username);
+  state.mutedUsersDetails = state.mutedUsersDetails.filter(u => u.username !== username);
+  showToast(`用户 ${username} 禁言已解除！`);
+  renderPage('alive');
+}
+function handleSensitiveWordKey(e) {
+  if (e.key === 'Enter') addSensitiveWord();
+}
+function addSensitiveWord() {
+  const input = document.getElementById('add-sensitive-word-input');
+  if (!input) return;
+  const word = input.value.trim();
+  if (!word) return;
+  if (state.sensitiveWords.includes(word)) {
+    showToast('该词汇已存在敏感词库中');
+    return;
+  }
+  state.sensitiveWords.push(word);
+  input.value = '';
+  showToast('新增敏感词成功！');
+  renderPage('alive');
+}
+function removeSensitiveWord(word) {
+  state.sensitiveWords = state.sensitiveWords.filter(w => w !== word);
+  showToast('敏感词已删除');
+  renderPage('alive');
+}
+
+// ─── B-SIDE ADS CONFIGURATION ────────────────────────────────────────────────
+function renderPage_aads() {
+  const container = document.getElementById('pg-aads');
+  const activeTab = state.aadsTab || '首页主Banner';
+  const filtered = state.ads.filter(a => a.position === activeTab);
+  const tabList = ['首页主Banner','播放前贴片','推荐插卡','直播间侧栏','进场弹窗','底部固定栏'];
+  const tabsHtml = tabList.map(tTab => `
+    <div class="tab ${activeTab === tTab ? 'on' : ''}" onclick="setAadsTab('${tTab}')">${t(tTab)}</div>
+  `).join('');
+  const rowsHtml = filtered.map((ad, idx) => `
+    <tr>
+      <td>${idx + 1}</td>
+      <td><div class="ph" style="width:60px;height:34px;background:#3b82f6;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center">AD</div></td>
+      <td>${t(ad.name)}</td>
+      <td style="font-size:11px;color:var(--sub)">${ad.url}</td>
+      <td><code style="font-size:10px">${ad.code}</code></td>
+      <td style="font-size:11px">${ad.schedule}</td>
+      <td><span class="badge ${ad.status === '投放中' ? 'b-green' : 'b-gray'}">${t(ad.status)}</span></td>
+      <td>
+        <div style="display:flex;gap:4px">
+          ${ad.status === '投放中' ? `<button class="btn-sm btn-d" onclick="toggleAdStatus('${ad.id}', '已停止')">停止</button>` : `<button class="btn-sm btn-b" onclick="toggleAdStatus('${ad.id}', '投放中')">投放</button>`}
+          <button class="btn-sm btn-d" onclick="deleteAd('${ad.id}')">删除</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  const promoOptionsHtml = state.promos.map(p => `
+    <option value="${p.landingPage}">${t(p.name)} (${p.promoCode})</option>
+  `).join('');
+  container.innerHTML = `
+    ${adminTop('广告配置')}
+    <div class="adm-layout">
+      ${adminSide('aads')}
+      <div class="adm-main">
+        <div class="adm-title">广告位配置</div>
+        <div class="tabs">${tabsHtml}</div>
+        <div style="display:flex;gap:12px">
+          <div style="flex:1">
+            <div class="card" style="margin-bottom:12px">
+              <div class="card-hd">当前 ${t(activeTab)} 广告列表</div>
+              <div style="padding:0">
+                <table class="wf-table">
+                  <thead>
+                    <tr><th>顺序</th><th>素材</th><th>广告名称</th><th>跳转目标</th><th>推广码</th><th>排期</th><th>状态</th><th>操作</th></tr>
+                  </thead>
+                  <tbody>
+                    ${rowsHtml || '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:15px;">当前版位暂无广告配置</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd">新增广告配置（至当前版位）</div>
+              <div class="card-bd">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div>
+                    <label class="wf-label">广告名称</label>
+                    <input class="wf-input" id="new-ad-name" placeholder="如：XX电子大促Banner">
+                  </div>
+                  <div>
+                    <label class="wf-label">关联推广链接</label>
+                    <select class="wf-sel" id="new-ad-promo-url" style="width:100%">
+                      <option value="">手动输入或选择预设推广...</option>
+                      ${promoOptionsHtml}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="wf-label">广告链接 (手动输入)</label>
+                    <input class="wf-input" id="new-ad-custom-url" placeholder="https://...">
+                  </div>
+                  <div>
+                    <label class="wf-label">排期期限</label>
+                    <div style="display:flex;gap:5px">
+                      <input class="wf-input" type="date" id="new-ad-start" value="2026-05-22">
+                      <span style="padding:6px;font-size:12px">至</span>
+                      <input class="wf-input" type="date" id="new-ad-end" value="2026-06-22">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="wf-label">展示权重权重 (%)</label>
+                    <input class="wf-input" type="number" id="new-ad-weight" value="50">
+                  </div>
+                </div>
+                <div style="margin-top:10px;display:flex;gap:6px;justify-content:flex-end">
+                  <button class="btn btn-p" onclick="saveNewAd()">保存广告配置</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="width:200px;flex-shrink:0">
+            <div class="card">
+              <div class="card-hd">预览 & 说明</div>
+              <div class="card-bd">
+                <div class="ph" style="width:100%;height:55px;background:#34495e;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center">Banner预览</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.8">
+                  · 版位属性：${activeTab === '首页主Banner' ? '1200×300px 轮播' : '普通定位广告'}<br>
+                  · 联动特性：可在左侧表单中选择已配置的推广渠道自动继承 UTM 参数与转化归因统计。
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function setAadsTab(tab) {
+  state.aadsTab = tab;
+  renderPage('aads');
+}
+function toggleAdStatus(id, newStatus) {
+  const ad = state.ads.find(a => a.id === id);
+  if (ad) {
+    ad.status = newStatus;
+    showToast(`广告状态已切换为: ${newStatus}`);
+    renderPage('aads');
+  }
+}
+function deleteAd(id) {
+  state.ads = state.ads.filter(a => a.id !== id);
+  showToast('广告配置已成功删除');
+  renderPage('aads');
+}
+function saveNewAd() {
+  const nameEl = document.getElementById('new-ad-name');
+  if (!nameEl || !nameEl.value.trim()) {
+    showToast('请输入广告名称');
+    return;
+  }
+  const selectUrl = document.getElementById('new-ad-promo-url').value;
+  const customUrl = document.getElementById('new-ad-custom-url').value;
+  const url = selectUrl || customUrl || 'https://game.site';
+  const start = document.getElementById('new-ad-start').value;
+  const end = document.getElementById('new-ad-end').value;
+  const weight = document.getElementById('new-ad-weight').value || 50;
+  state.ads.push({
+    id: 'ad_' + Date.now(),
+    position: state.aadsTab || '首页主Banner',
+    name: nameEl.value.trim(),
+    url: url,
+    code: 'AD_' + rnd(100, 999),
+    schedule: `${start.replace('2026-', '')}–${end.replace('2026-', '')}`,
+    status: '投放中',
+    weight: parseInt(weight)
+  });
+  showToast('新广告方案已保存并上线！');
+  renderPage('aads');
+}
+
+// ─── B-SIDE PROMO CHANNELS CONFIGURATION ──────────────────────────────────────
+function renderPage_apromo() {
+  const container = document.getElementById('pg-apromo');
+  const totalClicks = state.promos.reduce((acc, p) => acc + p.clicks, 0);
+  const totalConversions = state.promos.reduce((acc, p) => acc + p.conversions, 0);
+  const estimatedRevenue = (totalConversions * 240).toLocaleString();
+  const rowsHtml = state.promos.map(p => `
+    <tr>
+      <td style="font-weight:600">${t(p.name)}</td>
+      <td>${t(p.gameSite)}</td>
+      <td style="font-size:11px;color:var(--sub)">${p.landingPage}</td>
+      <td><code style="font-size:10px">${p.promoCode}</code></td>
+      <td style="font-size:10px;color:var(--sub)">src=${p.utmSource}&med=${p.utmMedium}</td>
+      <td style="color:#1e40af;font-weight:700">${p.clicks}</td>
+      <td style="color:#065f46">${p.conversions}</td>
+      <td><span class="badge ${p.status === '投放中' ? 'b-green' : 'b-gray'}">${t(p.status)}</span></td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn-sm btn-b" onclick="copyPromoUrl('${p.promoCode}')">复制链接</button>
+          <button class="btn-sm" onclick="togglePromoStatus('${p.promoCode}')">
+            ${p.status === '投放中' ? '暂停' : '启用'}
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  const newName = state.promoBuilderName || '';
+  const newSite = state.promoBuilderSite || 'XX电子游戏';
+  const newLanding = state.promoBuilderLanding || 'https://game-site-1.com/register';
+  const newCode = state.promoBuilderCode || 'ADULT_MAIN_001';
+  const newSource = state.promoBuilderSource || 'adult_platform';
+  const newCampaign = state.promoBuilderCampaign || 'may_banner_2026';
+  const newMedium = state.promoBuilderMedium || 'banner';
+  const fullUrl = `${newLanding}?ref=${newCode}&utm_source=${newSource}&utm_medium=${newMedium}&utm_campaign=${newCampaign}`;
+  container.innerHTML = `
+    ${adminTop('推广配置')}
+    <div class="adm-layout">
+      ${adminSide('apromo')}
+      <div class="adm-main">
+        <div class="adm-title">推广配置</div>
+        <div style="font-size:12px;color:var(--sub);margin-bottom:12px;background:#fff8e1;border:1px solid #f59e0b;border-radius:6px;padding:8px 12px">
+          💡 推广配置管理各游戏合作方的跳转链接与追踪参数，配置后可在广告位中直接引用。平台通过推广码归因，实现分润结算。
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-lbl">合作游戏站</div><div class="stat-val">6</div></div>
+          <div class="stat-card"><div class="stat-lbl">今日跳转量</div><div class="stat-val" style="color:#1e40af">${totalClicks}</div></div>
+          <div class="stat-card"><div class="stat-lbl">今日转化数</div><div class="stat-val" style="color:#065f46">${totalConversions}</div></div>
+          <div class="stat-card"><div class="stat-lbl">预估分润</div><div class="stat-val" style="color:#ef4444">¥${estimatedRevenue}</div><div class="stat-chg">今日结算</div></div>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-hd">推广链接归因列表</div>
+          <div style="padding:0">
+            <table class="wf-table">
+              <thead>
+                <tr>
+                  <th>推广名称</th><th>合作游戏站</th><th>落地页</th><th>推广码</th><th>UTM参数</th><th>累计点击</th><th>累计注册</th><th>状态</th><th>操作</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd">新增推广渠道 (UTM 参数拼接器)</div>
+          <div class="card-bd">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+              <div>
+                <label class="wf-label">推广名称</label>
+                <input class="wf-input" id="promo-builder-name" placeholder="如：XX电子端午Banner推广" value="${newName}" oninput="updatePromoBuilderField('promoBuilderName', this.value)">
+              </div>
+              <div>
+                <label class="wf-label">合作游戏站</label>
+                <select class="wf-sel" style="width:100%" onchange="updatePromoBuilderField('promoBuilderSite', this.value)">
+                  <option value="XX电子游戏" ${newSite === 'XX电子游戏' ? 'selected' : ''}>XX电子游戏</option>
+                  <option value="YY棋牌" ${newSite === 'YY棋牌' ? 'selected' : ''}>YY棋牌</option>
+                  <option value="ZZ体育" ${newSite === 'ZZ体育' ? 'selected' : ''}>ZZ体育</option>
+                </select>
+              </div>
+              <div>
+                <label class="wf-label">推广码</label>
+                <div style="display:flex;gap:5px">
+                  <input class="wf-input" id="promo-builder-code" value="${newCode}" oninput="updatePromoBuilderField('promoBuilderCode', this.value)">
+                  <button class="btn-sm btn-b" onclick="generateRandomPromoCode()">随机生成</button>
+                </div>
+              </div>
+              <div>
+                <label class="wf-label">落地页原始 URL</label>
+                <input class="wf-input" id="promo-builder-landing" value="${newLanding}" oninput="updatePromoBuilderField('promoBuilderLanding', this.value)">
+              </div>
+              <div>
+                <label class="wf-label">UTM Source</label>
+                <input class="wf-input" id="promo-builder-source" value="${newSource}" oninput="updatePromoBuilderField('promoBuilderSource', this.value)">
+              </div>
+              <div>
+                <label class="wf-label">UTM Campaign</label>
+                <input class="wf-input" id="promo-builder-campaign" value="${newCampaign}" oninput="updatePromoBuilderField('promoBuilderCampaign', this.value)">
+              </div>
+              <div>
+                <label class="wf-label">UTM Medium</label>
+                <input class="wf-input" id="promo-builder-medium" value="${newMedium}" oninput="updatePromoBuilderField('promoBuilderMedium', this.value)">
+              </div>
+              <div style="grid-column:span 2">
+                <label class="wf-label">拼接完成跳转 URL (实时更新)</label>
+                <input class="wf-input" id="promo-builder-full-url" style="color:#1d4ed8;font-size:11px;font-weight:bold" readonly value="${fullUrl}">
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:6px;justify-content:flex-end">
+              <button class="btn btn-p" onclick="savePromoConfig()">保存推广配置</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function updatePromoBuilderField(field, val) {
+  state[field] = val;
+  const newLanding = state.promoBuilderLanding || 'https://game-site-1.com/register';
+  const newCode = state.promoBuilderCode || 'ADULT_MAIN_001';
+  const newSource = state.promoBuilderSource || 'adult_platform';
+  const newCampaign = state.promoBuilderCampaign || 'may_banner_2026';
+  const newMedium = state.promoBuilderMedium || 'banner';
+  const fullUrl = `${newLanding}?ref=${newCode}&utm_source=${newSource}&utm_medium=${newMedium}&utm_campaign=${newCampaign}`;
+  const fullUrlEl = document.getElementById('promo-builder-full-url');
+  if (fullUrlEl) fullUrlEl.value = fullUrl;
+}
+function generateRandomPromoCode() {
+  const code = 'AD_BUILD_' + rnd(1000, 9999);
+  updatePromoBuilderField('promoBuilderCode', code);
+  const codeEl = document.getElementById('promo-builder-code');
+  if (codeEl) codeEl.value = code;
+}
+function savePromoConfig() {
+  const name = state.promoBuilderName || '';
+  if (!name.trim()) {
+    showToast('请输入推广配置名称');
+    return;
+  }
+  state.promos.push({
+    name: name,
+    gameSite: state.promoBuilderSite || 'XX电子游戏',
+    landingPage: state.promoBuilderLanding || 'https://game-site-1.com/register',
+    promoCode: state.promoBuilderCode || 'ADULT_MAIN_001',
+    utmSource: state.promoBuilderSource || 'adult_platform',
+    utmCampaign: state.promoBuilderCampaign || 'may_banner_2026',
+    utmMedium: state.promoBuilderMedium || 'banner',
+    clicks: 0, conversions: 0, status: '投放中', payoutType: 'CPA'
+  });
+  showToast(`推广渠道 ${name} 配置保存成功！`);
+  state.promoBuilderName = '';
+  renderPage('apromo');
+}
+function copyPromoUrl(code) {
+  const promo = state.promos.find(p => p.promoCode === code);
+  if (promo) {
+    const fullUrl = `${promo.landingPage}?ref=${promo.promoCode}&utm_source=${promo.utmSource}&utm_medium=${promo.utmMedium}&utm_campaign=${promo.utmCampaign}`;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+      showToast('推广渠道完整跟踪链接已复制！');
+    }).catch(() => {
+      showToast('跟踪链接: ' + fullUrl);
+    });
+  }
+}
+function togglePromoStatus(code) {
+  const promo = state.promos.find(p => p.promoCode === code);
+  if (promo) {
+    promo.status = promo.status === '投放中' ? '已暂停' : '投放中';
+    showToast('推广配置状态已成功更改！');
+    renderPage('apromo');
+  }
+}
+
+// ─── B-SIDE MARKETING MATERIALS ──────────────────────────────────────────────
+function renderPage_amats() {
+  const container = document.getElementById('pg-amats');
+  const activeTab = state.amatsTab || '全部素材';
+  let filtered = state.materials;
+  if (activeTab !== '全部素材') {
+    filtered = filtered.filter(m => m.type === activeTab);
+  }
+  const tabList = ['全部素材','Banner图','贴片视频','活动海报','礼物图标','游戏LOGO'];
+  const tabsHtml = tabList.map(tTab => `
+    <div class="tab ${activeTab === tTab ? 'on' : ''}" onclick="setAmatsTab('${tTab}')">${t(tTab)}</div>
+  `).join('');
+  const gridHtml = filtered.map(m => `
+    <div class="material-card">
+      <div class="material-preview">
+        <div class="ph" style="width:100%;height:90px;background:#1e293b;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:bold">${t(m.name.slice(0, 4))}</div>
+      </div>
+      <div class="mat-info">
+        <div class="mat-name" title="${m.name}">${t(m.name)}</div>
+        <div class="mat-meta"><span class="badge b-blue">${t(m.type)}</span> ${m.size} · ${m.fileSize}</div>
+        <div class="mat-meta" style="margin-top:2px">用于: ${t(m.useCase)}</div>
+      </div>
+      <div class="mat-actions">
+        <button class="btn-sm btn-b" onclick="previewMaterial('${m.id}')">预览</button>
+        <button class="btn-sm" onclick="showToast('已复制素材标志到系统剪贴板')">使用</button>
+        <button class="btn-sm btn-d" onclick="deleteMaterial('${m.id}')">删除</button>
+      </div>
+    </div>
+  `).join('');
+  container.innerHTML = `
+    ${adminTop('营销素材')}
+    <div class="adm-layout">
+      ${adminSide('amats')}
+      <div class="adm-main">
+        <div class="adm-title">营销素材库</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <div class="tabs" style="margin-bottom:0;border:none">${tabsHtml}</div>
+          <div style="margin-left:auto;display:flex;gap:7px">
+            <button class="btn btn-p" onclick="simulateMaterialUpload()">+ 上传素材</button>
+          </div>
+        </div>
+        <div class="upload-zone" style="margin-bottom:12px;padding:20px" onclick="simulateMaterialUpload()">
+          <div style="font-size:24px;color:#d1d5db;margin-bottom:6px">📁</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:3px">点击选择或拖拽文件至此模拟上传</div>
+          <div style="font-size:11px;color:#9ca3af">支持 JPG / PNG / GIF / MP4 · 单文件最大 50MB</div>
+        </div>
+        <div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--muted)">共 <strong style="color:var(--text)">${filtered.length}</strong> 个素材</span>
+        </div>
+        <div class="grid-4">${gridHtml || '<div style="grid-column:span 4;text-align:center;color:var(--muted);padding:40px 0;">该分类暂无素材</div>'}</div>
+      </div>
+    </div>
+  `;
+}
+function setAmatsTab(tab) {
+  state.amatsTab = tab;
+  renderPage('amats');
+}
+function previewMaterial(id) {
+  const m = state.materials.find(x => x.id === id);
+  if (m) {
+    document.getElementById('preview-title').textContent = `素材预览: ${m.name}`;
+    document.getElementById('preview-body').innerHTML = `
+      <div style="text-align:center;padding:20px;">
+        <div style="font-size:48px;margin-bottom:12px;">🖼️</div>
+        <p style="font-weight:bold;margin-bottom:4px;">${m.name}</p>
+        <p style="font-size:11px;color:var(--sub)">分辨率: ${m.size} | 大小: ${m.fileSize}</p>
+        <p style="font-size:11px;color:var(--sub)">排期版位: ${m.useCase}</p>
+      </div>
+    `;
+    openModal('preview-modal');
+  }
+}
+function deleteMaterial(id) {
+  state.materials = state.materials.filter(m => m.id !== id);
+  showToast('营销素材删除成功！');
+  renderPage('amats');
+}
+function simulateMaterialUpload() {
+  const name = prompt('请输入素材名称:', '端午大促活动主Banner图');
+  if (!name || !name.trim()) return;
+  state.materials.unshift({
+    id: 'mat_' + Date.now(),
+    name: name,
+    type: 'Banner图', size: '1200×300', fileSize: '215KB',
+    useCase: '全站大促横幅'
+  });
+  showToast('素材上传完成！已添加至当前素材分类库。');
+  renderPage('amats');
+}
+
+// ─── B-SIDE USER CENTER CONFIGURATION ────────────────────────────────────────
+function renderPage_ausers() {
+  const container = document.getElementById('pg-ausers');
+  const searchQ = state.ausersSearch || '';
+  const filterVip = state.ausersVipFilter || '全部状态';
+  let filtered = state.users;
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    filtered = filtered.filter(u => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || String(u.id).includes(q));
+  }
+  if (filterVip === 'VIP') {
+    filtered = filtered.filter(u => u.isVip);
+  } else if (filterVip === '已封禁') {
+    filtered = filtered.filter(u => u.status === '已封禁');
+  } else if (filterVip === '正常') {
+    filtered = filtered.filter(u => u.status === '正常');
+  }
+  const statsTotal = state.users.length;
+  const statsVip = state.users.filter(u => u.isVip).length;
+  const statsBanned = state.users.filter(u => u.status === '已封禁').length;
+  const rowsHtml = filtered.map(u => `
+    <tr>
+      <td style="color:var(--muted)">#${u.id}</td>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>${u.regDate}</td>
+      <td>${u.isVip ? '<span class="badge b-vip">👑 VIP 会员</span>' : '<span class="badge b-gray">普通</span>'}</td>
+      <td>${u.uploadsCount || 0}</td>
+      <td>${u.lastLogin}</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn-sm btn-b" onclick="adminGrantVip('${u.id}')">发VIP</button>
+          <button class="btn-sm btn-d" onclick="adminToggleBlock('${u.id}')">
+            ${u.status === '已封禁' ? '解封' : '封禁'}
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  container.innerHTML = `
+    ${adminTop('用户管理')}
+    <div class="adm-layout">
+      ${adminSide('ausers')}
+      <div class="adm-main">
+        <div class="adm-title">用户管理</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-lbl">总注册用户</div><div class="stat-val">${statsTotal}</div></div>
+          <div class="stat-card"><div class="stat-lbl">VIP 会员</div><div class="stat-val" style="color:#f59e0b">${statsVip}</div></div>
+          <div class="stat-card"><div class="stat-lbl">封禁用户</div><div class="stat-val" style="color:#ef4444">${statsBanned}</div></div>
+          <div class="stat-card"><div class="stat-lbl">今日活跃</div><div class="stat-val">${statsTotal - statsBanned}</div></div>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-bd" style="display:flex;gap:7px;align-items:center">
+            <input class="wf-input" id="ausers-search-input" style="width:230px" placeholder="搜索 Email / 昵称 / 用户ID..." value="${searchQ}" onkeydown="handleAusersSearch(event)">
+            <select class="wf-sel" onchange="setAusersVipFilter(this.value)">
+              <option value="全部状态" ${filterVip === '全部状态' ? 'selected' : ''}>全部状态</option>
+              <option value="正常" ${filterVip === '正常' ? 'selected' : ''}>正常</option>
+              <option value="VIP" ${filterVip === 'VIP' ? 'selected' : ''}>VIP</option>
+              <option value="已封禁" ${filterVip === '已封禁' ? 'selected' : ''}>已封禁</option>
+            </select>
+            <button class="btn btn-p" onclick="triggerAusersSearch()">搜索</button>
+          </div>
+        </div>
+        <div class="card">
+          <table class="wf-table">
+            <thead>
+              <tr><th>用户ID</th><th>昵称</th><th>Email</th><th>注册时间</th><th>VIP状态</th><th>上传数</th><th>最后登录</th><th>操作</th></tr>
+            </thead>
+            <tbody>${rowsHtml || '<tr><td colspan="8" style="text-align:center;padding:15px;">暂无匹配用户</td></tr>'}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function handleAusersSearch(e) {
+  if (e.key === 'Enter') triggerAusersSearch();
+}
+function triggerAusersSearch() {
+  const input = document.getElementById('ausers-search-input');
+  if (input) {
+    state.ausersSearch = input.value.trim();
+    renderPage('ausers');
+  }
+}
+function setAusersVipFilter(val) {
+  state.ausersVipFilter = val;
+  renderPage('ausers');
+}
+function adminGrantVip(id) {
+  const u = state.users.find(x => String(x.id) === String(id));
+  if (u) {
+    u.isVip = true;
+    const d = new Date();
+    d.setMonth(d.getMonth() + 1);
+    u.vipExpiry = d.toISOString().split('T')[0];
+    showToast(`成功为用户 ${u.name} 开通 30 天 VIP 会员！`);
+    renderPage('ausers');
+  }
+}
+function adminToggleBlock(id) {
+  const u = state.users.find(x => String(x.id) === String(id));
+  if (u) {
+    if (u.status === '已封禁') {
+      u.status = '正常';
+      showToast(`已解除对用户 ${u.name} 的封禁！`);
+    } else {
+      u.status = '已封禁';
+      showToast(`用户 ${u.name} 已被封禁！`);
+      if (state.currentUser && String(state.currentUser.id) === String(u.id)) {
+        logout();
+        showToast('您已被管理员封禁，系统强制退出。');
+      }
+    }
+    renderPage('ausers');
+  }
+}
+
+// ─── B-SIDE DATA REPORTS RENDERER ────────────────────────────────────────────
+function renderPage_areports() {
+  const container = document.getElementById('pg-areports');
+  const activeTab = state.areportsTab || '今日';
+  let metrics = { dau: '8,342', pv: '142K', ctr: '3.8%', conversions: '12,341', newReg: '234' };
+  let dauTrend = [42,51,48,62,71,68,75,81,78,83,79,81,85,83,72,88,91,86,94,83];
+  if (activeTab === '本周') {
+    metrics = { dau: '56,821', pv: '980K', ctr: '4.1%', conversions: '84,390', newReg: '1,562' };
+    dauTrend = [72,83,91,86,94,83,99,105,101,110,115,108,121,126,118,132,138,131,142,125];
+  } else if (activeTab === '本月') {
+    metrics = { dau: '248,562', pv: '4.2M', ctr: '3.9%', conversions: '368,400', newReg: '6,840' };
+    dauTrend = [115,108,121,126,118,132,138,131,142,125,149,152,145,161,168,159,174,181,173,190];
+  }
+  const tabsHtml = ['今日', '本周', '本月'].map(tTab => `
+    <span class="ftag ${activeTab === tTab ? 'on' : ''}" onclick="setAreportsTab('${tTab}')">${t(tTab)}</span>
+  `).join('');
+  const barsHtml = dauTrend.map(v => `
+    <div style="flex:1;background:linear-gradient(#3b82f6,#60a5fa);border-radius:2px 2px 0 0;height:${v}px;opacity:.8;min-height:3px;transition: height 0.5s ease-out;"></div>
+  `).join('');
+  const gameStatsHtml = state.promos.map(p => `
+    <div style="margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>${t(p.gameSite)}</span>
+        <span style="font-weight:700">${p.clicks.toLocaleString()}</span>
+      </div>
+      <div style="height:5px;background:#f3f4f6;border-radius:3px">
+        <div style="height:100%;background:#3b82f6;border-radius:3px;width:${Math.min(100, (p.clicks / 5000) * 100)}%;"></div>
+      </div>
+    </div>
+  `).join('');
+  container.innerHTML = `
+    ${adminTop('数据报表')}
+    <div class="adm-layout">
+      ${adminSide('areports')}
+      <div class="adm-main">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div class="adm-title" style="margin:0">数据报表</div>
+          <div style="display:flex;gap:6px;align-items:center">
+            ${tabsHtml}
+            <input class="wf-input" type="date" value="2026-05-01" style="width:110px">
+            <span style="font-size:12px">至</span>
+            <input class="wf-input" type="date" value="2026-05-20" style="width:110px">
+          </div>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(5,1fr)">
+          <div class="stat-card"><div class="stat-lbl">DAU (日活)</div><div class="stat-val">${metrics.dau}</div></div>
+          <div class="stat-card"><div class="stat-lbl">PV (浏览量)</div><div class="stat-val">${metrics.pv}</div></div>
+          <div class="stat-card"><div class="stat-lbl">广告 CTR</div><div class="stat-val" style="color:#22c55e">${metrics.ctr}</div></div>
+          <div class="stat-card"><div class="stat-lbl">游戏站跳转</div><div class="stat-val" style="color:#1e40af">${metrics.conversions}</div></div>
+          <div class="stat-card"><div class="stat-lbl">新注册用户</div><div class="stat-val" style="color:#ef4444">${metrics.newReg}</div></div>
+        </div>
+        <div class="tabs" style="margin-top:14px;"><div class="tab on">流量概览</div></div>
+        <div style="display:flex;gap:12px">
+          <div style="flex:1">
+            <div class="card" style="margin-bottom:12px">
+              <div class="card-hd">日活趋势 (DAU)</div>
+              <div class="card-bd">
+                <div style="display:flex;align-items:flex-end;gap:5px;height:120px;padding:0 4px">${barsHtml}</div>
+                <div style="display:flex;justify-content:space-between;font-size:10px;color:#9ca3af;padding:3px 4px 0">
+                  <span>05/01</span><span>05/05</span><span>05/10</span><span>05/15</span><span>05/20</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd">广告位效果对比</div>
+              <div style="padding:0">
+                <table class="wf-table">
+                  <thead><tr><th>广告位</th><th>总曝光量</th><th>点击量</th><th>点击率 CTR</th></tr></thead>
+                  <tbody>
+                    <tr><td>首页主Banner</td><td>84,231</td><td>3,209</td><td><strong style="color:#22c55e">3.80%</strong></td></tr>
+                    <tr><td>播放前贴片</td><td>121,432</td><td>4,821</td><td><strong style="color:#22c55e">3.97%</strong></td></tr>
+                    <tr><td>推荐列表插卡</td><td>52,341</td><td>1,421</td><td><strong style="color:#f59e0b">2.71%</strong></td></tr>
+                    <tr><td>直播间侧栏</td><td>38,201</td><td>982</td><td><strong style="color:#f59e0b">2.57%</strong></td></tr>
+                    <tr><td>底部固定栏</td><td>142,001</td><td>2,841</td><td><strong style="color:#22c55e">2.00%</strong></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div style="width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">
+            <div class="card">
+              <div class="card-hd">游戏站归因点击排行</div>
+              <div class="card-bd">${gameStatsHtml}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function setAreportsTab(tab) {
+  state.areportsTab = tab;
+  renderPage('areports');
+}
+
+// ─── ROUTING ENGINE ──────────────────────────────────────────────────────────
+const URL_MAP={
+  home:'https://example.com/',vlist:'https://example.com/videos',
+  vplay:'https://example.com/videos/12345',llist:'https://example.com/live',
+  lroom:'https://example.com/live/room/888',ugc:'https://example.com/player-videos',
+  ucenter:'https://example.com/user/profile',acontent:'https://admin.example.com/content',
+  alive:'https://admin.example.com/live',aads:'https://admin.example.com/ads',
+  apromo:'https://admin.example.com/promo',amats:'https://admin.example.com/materials',
+  ausers:'https://admin.example.com/users',areports:'https://admin.example.com/reports'
+};
+const LBL_MAP={
+  home:'首页',vlist:'影片列表',vplay:'影片播放页',llist:'直播列表',lroom:'直播间',
+  ugc:'玩家影片区',ucenter:'用户中心',acontent:'B端 · 内容管理',alive:'B端 · 直播管理',
+  aads:'B端 · 广告配置',apromo:'B端 · 推广配置',amats:'B端 · 营销素材',
+  ausers:'B端 · 用户管理',areports:'B端 · 数据报表'
+};
+
+function renderPage(id) {
+  state.activePage = id;
+  if (state.prerollInterval) {
+    clearInterval(state.prerollInterval);
+    state.prerollInterval = null;
+  }
+  if (state.entryAdInterval) {
+    clearInterval(state.entryAdInterval);
+    state.entryAdInterval = null;
+  }
+  if (state.viewerChatInterval) {
+    clearInterval(state.viewerChatInterval);
+    state.viewerChatInterval = null;
+  }
+  const renderers = {
+    home: renderPage_home, vlist: renderPage_vlist, vplay: renderPage_vplay,
+    llist: renderPage_llist, lroom: renderPage_lroom, ugc: renderPage_ugc,
+    ucenter: renderPage_ucenter, acontent: renderPage_acontent, alive: renderPage_alive,
+    aads: renderPage_aads, apromo: renderPage_apromo, amats: renderPage_amats,
+    ausers: renderPage_ausers, areports: renderPage_areports
+  };
+  if (renderers[id]) {
+    renderers[id]();
+    normalizePageLayout(id);
+  }
+}
+
+function normalizePageLayout(id) {
+  const page = document.getElementById('pg-' + id);
+  if (!page) return;
+  let canvas = page.querySelector(':scope > .page-canvas');
+  if (!canvas) {
+    canvas = document.createElement('div');
+    canvas.className = 'page-canvas';
+    while (page.firstChild) {
+      canvas.appendChild(page.firstChild);
+    }
+    page.appendChild(canvas);
+    return;
+  }
+  while (page.firstChild && page.firstChild !== canvas) {
+    canvas.appendChild(page.firstChild);
+  }
+}
+
+function nav(id) {
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.toggle('active', el.dataset.p === id));
+  renderPage(id);
+  document.querySelectorAll('.page').forEach(el => el.classList.toggle('active', el.id === 'pg-' + id));
+  document.getElementById('url-bar').textContent = URL_MAP[id] || '';
+  document.getElementById('pg-label').textContent = t(LBL_MAP[id]) || '';
+  const caEl = document.getElementById('ca');
+  if (caEl) caEl.scrollTop = 0;
+}
+
+// ─── INITIALIZE DOM CONTAINERS ────────────────────────────────────────────────
+const ca = document.getElementById('ca');
+const pageIds = ['home', 'vlist', 'vplay', 'llist', 'lroom', 'ugc', 'ucenter', 'acontent', 'alive', 'aads', 'apromo', 'amats', 'ausers', 'areports'];
+ca.innerHTML = '';
+pageIds.forEach(id => {
+  const d = document.createElement('div');
+  d.className = 'page';
+  d.id = 'pg-' + id;
+  ca.appendChild(d);
+});
+
+document.querySelectorAll('.sb-item').forEach(el => {
+  el.addEventListener('click', () => nav(el.dataset.p));
+});
+
+// Age Confirmation load logic & cookie/localStorage simulation
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('age-confirmed') === 'true') {
+    const ageModal = document.getElementById('age-modal');
+    if (ageModal) ageModal.classList.add('hidden');
+  }
+
+  // Parse SSO parameters from demo game portal
+  const urlParams = new URLSearchParams(window.location.search);
+  const ref = urlParams.get('ref');
+  const userParam = urlParams.get('user');
+  if (ref === 'demo_VIP_PROMO' && userParam) {
+    // Find or create user
+    let user = state.users.find(u => u.name === userParam);
+    if (!user) {
+      user = {
+        id: 10000 + state.users.length + 1,
+        name: userParam,
+        email: `${userParam.toLowerCase()}@demo-vip.com`,
+        regDate: new Date().toISOString().split('T')[0],
+        isVip: true,
+        vipExpiry: '2026-12-31',
+        pts: 8888,
+        uploadsCount: 0,
+        lastLogin: '刚刚',
+        status: '正常',
+        password: 'sso_bypass_login',
+        favorites: ['v1', 'v3']
+      };
+      state.users.push(user);
+    } else {
+      user.isVip = true;
+      user.vipExpiry = '2026-12-31';
+    }
+    state.currentUser = user;
+    setTimeout(() => {
+      showToast('[SSO 登录成功] 欢迎来自 demo 娱乐城的贵宾：' + userParam + '！已为您开通 VIP 尊荣权益。');
+      nav(state.activePage);
+    }, 800);
+  }
+});
+
+const ageLeaveBtn = document.querySelector('#age-modal button:not(.btn-p)');
+if (ageLeaveBtn) {
+  ageLeaveBtn.addEventListener('click', () => {
+    window.location.href = 'https://www.google.com';
+  });
+}
+
+const ageConfirmBtn = document.querySelector('#age-modal button.btn-p');
+if (ageConfirmBtn) {
+  ageConfirmBtn.removeAttribute('onclick');
+  ageConfirmBtn.addEventListener('click', () => {
+    localStorage.setItem('age-confirmed', 'true');
+    const ageModal = document.getElementById('age-modal');
+    if (ageModal) ageModal.classList.add('hidden');
+    showToast('已确认满 18 岁，欢迎光临！');
+  });
+}
+
+nav('home');
+</script>
+</body>
+</html>
