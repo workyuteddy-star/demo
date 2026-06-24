@@ -2957,20 +2957,6 @@ function normalizePageLayout(id) {
   }
 }
 
-function applyMobileStyles() {
-  document.querySelectorAll('div[style*="flex:1"]').forEach(el => {
-    el.style.width = '100% !important';
-    el.style.flex = '1';
-  });
-  document.querySelectorAll('div[style*="width:210px"]').forEach(el => {
-    el.style.display = 'none';
-    el.style.width = '0';
-  });
-  document.querySelectorAll('div[style*="display:flex;gap:14px"]').forEach(el => {
-    el.style.flexDirection = 'column';
-  });
-}
-
 function nav(id) {
   document.querySelectorAll('.sb-item').forEach(el => el.classList.toggle('active', el.dataset.p === id));
   renderPage(id);
@@ -2979,7 +2965,6 @@ function nav(id) {
   document.getElementById('pg-label').textContent = t(LBL_MAP[id]) || '';
   const caEl = document.getElementById('ca');
   if (caEl) caEl.scrollTop = 0;
-  setTimeout(applyMobileStyles, 50);
 }
 
 // ─── INITIALIZE DOM CONTAINERS ────────────────────────────────────────────────
