@@ -156,6 +156,22 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; font-size: 13px;
 .chat-msg { animation: fadeIn 0.2s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
+/* MOBILE WAP STYLES - 375px */
+body { flex-direction: column; }
+.sidebar { display: none; width: 0; }
+.viewport { width: 100%; }
+.content-area { padding: 0; background: #fff; }
+.vp-header { display: none; }
+.wf-navbar { height: 44px; padding: 0 8px; gap: 0; }
+.wf-logo { font-size: 12px; margin: 0; }
+.nav-lk { font-size: 11px; padding: 0 6px; }
+.wf-search { display: none; }
+.btn, .btn-sm { width: 100%; margin-bottom: 8px; font-size: 12px; padding: 10px; }
+.grid-4, .grid-5, .grid-3 { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+.card { margin-bottom: 12px; border-radius: 4px; }
+.wf-input, .wf-sel { font-size: 14px; width: 100%; }
+.vid-title { font-size: 12px; }
+
 </style>
 </head>
 <body>
