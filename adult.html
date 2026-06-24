@@ -659,6 +659,11 @@ function renderNavbar(activeTab) {
 
 // ─── AD CLICKING ─────────────────────────────────────────────────────────────
 function clickAd(adId) {
+  if (!state.currentUser) {
+    showToast('请先登录');
+    openModal('login-modal');
+    return;
+  }
   const ad = state.ads.find(a => a.id === adId);
   if (ad) {
     if (!ad.clicks) ad.clicks = 0;
