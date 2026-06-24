@@ -44,7 +44,6 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; font-size: 13px;
   border: 1px solid #d7dde6;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
   overflow: hidden;
-  flex-shrink: 1;
 }
 .page-canvas > .wf-navbar:first-child,
 .page-canvas > .adm-topbar:first-child {
@@ -158,27 +157,16 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; font-size: 13px;
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
 /* RESPONSIVE DESIGN */
-@media (max-width: 1024px) {
-  .sidebar { width: 150px; min-width: 150px; }
-}
-
 @media (max-width: 768px) {
-  body { flex-direction: column; }
-  .sidebar { display: none; }
-  .viewport { height: 100vh; }
-  .content-area { padding: 16px; }
-  .page-canvas {
-    max-width: 480px;
-    margin: 0 auto;
-  }
-  .wf-search { width: auto; }
+  body { flex-direction: column !important; }
+  .sidebar { display: none !important; width: 0 !important; min-width: 0 !important; }
+  .viewport { flex: 1 !important; width: 100% !important; }
+  .page-canvas { width: 100% !important; max-width: 480px; margin: 0 auto; }
 }
 
 @media (max-width: 480px) {
-  .page-canvas { max-width: 100%; }
-  .vp-header { padding: 0 8px; }
-  .content-area { padding: 8px; }
-  .wf-navbar { padding: 0 8px; gap: 8px; }
+  .page-canvas { max-width: 100% !important; }
+  .wf-navbar { padding: 0 8px; }
   .wf-search { display: none; }
 }
 </style>
@@ -685,11 +673,6 @@ function renderNavbar(activeTab) {
 
 // ─── AD CLICKING ─────────────────────────────────────────────────────────────
 function clickAd(adId) {
-  if (!state.currentUser) {
-    showToast('请先登录');
-    openModal('login-modal');
-    return;
-  }
   const ad = state.ads.find(a => a.id === adId);
   if (ad) {
     if (!ad.clicks) ad.clicks = 0;
