@@ -160,7 +160,13 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; font-size: 13px;
 body { flex-direction: column !important; }
 .sidebar { display: none !important; width: 0 !important; min-width: 0 !important; }
 .viewport { width: 100% !important; flex: 1 !important; }
-.content-area { padding: 0 !important; background: #fff !important; }
+.content-area { width: 375px !important; padding: 0 !important; background: #fff !important; overflow-y: auto !important; overflow-x: hidden !important; }
+.page { display: flex !important; justify-content: flex-start !important; align-items: flex-start !important; }
+.page.active { display: flex !important; justify-content: flex-start !important; }
+.page-canvas { width: 375px !important; }
+.page-canvas > * { width: 100% !important; }
+.wf-navbar { width: 100% !important; }
+
 .vp-header { display: none !important; }
 .wf-navbar { height: 44px !important; padding: 0 8px !important; gap: 0 !important; }
 .wf-logo { font-size: 12px !important; margin: 0 !important; }
