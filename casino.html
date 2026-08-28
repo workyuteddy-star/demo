@@ -203,6 +203,13 @@
         }
 
         /* --- BRAND NAVIGATION BAR (demo style) --- */
+        /* Sticky header wrapper: navbar + hover drawer travel together */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
         .brand-navbar {
             background: var(--bg-white);
             height: 72px;
@@ -211,9 +218,8 @@
             justify-content: space-between;
             padding: 0 40px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-            position: sticky;
-            top: 0;
-            z-index: 9;
+            position: relative;
+            z-index: 2;
         }
 
         .demo-logo {
@@ -1750,8 +1756,18 @@
             background: #ffffff;
             border-bottom: 0px solid transparent;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            position: relative;
-            z-index: 8;
+            /* Overlay under the navbar: opening it must not reflow the page,
+               otherwise a scrollbar appearing/disappearing retriggers hover. */
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hot-extension-bar.show {
+            pointer-events: auto;
         }
 
         .hot-extension-bar.show {
@@ -2028,6 +2044,9 @@
                 <button class="top-link-btn" onclick="showToast('語系切換：已為您即時翻譯繁體中文')">繁體中文 ▾</button>
             </div>
 
+            <!-- STICKY HEADER: NAV + HOVER DRAWER -->
+            <div class="site-header" id="siteHeader">
+
             <!-- WHITE NAVIGATION BAR -->
             <nav class="brand-navbar">
                 <div class="demo-logo" onclick="switchTab('lobby')">demo</div>
@@ -2090,6 +2109,7 @@
                     <button class="hot-ext-arrow right" onclick="scrollHotExt(1)">❯</button>
                 </div>
             </div>
+            </div><!-- /.site-header -->
 
             <!-- CANVAS BODY -->
             <div class="canvas-body">
@@ -3222,6 +3242,8 @@
                     return;
                 }
 
+                closeDrawerInstant();
+
                 document.querySelectorAll('.view-view-panel').forEach(panel => {
                     panel.classList.remove('active');
                 });
@@ -3346,6 +3368,14 @@
                     clearDrawerTimeout();
                 });
 
+                // The navbar and drawer form one hover region; only leaving the
+                // whole header closes it, so the gaps between tabs don't flicker.
+                const header = document.getElementById('siteHeader');
+                if (header) {
+                    header.addEventListener('mouseenter', clearDrawerTimeout);
+                    header.addEventListener('mouseleave', startDrawerCloseTimeout);
+                }
+
                 const links = [
                     { id: 'lobby', hasSub: false },
                     { id: 'hot', hasSub: true },
@@ -3371,9 +3401,9 @@
                         }
                     });
 
-                    btn.addEventListener('mouseleave', () => {
-                        startDrawerCloseTimeout();
-                    });
+                    // No per-button mouseleave: moving across the gaps between
+                    // tabs would otherwise start a close timer. The header-level
+                    // mouseleave handles closing.
                 });
             }
 
@@ -3384,6 +3414,9 @@
 
                 const data = drawerData[tabId];
                 if (!data) return;
+
+                // Already showing this tab: don't rebuild (rebuilding flickers)
+                if (activeDrawerTab === tabId && ext.classList.contains('show')) return;
 
                 activeDrawerTab = tabId;
                 track.innerHTML = '';
@@ -4226,6 +4259,7 @@
                 }, 2000);
             });
         </script>
+    </div><!-- /.proto-frame -->
 </body>
 
 </html>
