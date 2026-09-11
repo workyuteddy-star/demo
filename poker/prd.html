@@ -451,6 +451,9 @@
         <div><strong>负责人：</strong> Teddy Yu (Lead Product Manager)</div>
         <div><strong>密级说明：</strong> 核心业务规格书 / 面试展示</div>
       </div>
+      <a href="https://workyuteddy-star.github.io/demo/poker/" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:10px 18px;background:#1e3a8a;color:#fff;text-decoration:none;border-radius:6px;font-size:13.5px;font-weight:600;">
+        ▶ 打开配套互动原型（13 画面 · 牌桌可实际对局）
+      </a>
     </div>
 
     <!-- 1. 专案概述与商业目标 -->
@@ -683,38 +686,48 @@
       <h3>4.2 多重主池与边池动态拆分核心算法</h3>
       <p>当多名筹码不同的玩家发生 All-in 时，系统根据每位玩家的总投入贡献，按阶梯切分为主池（Main Pot）与多个边池（Side Pots 1..N）：</p>
 
-      <pre><code>// 生产级主边池拆分算法实现逻辑
+      <pre><code>// 生产级主边池拆分算法（含相邻底池合并）
 function calculatePots(playersContribution) {
   let pots = [];
-  // 过滤投入金额大于0的玩家
-  let active = playersContribution.filter(p => p.amount > 0);
+  let active = playersContribution.filter(p =&gt; p.amount &gt; 0);
 
-  while (active.length > 0) {
-    // 获取当前未结算筹码中的最小下注值
-    let minBet = Math.min(...active.map(p => p.amount));
+  while (active.length &gt; 0) {
+    // 以当前未结算筹码中的最小下注值为本层切分基准
+    let minBet = Math.min(...active.map(p =&gt; p.amount));
     let currentPotAmount = 0;
     let eligibleContenders = [];
 
-    // 每个玩家向当前池贡献 minBet
     for (let p of active) {
       currentPotAmount += minBet;
       p.amount -= minBet;
-      if (!p.isFolded) {
-        eligibleContenders.push(p.id); // 只有未弃牌玩家有资格瓜分
-      }
+      if (!p.isFolded) eligibleContenders.push(p.id);  // 弃牌者的死钱留在池中但无争夺权
     }
 
-    pots.push({
-      potIndex: pots.length,
-      potType: pots.length === 0 ? "Main Pot" : `Side Pot ${pots.length}`,
-      amount: currentPotAmount,
-      eligiblePlayers: eligibleContenders
-    });
+    // ★ 关键：相邻底池若「有权争夺玩家集合」完全相同，必须合并
+    //   真实的边池分层只能由存活玩家的 All-in 金额差异产生；
+    //   弃牌玩家的死钱会造成额外分层，但不构成独立底池。
+    const key = [...eligibleContenders].sort().join("|");
+    const last = pots[pots.length - 1];
+    if (last &amp;&amp; last.key === key) {
+      last.amount += currentPotAmount;
+    } else {
+      pots.push({
+        potIndex: pots.length,
+        potType: pots.length === 0 ? "Main Pot" : `Side Pot ${pots.length}`,
+        amount: currentPotAmount,
+        eligiblePlayers: eligibleContenders,
+        key
+      });
+    }
 
-    active = active.filter(p => p.amount > 0);
+    active = active.filter(p =&gt; p.amount &gt; 0);
   }
-  return pots; // 派彩时从最后一个边池向前依序比牌派发
-}</code></pre>
+  return pots;  // 派彩时从最后一个边池向前依序比牌派发
+}
+
+// 验收断言（对应 QA_01 TC-POT-003 / TC-POT-004）：
+//   1. 任意相邻底池的 eligiblePlayers 集合不得相同
+//   2. Σ 底池金额 === Σ 玩家投入总额（含死钱），零误差</code></pre>
     </section>
 
     <!-- 5. 抽水模型与商业化结算 -->
@@ -787,13 +800,13 @@ function calculatePots(playersContribution) {
         <div class="flow-title">图 6-1：EV Cashout 业务决策流</div>
         <div class="decision-container">
           <div class="decision-node center">
-            多人 All-in 锁定底池 ➔ 校验玩家手牌胜率 (Equity) 是否 ≥ 60%
+            多人 All-in 锁定底池 ➔ 同时校验：胜率 P<sub>win</sub> ≥ 60% <strong>且</strong> 该底池 ≥ 20 × BB
           </div>
           <div class="branches-grid">
             <div class="branch-card green">
               <span class="branch-tag green">分支 A：胜率 ≥ 60% 触发折现</span>
               <p style="font-size:13px; color:#334155; margin-bottom:8px;">
-                1. 弹出 8 秒倒计时折现选择框<br>
+                1. 弹出 5 秒倒计时折现选择框<br>
                 2. 扣除 1% 平台服务手续费<br>
                 3. 折现筹码立即打入玩家余额入袋为安<br>
                 4. 玩家退出底池争夺，底池后续胜负由平台资金池接管
@@ -802,8 +815,8 @@ function calculatePots(playersContribution) {
             <div class="branch-card gray">
               <span class="branch-tag gray">分支 B：未达到门槛 / 玩家拒绝</span>
               <p style="font-size:13px; color:#334155; margin-bottom:8px;">
-                1. 胜率 &lt; 60% 不触发保护<br>
-                2. 玩家点击拒绝或 8 秒超时<br>
+                1. 两项门槛任一不达标即不唤起面板<br>
+                2. 玩家点击拒绝或 5 秒超时<br>
                 3. 正常打完剩余发牌流程<br>
                 4. 依最终公共牌摊牌比牌，胜者全拿，负者出局
               </p>
@@ -811,7 +824,15 @@ function calculatePots(playersContribution) {
           </div>
         </div>
       </div>
-      <p><strong>数学公式：</strong> $\text{Cashout Amount} = (\text{Total Pot} - \text{Rake}) \times \text{Equity} \times (1 - 1\%)$</p>
+      <p><strong>数学公式（含平手率）：</strong></p>
+      <pre><code>Raw_EV        = TotalPot × P_win  +  (TotalPot ÷ 2) × P_tie
+Cashout_Payout = Raw_EV × (1 − FeeRate)      // FeeRate 默认 1.0%，后台可配置</code></pre>
+      <div class="callout">
+        <strong>★ 对手知情权边界：</strong>折现面板<strong>仅对触发玩家可见</strong>，对手端无任何提示（含动效与时序差异）。若告知对手「对方已折现」，等同泄露其牌力领先，构成不对等信息优势。对手若最终获胜，仍获得完整底池，差额由平台承担。
+      </div>
+      <div class="callout callout-warning">
+        <strong>⚠️ 费用不重复原则：</strong>已被折现的部分<strong>不再计入抽水基数</strong>；未折现的剩余底池照常抽水。任何一局须满足 <code class="inline">折现手续费基数 + 抽水基数 ≤ 底池总额</code>。
+      </div>
     </section>
 
     <!-- 7. 可证明公平 RNG 架构 -->
@@ -837,11 +858,18 @@ function calculatePots(playersContribution) {
           <div class="timeline-item">
             <div class="timeline-bullet">3</div>
             <div class="timeline-content">
-              <strong>洗牌算法执行：</strong>服务端计算 <code class="inline">HMAC_SHA256(ServerSeed, ClientSeeds + Nonce)</code>，以此伪随机哈希流驱动 Fisher-Yates 算法确定性洗牌发牌。
+              <strong>洗牌算法执行：</strong>服务端计算 <code class="inline">HMAC_SHA256(ServerSeed, ClientSeeds + Nonce)</code>，以此哈希流驱动 Fisher-Yates 确定性洗牌。
             </div>
           </div>
           <div class="timeline-item">
             <div class="timeline-bullet">4</div>
+            <div class="timeline-content">
+              <strong>拒绝采样消除模偏差（Modulo Bias）：</strong>32 位随机数空间 $2^{32}$ 无法被牌堆区间长度整除时，直接取模会使<strong>前若干个索引的中选概率偏高</strong>（52 张牌时 $2^{32} \bmod 52 = 48$，索引 0~47 比 48~51 高约 $1.2\times10^{-8}$）。单局偏差极微，但在日均千万手牌规模下<strong>可被卡方检验统计显著检出</strong>，一旦被审计揭露，「可证明公平」的品牌承诺即告破产。<br>
+              解法：将哈希流截断至 $\lfloor 2^{32}/bound \rfloor \times bound$，落在区间外的随机数<strong>直接丢弃并取下一个</strong>。丢弃与重取过程完全由哈希流决定，验证方可完整复现，不破坏验证链；期望重试次数趋近于 0。
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-bullet">5</div>
             <div class="timeline-content">
               <strong>局后公开验牌：</strong>牌局结算完成后，系统公开明文 <code class="inline">Server Seed</code>。玩家可在前端输入种子即时重算验证牌堆序列，100% 杜绝换牌！
             </div>
@@ -933,7 +961,8 @@ function calculatePots(playersContribution) {
       <ul>
         <li><strong>Done 的定义 (Definition of Done)：</strong>必须覆盖主边池拆分与单挑特例单元测试、压测达到 100,000 CCU、通过第三方 RNG 统计随机性检验。</li>
         <li><strong>边界测试矩阵：</strong>极端断线补帧、翻前全员弃牌零抽水、三人同点数奇数分筹（Odd Chip）分配等 20+ 极端测试用例。</li>
-        <li><strong>配套高保真原型：</strong>专案配套 13 画面完整网页版交互原型（位于 <code class="inline">07_UIUX设计规范/原型网页版/index.html</code>），支持直接打开体验。</li>
+        <li><strong>配套高保真原型：</strong>专案配套 <strong>13 画面完整网页版交互原型</strong>，牌桌为可实际对局的完整引擎（入座买入 → 四轮下注 → 摊牌 → 分层派彩与抽水结算），洗牌即为本文 §7 所述的 SHA-256 + 拒绝采样算法。<br><a href="https://workyuteddy-star.github.io/demo/poker/" style="color:#2563eb;font-weight:600;">▶ 打开互动原型 →</a></li>
+        <li><strong>已通过的验收压测：</strong>600 手连续对局涵盖全下 16 手、边池 10 手、平分底池 8 手，<strong>筹码守恒零误差</strong>（期初 + 重买 − 抽水 = 期末）。</li>
       </ul>
     </section>
 

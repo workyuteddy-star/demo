@@ -28,6 +28,9 @@
   .nav-badge { font-size: 9px; color: #8FC7A6; background: rgba(95,208,138,.13); border: 1px solid rgba(95,208,138,.28); border-radius: 4px; padding: 2px 5px; flex-shrink: 0; }
   .nav-item.active .nav-badge { color: #5FD08A; }
 
+  #prd-link { display: flex; align-items: center; gap: 9px; padding: 11px 12px; border-radius: 10px; border: 1px solid rgba(232,185,68,.26); background: rgba(232,185,68,.06); color: #DCC896; text-decoration: none; font-size: 12.5px; font-weight: 500; transition: background .12s, color .12s; }
+  #prd-link:hover { background: rgba(232,185,68,.13); color: #F0C863; }
+
   #main { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; }
   #topbar { flex-shrink: 0; padding: 16px 26px 14px; border-bottom: 1px solid rgba(232,185,68,.1); display: flex; align-items: center; gap: 18px; }
   #screen-title { font-size: 16px; font-weight: 600; }
@@ -176,6 +179,13 @@
           
         </button>
       </div>
+    <div style="margin-top:auto;padding:12px;">
+      <a href="https://workyuteddy-star.github.io/demo/poker/prd.html" target="_blank" rel="noopener" id="prd-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+        <span style="flex-grow:1;">查看 PRD 规格书</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
   </aside>
 
   <main id="main">
