@@ -53,7 +53,7 @@
   }
 
 /* Main */
-#screen-Main { margin: 0; font-family: 'Space Grotesk', system-ui, sans-serif; }#screen-Main a { color: #E8B944; }#screen-Main a:hover { color: #F5D06F; }#screen-Main .n { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }#screen-Main .rng { -webkit-appearance: none; appearance: none; height: 7px; border-radius: 99px; outline: none; }#screen-Main .rng::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(160deg,#FFFDF6,#E6DCC4); border: 3px solid #E8B944; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,.9); }#screen-Main .back { background-image: repeating-linear-gradient(45deg, rgba(240,220,170,.22) 0 1.5px, transparent 1.5px 5px), repeating-linear-gradient(-45deg, rgba(240,220,170,.22) 0 1.5px, transparent 1.5px 5px), linear-gradient(155deg, #9A2E3C, #5C1A23); }
+#screen-Main { margin: 0; font-family: 'Space Grotesk', system-ui, sans-serif; }#screen-Main a { color: #E8B944; }#screen-Main a:hover { color: #F5D06F; }#screen-Main .n { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }#screen-Main .rng { -webkit-appearance: none; appearance: none; height: 7px; border-radius: 99px; outline: none; }#screen-Main .rng::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(160deg,#FFFDF6,#E6DCC4); border: 3px solid #E8B944; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,.9); }#screen-Main .back { background-image: repeating-linear-gradient(45deg, rgba(240,220,170,.22) 0 1.5px, transparent 1.5px 5px), repeating-linear-gradient(-45deg, rgba(240,220,170,.22) 0 1.5px, transparent 1.5px 5px), linear-gradient(155deg, #9A2E3C, #5C1A23); }#screen-Main .cd { border-radius: 8px; background: linear-gradient(170deg,#FFFDF7,#EFE8D6); box-shadow: 0 8px 20px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9); position: relative; }#screen-Main .btn { cursor: pointer; transition: filter .12s, transform .06s; }#screen-Main .btn:hover { filter: brightness(1.14); }#screen-Main .btn:active { transform: translateY(1px); }#screen-Main .ck { width: 15px; height: 15px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }#screen-Main .ov { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: rgba(5,11,8,.76); display: flex; align-items: center; justify-content: center; z-index: 40; }
   
 
 /* Showdown */
@@ -214,7 +214,7 @@
 
   <div style="position: absolute; left: 80px; top: -140px; width: 1000px; height: 620px; background: radial-gradient(ellipse at 50% 50%, rgba(96,196,148,.15) 0%, rgba(96,196,148,0) 62%); pointer-events: none;"></div>
 
-  <div style="height: 58px; flex-shrink: 0; display: flex; align-items: center; gap: 20px; padding: 0 22px; background: linear-gradient(180deg, #0D1A15, #0A1410); border-bottom: 1px solid rgba(232,185,68,.16); position: relative; z-index: 2;">
+  <div style="height: 58px; flex-shrink: 0; display: flex; align-items: center; gap: 20px; padding: 0 22px; background: linear-gradient(180deg, #0D1A15, #0A1410); border-bottom: 1px solid rgba(232,185,68,.16); position: relative; z-index: 30;">
     <div style="display: flex; align-items: center; gap: 10px;">
       <div style="width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(160deg,#1E3025,#0D1913); border: 1px solid rgba(232,185,68,.42); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 0 rgba(232,185,68,.22), 0 2px 8px rgba(0,0,0,.4);">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="#E8B944"><path d="M12 2.6c2.9 3.6 6.4 5.7 6.4 9.4a5.7 5.7 0 0 1-8.1 5.2l.9 4.2h-2.4l.9-4.2A5.7 5.7 0 0 1 5.6 12c0-3.7 3.5-5.8 6.4-9.4Z"/></svg>
@@ -233,14 +233,40 @@
     <div style="flex-grow: 1;"></div>
     <div style="display: flex; align-items: center; gap: 8px; padding: 6px 13px; border-radius: 9px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.07);">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5FD08A" stroke-width="1.9"><rect x="2" y="6" width="20" height="13" rx="2.5"/><path d="M2 10h20"/></svg>
-      <span class="n" style="font-size: 15px; font-weight: 600;">$12,840.00</span>
+      <span class="n" style="font-size: 15px; font-weight: 600;">{{ g.balance }}</span>
     </div>
     <div style="display: flex; gap: 8px;">
-      <div style="width: 34px; height: 34px; border-radius: 9px; border: 1px solid rgba(255,255,255,.09); background: rgba(255,255,255,.03); display: flex; align-items: center; justify-content: center;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A9BDB1" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+      <div class="btn" onClick="{{ toggleSettings }}" style="width: 34px; height: 34px; border-radius: 9px; border: 1px solid {{ g.gearBorder }}; background: {{ g.gearBg }}; display: flex; align-items: center; justify-content: center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ g.gearIcon }}" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
       </div>
-      <div style="height: 34px; border-radius: 9px; border: 1px solid rgba(214,69,69,.32); background: rgba(214,69,69,.07); color: #E99A9A; display: flex; align-items: center; padding: 0 14px; font-size: 13px; font-weight: 500;">离桌</div>
+      <div class="btn" onClick="{{ askLeave }}" style="height: 34px; border-radius: 9px; border: 1px solid rgba(214,69,69,.32); background: rgba(214,69,69,.07); color: #E99A9A; display: flex; align-items: center; padding: 0 14px; font-size: 13px; font-weight: 500;">离桌</div>
     </div>
+
+    <sc-if value="{{ g.setOpen }}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; right: 96px; top: 52px; width: 244px; border-radius: 13px; background: linear-gradient(180deg,#13241C,#0B1611); border: 1px solid rgba(232,185,68,.3); box-shadow: 0 18px 44px rgba(0,0,0,.6); padding: 15px 16px; z-index: 50;">
+        <div style="font-size: 11px; color: #7E9488; letter-spacing: .14em; margin-bottom: 12px;">桌台设置</div>
+        <div class="btn" onClick="{{ toggleFour }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 0;">
+          <div class="ck" style="background: {{ g.fourBg }}; border: 1px solid {{ g.fourBorder }};">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14261C" stroke-width="3.4" style="display: {{ g.fourTick }};"><path d="M5 12l5 5L19 7"/></svg>
+          </div>
+          <span style="font-size: 13px; color: #C7D4CB; flex-grow: 1;">四色牌</span>
+          <span style="font-size: 10px; color: #6F8377;">♠♥♣♦</span>
+        </div>
+        <div class="btn" onClick="{{ toggleSound }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 0;">
+          <div class="ck" style="background: {{ g.sndBg }}; border: 1px solid {{ g.sndBorder }};">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14261C" stroke-width="3.4" style="display: {{ g.sndTick }};"><path d="M5 12l5 5L19 7"/></svg>
+          </div>
+          <span style="font-size: 13px; color: #C7D4CB; flex-grow: 1;">行动提醒音</span>
+        </div>
+        <div class="btn" onClick="{{ toggleAnim }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 0;">
+          <div class="ck" style="background: {{ g.aniBg }}; border: 1px solid {{ g.aniBorder }};">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14261C" stroke-width="3.4" style="display: {{ g.aniTick }};"><path d="M5 12l5 5L19 7"/></svg>
+          </div>
+          <span style="font-size: 13px; color: #C7D4CB; flex-grow: 1;">派彩动效</span>
+        </div>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.07); font-size: 10px; color: #5F7368; line-height: 1.6;">四色牌为色盲适配项，约 8% 男性玩家需要</div>
+      </div>
+    </sc-if>
   </div>
 
   <div style="flex-grow: 1; display: flex; min-height: 0; position: relative; z-index: 1;">
@@ -258,48 +284,51 @@
       <div style="position: absolute; left: 0; top: 128px; width: 1120px; display: flex; flex-direction: column; align-items: center; gap: 15px;">
         <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(180deg, rgba(6,16,12,.72), rgba(6,16,12,.5)); border: 1px solid rgba(232,185,68,.26); border-radius: 99px; padding: 6px 8px 6px 16px; box-shadow: 0 4px 16px rgba(0,0,0,.4);">
           <span style="font-size: 11px; color: #A9BDB1; letter-spacing: .14em;">底池</span>
-          <span class="n" style="font-size: 25px; font-weight: 600; color: #F0C863; text-shadow: 0 0 18px rgba(232,185,68,.4);">$1,250</span>
+          <span class="n" style="font-size: 25px; font-weight: 600; color: #F0C863; text-shadow: 0 0 18px rgba(232,185,68,.4);">{{ g.potLabel }}</span>
           <div style="display: flex; align-items: center; margin-left: 2px;">
-            <svg width="26" height="26" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#C9A227"/><circle cx="16" cy="16" r="15" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1"/><g stroke="#FFF7E0" stroke-width="4.5" opacity=".92"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(255,247,224,.9)" stroke-width="2"/><circle cx="16" cy="16" r="5.6" fill="rgba(0,0,0,.16)"/></svg>
-            <svg width="26" height="26" viewBox="0 0 32 32" style="margin-left: -9px;"><circle cx="16" cy="16" r="15" fill="#2E7D52"/><circle cx="16" cy="16" r="15" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1"/><g stroke="#EAF7EF" stroke-width="4.5" opacity=".92"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(234,247,239,.9)" stroke-width="2"/><circle cx="16" cy="16" r="5.6" fill="rgba(0,0,0,.16)"/></svg>
+            <svg width="26" height="26" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#C9A227"/><g stroke="#FFF7E0" stroke-width="4.5" opacity=".92"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(255,247,224,.9)" stroke-width="2"/><circle cx="16" cy="16" r="5.6" fill="rgba(0,0,0,.16)"/></svg>
+            <svg width="26" height="26" viewBox="0 0 32 32" style="margin-left: -9px;"><circle cx="16" cy="16" r="15" fill="#2E7D52"/><g stroke="#EAF7EF" stroke-width="4.5" opacity=".92"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(234,247,239,.9)" stroke-width="2"/><circle cx="16" cy="16" r="5.6" fill="rgba(0,0,0,.16)"/></svg>
           </div>
         </div>
 
         <div style="display: flex; gap: 10px;">
-          <div style="width: 64px; height: 90px; border-radius: 8px; background: linear-gradient(170deg,#FFFDF7,#EFE8D6); box-shadow: 0 8px 20px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9); position: relative;">
+          <div class="cd" style="width: 64px; height: 90px;">
             <span class="n" style="position: absolute; left: 6px; top: 4px; font-size: 16px; font-weight: 600; color: {{ c.s }}; line-height: 1;">A</span>
             <span style="position: absolute; left: 7px; top: 21px; font-size: 11px; color: {{ c.s }}; line-height: 1;">&#9824;</span>
             <span style="position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-size: 34px; color: {{ c.s }}; line-height: 1;">&#9824;</span>
           </div>
-          <div style="width: 64px; height: 90px; border-radius: 8px; background: linear-gradient(170deg,#FFFDF7,#EFE8D6); box-shadow: 0 8px 20px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9); position: relative;">
+          <div class="cd" style="width: 64px; height: 90px;">
             <span class="n" style="position: absolute; left: 6px; top: 4px; font-size: 16px; font-weight: 600; color: {{ c.h }}; line-height: 1;">K</span>
             <span style="position: absolute; left: 7px; top: 21px; font-size: 11px; color: {{ c.h }}; line-height: 1;">&#9829;</span>
             <span style="position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-size: 34px; color: {{ c.h }}; line-height: 1;">&#9829;</span>
           </div>
-          <div style="width: 64px; height: 90px; border-radius: 8px; background: linear-gradient(170deg,#FFFDF7,#EFE8D6); box-shadow: 0 8px 20px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9); position: relative;">
+          <div class="cd" style="width: 64px; height: 90px;">
             <span class="n" style="position: absolute; left: 6px; top: 4px; font-size: 16px; font-weight: 600; color: {{ c.d }}; line-height: 1;">7</span>
             <span style="position: absolute; left: 7px; top: 21px; font-size: 11px; color: {{ c.d }}; line-height: 1;">&#9830;</span>
             <span style="position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-size: 34px; color: {{ c.d }}; line-height: 1;">&#9830;</span>
           </div>
-          <div style="width: 64px; height: 90px; border-radius: 8px; background: linear-gradient(170deg,#FFFDF7,#EFE8D6); box-shadow: 0 8px 20px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9); position: relative;">
+          <div class="cd" style="width: 64px; height: 90px;">
             <span class="n" style="position: absolute; left: 6px; top: 4px; font-size: 16px; font-weight: 600; color: {{ c.c }}; line-height: 1;">Q</span>
             <span style="position: absolute; left: 7px; top: 21px; font-size: 11px; color: {{ c.c }}; line-height: 1;">&#9827;</span>
             <span style="position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-size: 34px; color: {{ c.c }}; line-height: 1;">&#9827;</span>
           </div>
-          <div style="width: 64px; height: 90px; border-radius: 8px; border: 1px dashed rgba(232,185,68,.26); background: rgba(0,0,0,.16); display: flex; align-items: center; justify-content: center;">
-            <span style="font-size: 10px; color: rgba(232,185,68,.4); letter-spacing: .1em;">RIVER</span>
+          <div style="width: 64px; height: 90px; border-radius: 8px; background: {{ g.b5.bg }}; border: {{ g.b5.border }}; box-shadow: {{ g.b5.shadow }}; position: relative; display: flex; align-items: center; justify-content: center;">
+            <span class="n" style="position: absolute; left: 6px; top: 4px; font-size: 16px; font-weight: 600; color: {{ g.b5.color }}; line-height: 1; display: {{ g.b5.show }};">{{ g.b5.rank }}</span>
+            <span style="position: absolute; left: 7px; top: 21px; font-size: 11px; color: {{ g.b5.color }}; line-height: 1; display: {{ g.b5.show }};">{{ g.b5.suit }}</span>
+            <span style="font-size: 34px; color: {{ g.b5.color }}; line-height: 1; display: {{ g.b5.show }};">{{ g.b5.suit }}</span>
+            <span style="font-size: 10px; color: rgba(232,185,68,.4); letter-spacing: .1em; display: {{ g.b5.hide }};">RIVER</span>
           </div>
         </div>
 
         <div style="display: flex; align-items: center; gap: 9px;">
           <div style="width: 26px; height: 1px; background: linear-gradient(90deg, transparent, rgba(232,185,68,.4));"></div>
-          <span style="font-size: 10px; color: #8FA69A; letter-spacing: .2em;">TURN · 河牌待发</span>
+          <span style="font-size: 10px; color: #8FA69A; letter-spacing: .2em;">{{ g.streetLabel }}</span>
           <div style="width: 26px; height: 1px; background: linear-gradient(90deg, rgba(232,185,68,.4), transparent);"></div>
         </div>
       </div>
 
-      <div style="position: absolute; left: 44px; top: 292px; width: 186px;">
-        <div style="position: absolute; left: 118px; top: -30px; display: flex;">
+      <div style="position: absolute; left: 44px; top: 292px; width: 186px; opacity: {{ s.kz.dim }};">
+        <div style="position: absolute; left: 118px; top: -30px; display: {{ s.kz.cards }};">
           <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); transform: rotate(-7deg);"></div>
           <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); margin-left: -13px; transform: rotate(6deg);"></div>
         </div>
@@ -307,16 +336,16 @@
           <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(150deg,#3D7FA6,#1D4A66); border: 2px solid rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #DDEAF2; flex-shrink: 0;">K</div>
           <div style="flex-grow: 1; min-width: 0;">
             <div style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Kazuki_88</div>
-            <div class="n" style="font-size: 13px; color: #9FB3A6;">$3,120</div>
+            <div class="n" style="font-size: 13px; color: #9FB3A6;">{{ s.kz.chips }}</div>
           </div>
         </div>
-        <div style="margin-top: 8px; margin-left: 52px; display: flex; align-items: center; gap: 7px;">
-          <svg width="20" height="20" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#D64545"/><g stroke="#FFF" stroke-width="4.5" opacity=".9"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2"/></svg>
-          <span class="n" style="font-size: 12px; color: #FFB59B;">$50</span>
+        <div style="margin-top: 8px; margin-left: 52px; display: flex; align-items: center; gap: 7px; min-height: 20px;">
+          <svg width="20" height="20" viewBox="0 0 32 32" style="display: {{ s.kz.betShow }};"><circle cx="16" cy="16" r="15" fill="#D64545"/><g stroke="#FFF" stroke-width="4.5" opacity=".9"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2"/></svg>
+          <span class="n" style="font-size: 12px; color: {{ s.kz.statusColor }};">{{ s.kz.status }}</span>
         </div>
       </div>
 
-      <div style="position: absolute; left: 112px; top: 52px; width: 186px; opacity: .42;">
+      <div style="position: absolute; left: 112px; top: 52px; width: 186px; opacity: {{ s.mt.dim }};">
         <div style="display: flex; align-items: center; gap: 10px; background: rgba(6,15,11,.8); border: 1px solid rgba(255,255,255,.05); border-radius: 13px; padding: 8px 11px;">
           <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(150deg,#6B5A85,#3A2F4D); border: 2px solid rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #CFC6DE; flex-shrink: 0;">M</div>
           <div style="flex-grow: 1; min-width: 0;">
@@ -327,8 +356,8 @@
         <div style="margin-top: 8px; margin-left: 52px; font-size: 10px; color: #6F8377; letter-spacing: .16em;">已弃牌</div>
       </div>
 
-      <div style="position: absolute; left: 467px; top: 18px; width: 186px;">
-        <div style="position: absolute; left: 62px; top: 62px; display: flex; z-index: -1;">
+      <div style="position: absolute; left: 467px; top: 18px; width: 186px; opacity: {{ s.ds.dim }};">
+        <div style="position: absolute; left: 62px; top: 62px; display: {{ s.ds.cards }}; z-index: -1;">
           <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); transform: rotate(-6deg);"></div>
           <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); margin-left: -13px; transform: rotate(7deg);"></div>
         </div>
@@ -336,20 +365,16 @@
           <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(150deg,#A06F3C,#4F351E); border: 2px solid rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #F0DEC6; flex-shrink: 0;">D</div>
           <div style="flex-grow: 1; min-width: 0;">
             <div style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">DeepStackNo1</div>
-            <div class="n" style="font-size: 13px; color: #9FB3A6;">$8,405</div>
+            <div class="n" style="font-size: 13px; color: #9FB3A6;">{{ s.ds.chips }}</div>
           </div>
         </div>
-        <div style="margin-top: 46px; margin-left: 52px; display: flex; align-items: center; gap: 7px;">
-          <svg width="20" height="20" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#D64545"/><g stroke="#FFF" stroke-width="4.5" opacity=".9"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2"/></svg>
-          <span class="n" style="font-size: 12px; color: #FFB59B;">$50</span>
+        <div style="margin-top: 46px; margin-left: 52px; display: flex; align-items: center; gap: 7px; min-height: 20px;">
+          <svg width="20" height="20" viewBox="0 0 32 32" style="display: {{ s.ds.betShow }};"><circle cx="16" cy="16" r="15" fill="#D64545"/><g stroke="#FFF" stroke-width="4.5" opacity=".9"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2"/></svg>
+          <span class="n" style="font-size: 12px; color: {{ s.ds.statusColor }};">{{ s.ds.status }}</span>
         </div>
       </div>
 
-      <div style="position: absolute; left: 822px; top: 52px; width: 186px;">
-        <div style="position: absolute; left: 40px; top: -30px; display: flex;">
-          <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); transform: rotate(-7deg);"></div>
-          <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); margin-left: -13px; transform: rotate(6deg);"></div>
-        </div>
+      <div style="position: absolute; left: 822px; top: 52px; width: 186px; opacity: {{ s.sf.dim }};">
         <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(180deg, rgba(10,22,17,.92), rgba(6,15,11,.88)); border: 1px solid rgba(255,255,255,.09); border-radius: 13px; padding: 8px 11px; box-shadow: 0 6px 18px rgba(0,0,0,.45);">
           <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(150deg,#3E9C73,#1C4E3A); border: 2px solid rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #D6F0E2; flex-shrink: 0;">S</div>
           <div style="flex-grow: 1; min-width: 0;">
@@ -357,101 +382,163 @@
             <div class="n" style="font-size: 13px; color: #9FB3A6;">$2,240</div>
           </div>
         </div>
-        <div style="margin-top: 8px; margin-left: 52px; font-size: 10px; color: #6F8377; letter-spacing: .16em;">过牌</div>
+        <div style="margin-top: 8px; margin-left: 52px; font-size: 10px; color: #6F8377; letter-spacing: .16em;">已弃牌</div>
       </div>
 
-      <div style="position: absolute; left: 890px; top: 292px; width: 186px;">
-        <div style="position: absolute; left: 40px; top: -30px; display: flex;">
-          <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(255,217,102,.45); box-shadow: 0 3px 10px rgba(255,217,102,.2); transform: rotate(-7deg);"></div>
-          <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(255,217,102,.45); box-shadow: 0 3px 10px rgba(255,217,102,.2); margin-left: -13px; transform: rotate(6deg);"></div>
+      <div style="position: absolute; left: 890px; top: 292px; width: 186px; opacity: {{ s.rk.dim }};">
+        <div style="position: absolute; left: 40px; top: -30px; display: {{ s.rk.cards }};">
+          <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); transform: rotate(-7deg);"></div>
+          <div class="back" style="width: 30px; height: 42px; border-radius: 4px; border: 1px solid rgba(240,220,170,.3); box-shadow: 0 3px 8px rgba(0,0,0,.45); margin-left: -13px; transform: rotate(6deg);"></div>
         </div>
-        <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(180deg, rgba(30,26,10,.95), rgba(14,18,12,.9)); border: 2px solid {{ hi }}; border-radius: 13px; padding: 7px 10px; box-shadow: 0 0 0 4px rgba(255,217,102,.1), 0 0 28px rgba(255,217,102,.22);">
-          <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(150deg,#B85252,#5E2828); border: 2px solid rgba(255,217,102,.5); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #FBDFDF; flex-shrink: 0;">R</div>
+        <div style="display: {{ s.rk.showCards }}; gap: 5px; position: absolute; left: 34px; top: -46px;">
+          <div class="cd" style="width: 36px; height: 50px;"><span class="n" style="position:absolute;left:4px;top:2px;font-size:12px;font-weight:600;color:{{ c.d }};">K</span><span style="position:absolute;left:0;right:0;top:17px;text-align:center;font-size:20px;color:{{ c.d }};">&#9830;</span></div>
+          <div class="cd" style="width: 36px; height: 50px;"><span class="n" style="position:absolute;left:4px;top:2px;font-size:12px;font-weight:600;color:{{ c.d }};">J</span><span style="position:absolute;left:0;right:0;top:17px;text-align:center;font-size:20px;color:{{ c.d }};">&#9830;</span></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(180deg, rgba(10,22,17,.92), rgba(6,15,11,.88)); border: 1px solid rgba(255,255,255,.09); border-radius: 13px; padding: 8px 11px; box-shadow: 0 6px 18px rgba(0,0,0,.45);">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(150deg,#B85252,#5E2828); border: 2px solid rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #FBDFDF; flex-shrink: 0;">R</div>
           <div style="flex-grow: 1; min-width: 0;">
-            <div style="font-size: 13px; font-weight: 600; color: {{ hi }};">RiverKing</div>
-            <div class="n" style="font-size: 13px; color: #C7D4CB;">$5,970</div>
+            <div style="font-size: 13px; font-weight: 500;">RiverKing</div>
+            <div class="n" style="font-size: 13px; color: #9FB3A6;">{{ s.rk.chips }}</div>
           </div>
         </div>
-        <div style="margin-top: 7px; margin-left: 52px; display: flex; align-items: center; gap: 8px;">
-          <div style="width: 90px; height: 4px; border-radius: 99px; background: rgba(0,0,0,.45); overflow: hidden;">
-            <div style="width: 64%; height: 100%; background: linear-gradient(90deg,#FFD966,#E8B944); box-shadow: 0 0 8px rgba(255,217,102,.6);"></div>
-          </div>
-          <span class="n" style="font-size: 11px; color: {{ hi }};">9s</span>
+        <div style="margin-top: 8px; margin-left: 52px; display: flex; align-items: center; gap: 7px; min-height: 20px;">
+          <svg width="20" height="20" viewBox="0 0 32 32" style="display: {{ s.rk.betShow }};"><circle cx="16" cy="16" r="15" fill="#D64545"/><g stroke="#FFF" stroke-width="4.5" opacity=".9"><path d="M16 1.4v4.6"/><path d="M16 26v4.6"/><path d="M1.4 16h4.6"/><path d="M26 16h4.6"/></g><circle cx="16" cy="16" r="9.2" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2"/></svg>
+          <span class="n" style="font-size: 12px; color: {{ s.rk.statusColor }};">{{ s.rk.status }}</span>
         </div>
       </div>
 
       <div style="position: absolute; left: 0; top: 452px; width: 1120px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
         <div style="display: flex; align-items: center; gap: 16px;">
           <div style="display: flex; gap: 8px;">
-            <div style="width: 74px; height: 104px; border-radius: 9px; background: linear-gradient(170deg,#FFFEFA,#F2EBDA); box-shadow: 0 10px 26px rgba(0,0,0,.55), 0 0 0 2px #E8B944, inset 0 1px 0 rgba(255,255,255,.9); position: relative; transform: rotate(-3deg);">
-              <span class="n" style="position: absolute; left: 8px; top: 5px; font-size: 19px; font-weight: 600; color: {{ c.s }}; line-height: 1;">A</span>
-              <span style="position: absolute; left: 9px; top: 25px; font-size: 13px; color: {{ c.s }}; line-height: 1;">&#9824;</span>
-              <span style="position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 40px; color: {{ c.s }}; line-height: 1;">&#9824;</span>
+            <div class="cd" style="width: 74px; height: 104px; box-shadow: 0 10px 26px rgba(0,0,0,.55), 0 0 0 2px #E8B944, inset 0 1px 0 rgba(255,255,255,.9); transform: rotate(-3deg);">
+              <span class="n" style="position: absolute; left: 8px; top: 5px; font-size: 19px; font-weight: 600; color: {{ c.d }}; line-height: 1;">A</span>
+              <span style="position: absolute; left: 9px; top: 25px; font-size: 13px; color: {{ c.d }}; line-height: 1;">&#9830;</span>
+              <span style="position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 40px; color: {{ c.d }}; line-height: 1;">&#9830;</span>
             </div>
-            <div style="width: 74px; height: 104px; border-radius: 9px; background: linear-gradient(170deg,#FFFEFA,#F2EBDA); box-shadow: 0 10px 26px rgba(0,0,0,.55), 0 0 0 2px #E8B944, inset 0 1px 0 rgba(255,255,255,.9); position: relative; transform: rotate(3deg);">
-              <span class="n" style="position: absolute; left: 8px; top: 5px; font-size: 19px; font-weight: 600; color: {{ c.c }}; line-height: 1;">Q</span>
-              <span style="position: absolute; left: 9px; top: 25px; font-size: 13px; color: {{ c.c }}; line-height: 1;">&#9827;</span>
-              <span style="position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 40px; color: {{ c.c }}; line-height: 1;">&#9827;</span>
+            <div class="cd" style="width: 74px; height: 104px; box-shadow: 0 10px 26px rgba(0,0,0,.55), 0 0 0 2px #E8B944, inset 0 1px 0 rgba(255,255,255,.9); transform: rotate(3deg);">
+              <span class="n" style="position: absolute; left: 8px; top: 5px; font-size: 19px; font-weight: 600; color: {{ c.h }}; line-height: 1;">Q</span>
+              <span style="position: absolute; left: 9px; top: 25px; font-size: 13px; color: {{ c.h }}; line-height: 1;">&#9829;</span>
+              <span style="position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 40px; color: {{ c.h }}; line-height: 1;">&#9829;</span>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; gap: 5px;">
             <div style="font-size: 10px; color: #7E9488; letter-spacing: .16em;">当前牌型</div>
-            <div style="font-size: 18px; font-weight: 600; color: #5FD08A;">两对 A / Q</div>
+            <div style="font-size: 18px; font-weight: 600; color: #5FD08A;">{{ g.handName }}</div>
             <div style="display: flex; align-items: center; gap: 7px;">
               <div style="width: 62px; height: 4px; border-radius: 99px; background: rgba(255,255,255,.1); overflow: hidden;">
-                <div style="width: 68%; height: 100%; background: #5FD08A;"></div>
+                <div style="width: {{ g.equityPct }}; height: 100%; background: #5FD08A;"></div>
               </div>
-              <span class="n" style="font-size: 11px; color: #8FA69A;">胜率 68.4%</span>
+              <span class="n" style="font-size: 11px; color: #8FA69A;">{{ g.equityLabel }}</span>
             </div>
           </div>
         </div>
-        <div style="display: flex; align-items: center; gap: 13px; background: linear-gradient(180deg, rgba(12,26,20,.95), rgba(7,17,13,.92)); border: 1px solid rgba(232,185,68,.28); border-radius: 14px; padding: 9px 18px; box-shadow: 0 8px 22px rgba(0,0,0,.5);">
+        <div style="display: flex; align-items: center; gap: 13px; background: linear-gradient(180deg, rgba(12,26,20,.95), rgba(7,17,13,.92)); border: 2px solid {{ g.meBorder }}; border-radius: 14px; padding: 8px 17px; box-shadow: {{ g.meShadow }};">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(150deg,#E0B24E,#8A6A22); border: 2px solid rgba(255,217,102,.55); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #2A2008;">Y</div>
           <div>
-            <div style="font-size: 13px; font-weight: 600;">你 · BTN</div>
-            <div class="n" style="font-size: 16px; font-weight: 600; color: #F0C863;">$2,480</div>
+            <div style="font-size: 13px; font-weight: 600; color: {{ g.meNameColor }};">你 · BTN</div>
+            <div class="n" style="font-size: 16px; font-weight: 600; color: #F0C863;">{{ g.stackLabel }}</div>
           </div>
           <div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(160deg,#FFFEF8,#DED6C2); color: #16241C; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; margin-left: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.5);">D</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; min-height: 18px;">
+          <div style="width: 96px; height: 4px; border-radius: 99px; background: rgba(0,0,0,.45); overflow: hidden; display: {{ g.timerShow }};">
+            <div style="width: 72%; height: 100%; background: linear-gradient(90deg,#FFD966,#E8B944); box-shadow: 0 0 8px rgba(255,217,102,.6);"></div>
+          </div>
+          <span class="n" style="font-size: 11px; color: #FFD966; display: {{ g.timerShow }};">11s</span>
         </div>
       </div>
     </div>
 
     <div style="width: 320px; flex-shrink: 0; background: linear-gradient(180deg,#0C1813,#0A1410); border-left: 1px solid rgba(232,185,68,.14); display: flex; flex-direction: column;">
       <div style="display: flex; border-bottom: 1px solid rgba(232,185,68,.12);">
-        <div style="flex-grow: 1; text-align: center; padding: 13px 0; font-size: 13px; font-weight: 600; color: #E8B944; border-bottom: 2px solid #E8B944;">牌局记录</div>
-        <div style="flex-grow: 1; text-align: center; padding: 13px 0; font-size: 13px; color: #7E9488;">数据 HUD</div>
-        <div style="flex-grow: 1; text-align: center; padding: 13px 0; font-size: 13px; color: #7E9488;">聊天</div>
+        <div class="btn" onClick="{{ tabLog }}" style="flex-grow: 1; text-align: center; padding: 13px 0; font-size: 13px; font-weight: {{ t.logW }}; color: {{ t.logC }}; border-bottom: 2px solid {{ t.logB }};">牌局记录</div>
+        <div class="btn" onClick="{{ tabHud }}" style="flex-grow: 1; text-align: center; padding: 13px 0; font-size: 13px; font-weight: {{ t.hudW }}; color: {{ t.hudC }}; border-bottom: 2px solid {{ t.hudB }};">数据 HUD</div>
+        <div class="btn" onClick="{{ tabChat }}" style="flex-grow: 1; text-align: center; padding: 13px 0; font-size: 13px; font-weight: {{ t.chatW }}; color: {{ t.chatC }}; border-bottom: 2px solid {{ t.chatB }};">聊天</div>
       </div>
 
-      <div style="padding: 15px 17px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(232,185,68,.1);">
-        <div style="display: flex; justify-content: space-between; align-items: baseline;">
-          <span class="n" style="font-size: 11px; color: #7E9488;">#A7F2-0391</span>
-          <span class="n" style="font-size: 14px; font-weight: 600; color: #5FD08A;">+$420</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;">
-          <span style="color: #7E9488;">底池</span><span class="n" style="color: #C7D4CB;">$880</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;">
-          <span style="color: #7E9488;">抽水 5% · 封顶 $30</span><span class="n" style="color: #FFB59B;">$30</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;">
-          <span style="color: #7E9488;">我的分摊 · 加权贡献</span><span class="n" style="color: #C7D4CB;">$13.60</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px; margin-top: 3px; padding: 9px 11px; border-radius: 9px; background: linear-gradient(135deg, rgba(74,158,111,.13), rgba(74,158,111,.05)); border: 1px solid rgba(74,158,111,.3);">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5FD08A" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-          <span style="font-size: 11px; color: #8FC7A6; flex-grow: 1;">可证明公平 · 已验证</span>
-          <span style="font-size: 11px; color: #5FD08A; font-weight: 600;">种子</span>
-        </div>
-      </div>
+      <sc-if value="{{ t.isLog }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; min-height: 0; flex-grow: 1;">
+          <div style="padding: 15px 17px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(232,185,68,.1);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <span class="n" style="font-size: 11px; color: #7E9488;">#A7F2-0417</span>
+              <span class="n" style="font-size: 14px; font-weight: 600; color: {{ g.netColor }};">{{ g.netLabel }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px;">
+              <span style="color: #7E9488;">底池</span><span class="n" style="color: #C7D4CB;">{{ g.potLabel }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px;">
+              <span style="color: #7E9488;">抽水 5% · 封顶 $30</span><span class="n" style="color: #FFB59B;">{{ g.rakeLabel }}</span>
+            </div>
+            <div class="btn" onClick="{{ toggleSeed }}" style="display: flex; align-items: center; gap: 8px; margin-top: 3px; padding: 9px 11px; border-radius: 9px; background: linear-gradient(135deg, rgba(74,158,111,.13), rgba(74,158,111,.05)); border: 1px solid rgba(74,158,111,.3);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5FD08A" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+              <span style="font-size: 11px; color: #8FC7A6; flex-grow: 1;">可证明公平 · 已验证</span>
+              <span style="font-size: 11px; color: #5FD08A; font-weight: 600;">种子</span>
+            </div>
+            <sc-if value="{{ g.seedOpen }}" hint-placeholder-val="{{ true }}">
+              <div style="padding: 11px 12px; border-radius: 9px; background: rgba(0,0,0,.34); border: 1px solid rgba(255,255,255,.07); display: flex; flex-direction: column; gap: 8px;">
+                <div>
+                  <div style="font-size: 9px; color: #6F8377; letter-spacing: .1em; margin-bottom: 3px;">SERVER HASH</div>
+                  <div class="n" style="font-size: 10px; color: #A9BDB1; word-break: break-all;">3f8a9c21d4e7b0f6a5c839e2147b6d0c</div>
+                </div>
+                <div>
+                  <div style="font-size: 9px; color: #6F8377; letter-spacing: .1em; margin-bottom: 3px;">SERVER SEED</div>
+                  <div class="n" style="font-size: 10px; color: #A9BDB1; word-break: break-all;">{{ g.seedReveal }}</div>
+                </div>
+                <div>
+                  <div style="font-size: 9px; color: #6F8377; letter-spacing: .1em; margin-bottom: 3px;">NONCE</div>
+                  <div class="n" style="font-size: 10px; color: #A9BDB1;">0417</div>
+                </div>
+              </div>
+            </sc-if>
+          </div>
 
-      <div style="padding: 14px 17px; display: flex; flex-direction: column; gap: 9px; overflow: hidden;">
-        <div style="font-size: 10px; color: #6F8377; letter-spacing: .16em;">本局动作</div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;"><span style="color: #9FB3A6;">DeepStackNo1</span><span style="color: #FFB59B;">下注 $50</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;"><span style="color: #9FB3A6;">Sofia_Vlt</span><span style="color: #7E9488;">过牌</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;"><span style="color: #9FB3A6;">Marta_R</span><span style="color: #7E9488;">弃牌</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;"><span style="color: #9FB3A6;">Kazuki_88</span><span style="color: #FFB59B;">跟注 $50</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px;"><span style="color: #FFD966;">RiverKing</span><span style="color: #FFD966;">行动中…</span></div>
-      </div>
+          <div style="padding: 14px 17px; display: flex; flex-direction: column; gap: 9px; overflow: hidden; flex-grow: 1;">
+            <div style="font-size: 10px; color: #6F8377; letter-spacing: .16em;">本局动作</div>
+            <sc-for list="{{ g.log }}" as="row" hint-placeholder-count="5">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; gap: 10px;">
+                <span style="color: {{ row.whoColor }}; white-space: nowrap;">{{ row.who }}</span>
+                <span style="color: {{ row.actColor }}; text-align: right;">{{ row.act }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ t.isHud }}" hint-placeholder-val="{{ true }}">
+        <div style="padding: 15px 17px; display: flex; flex-direction: column; gap: 11px;">
+          <div style="display: grid; grid-template-columns: minmax(0,1fr) 38px 38px 34px; gap: 6px; font-size: 10px; color: #6F8377; letter-spacing: .08em; padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.07);">
+            <span>玩家</span><span style="text-align:right;">VPIP</span><span style="text-align:right;">PFR</span><span style="text-align:right;">AF</span>
+          </div>
+          <sc-for list="{{ g.hud }}" as="h" hint-placeholder-count="5">
+            <div style="display: grid; grid-template-columns: minmax(0,1fr) 38px 38px 34px; gap: 6px; font-size: 12px; align-items: center;">
+              <span style="color: {{ h.color }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ h.name }}</span>
+              <span class="n" style="text-align:right; color: #C7D4CB;">{{ h.vpip }}</span>
+              <span class="n" style="text-align:right; color: #C7D4CB;">{{ h.pfr }}</span>
+              <span class="n" style="text-align:right; color: {{ h.afColor }};">{{ h.af }}</span>
+            </div>
+          </sc-for>
+          <div style="margin-top: 6px; padding: 11px 12px; border-radius: 9px; background: rgba(232,185,68,.06); border: 1px solid rgba(232,185,68,.2); font-size: 10px; color: #A9BDB1; line-height: 1.65;">内置轻量 HUD 仅显示本桌统计，不接入第三方数据库 —— 对标 GGPoker Smart HUD 策略，同时封杀外挂式 HUD</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ t.isChat }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; flex-grow: 1; min-height: 0;">
+          <div style="padding: 15px 17px; display: flex; flex-direction: column; gap: 10px; flex-grow: 1;">
+            <sc-for list="{{ g.chat }}" as="m" hint-placeholder-count="4">
+              <div>
+                <div style="font-size: 11px; color: {{ m.color }}; margin-bottom: 2px;">{{ m.who }}</div>
+                <div style="font-size: 12px; color: #C7D4CB; line-height: 1.5;">{{ m.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding: 12px 14px; border-top: 1px solid rgba(232,185,68,.1); display: flex; gap: 8px;">
+            <div style="flex-grow: 1; height: 34px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; padding: 0 11px; font-size: 12px; color: #5F7368;">说点什么…</div>
+            <div class="btn" onClick="{{ sendChat }}" style="width: 34px; height: 34px; border-radius: 8px; background: linear-gradient(180deg,#F2C85F,#D2A238); display: flex; align-items: center; justify-content: center;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#221904" stroke-width="2.2"><path d="M4 12l16-8-6 16-2-6-8-2Z"/></svg>
+            </div>
+          </div>
+        </div>
+      </sc-if>
     </div>
   </div>
 
@@ -460,46 +547,52 @@
 
       <div style="width: 430px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px;">
         <div style="display: flex; align-items: baseline; justify-content: space-between;">
-          <span style="font-size: 11px; color: #8FA69A; letter-spacing: .12em;">加注至</span>
-          <span class="n" style="font-size: 24px; font-weight: 600; color: {{ r.tone }};">{{ r.label }}</span>
+          <span style="font-size: 11px; color: #8FA69A; letter-spacing: .12em;">{{ a.raiseWord }}</span>
+          <span class="n" style="font-size: 24px; font-weight: 600; color: {{ a.tone }};">{{ a.label }}</span>
         </div>
-        <input class="rng" type="range" min="20" max="2480" step="10" value="{{ r.val }}" onChange="{{ onSlide }}" style="width: 100%; background: {{ r.track }};" />
+        <input class="rng" type="range" min="{{ a.min }}" max="{{ a.max }}" step="10" value="{{ a.val }}" onChange="{{ onSlide }}" style="width: 100%; background: {{ a.track }};" />
         <div style="display: flex; gap: 8px;">
-          <div onClick="{{ q1 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(232,185,68,.22); background: rgba(232,185,68,.04); font-size: 12px; color: #DCC896; cursor: pointer;">1/3 池</div>
-          <div onClick="{{ q2 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(232,185,68,.22); background: rgba(232,185,68,.04); font-size: 12px; color: #DCC896; cursor: pointer;">1/2 池</div>
-          <div onClick="{{ q3 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(232,185,68,.22); background: rgba(232,185,68,.04); font-size: 12px; color: #DCC896; cursor: pointer;">底池</div>
-          <div onClick="{{ q4 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(214,69,69,.3); background: rgba(214,69,69,.06); font-size: 12px; color: #E99A9A; cursor: pointer;">全下</div>
+          <div class="btn" onClick="{{ q1 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(232,185,68,.22); background: rgba(232,185,68,.04); font-size: 12px; color: #DCC896;">1/3 池</div>
+          <div class="btn" onClick="{{ q2 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(232,185,68,.22); background: rgba(232,185,68,.04); font-size: 12px; color: #DCC896;">1/2 池</div>
+          <div class="btn" onClick="{{ q3 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(232,185,68,.22); background: rgba(232,185,68,.04); font-size: 12px; color: #DCC896;">底池</div>
+          <div class="btn" onClick="{{ q4 }}" style="flex-grow: 1; text-align: center; padding: 8px 0; border-radius: 8px; border: 1px solid rgba(214,69,69,.3); background: rgba(214,69,69,.06); font-size: 12px; color: #E99A9A;">全下</div>
         </div>
-        <div style="min-height: 15px; font-size: 11px; color: {{ r.hintTone }};">{{ r.hint }}</div>
+        <div style="min-height: 15px; font-size: 11px; color: {{ a.hintTone }};">{{ a.hint }}</div>
       </div>
 
       <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 11px;">
         <div style="display: flex; gap: 13px;">
-          <div style="width: 164px; height: 62px; border-radius: 12px; border: 1px solid rgba(214,69,69,.42); background: linear-gradient(180deg, rgba(214,69,69,.14), rgba(214,69,69,.05)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,.06);">
-            <span style="font-size: 16px; font-weight: 600; color: #EFA3A3;">弃牌</span>
+          <div class="btn" onClick="{{ doFold }}" style="width: 164px; height: 62px; border-radius: 12px; border: 1px solid {{ a.foldBorder }}; background: {{ a.foldBg }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; box-shadow: inset 0 1px 0 rgba(255,255,255,.06); opacity: {{ a.enabled }};">
+            <span style="font-size: 16px; font-weight: 600; color: {{ a.foldText }};">弃牌</span>
             <span style="font-size: 9px; color: #8F5F5C; letter-spacing: .16em;">F</span>
           </div>
-          <div style="width: 220px; height: 62px; border-radius: 12px; border: 1px solid rgba(74,158,111,.5); background: linear-gradient(180deg, rgba(74,158,111,.2), rgba(74,158,111,.07)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,.07);">
-            <span class="n" style="font-size: 16px; font-weight: 600; color: #8FE0B2;">跟注 $50</span>
+          <div class="btn" onClick="{{ doCall }}" style="width: 220px; height: 62px; border-radius: 12px; border: 1px solid rgba(74,158,111,.5); background: linear-gradient(180deg, rgba(74,158,111,.2), rgba(74,158,111,.07)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; box-shadow: inset 0 1px 0 rgba(255,255,255,.07); opacity: {{ a.enabled }};">
+            <span class="n" style="font-size: 16px; font-weight: 600; color: #8FE0B2;">{{ a.callLabel }}</span>
             <span style="font-size: 9px; color: #5C8571; letter-spacing: .16em;">C</span>
           </div>
-          <div style="flex-grow: 1; height: 62px; border-radius: 12px; background: {{ r.btnBg }}; border: 1px solid {{ r.btnBorder }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; cursor: pointer; box-shadow: {{ r.btnShadow }};">
-            <span class="n" style="font-size: 16px; font-weight: 700; color: {{ r.btnText }};">{{ r.btnLabel }}</span>
-            <span style="font-size: 9px; color: {{ r.btnSub }}; letter-spacing: .16em;">R</span>
+          <div class="btn" onClick="{{ doRaise }}" style="flex-grow: 1; height: 62px; border-radius: 12px; background: {{ a.btnBg }}; border: 1px solid {{ a.btnBorder }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; box-shadow: {{ a.btnShadow }}; opacity: {{ a.enabled }};">
+            <span class="n" style="font-size: 16px; font-weight: 700; color: {{ a.btnText }};">{{ a.btnLabel }}</span>
+            <span style="font-size: 9px; color: {{ a.btnSub }}; letter-spacing: .16em;">R</span>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 22px;">
-          <div style="display: flex; align-items: center; gap: 7px;">
-            <div style="width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(232,185,68,.3); background: rgba(0,0,0,.3);"></div>
-            <span style="font-size: 12px; color: #8FA69A;">自动过牌</span>
+          <div class="btn" onClick="{{ pre1 }}" style="display: flex; align-items: center; gap: 7px;">
+            <div class="ck" style="background: {{ p.c1bg }}; border: 1px solid {{ p.c1border }};">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14261C" stroke-width="3.4" style="display: {{ p.c1tick }};"><path d="M5 12l5 5L19 7"/></svg>
+            </div>
+            <span style="font-size: 12px; color: {{ p.c1text }};">自动过牌</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 7px;">
-            <div style="width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(232,185,68,.3); background: rgba(0,0,0,.3);"></div>
-            <span style="font-size: 12px; color: #8FA69A;">有注则弃</span>
+          <div class="btn" onClick="{{ pre2 }}" style="display: flex; align-items: center; gap: 7px;">
+            <div class="ck" style="background: {{ p.c2bg }}; border: 1px solid {{ p.c2border }};">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14261C" stroke-width="3.4" style="display: {{ p.c2tick }};"><path d="M5 12l5 5L19 7"/></svg>
+            </div>
+            <span style="font-size: 12px; color: {{ p.c2text }};">有注则弃</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 7px;">
-            <div style="width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(232,185,68,.3); background: rgba(0,0,0,.3);"></div>
-            <span style="font-size: 12px; color: #8FA69A;">任何情况跟注</span>
+          <div class="btn" onClick="{{ pre3 }}" style="display: flex; align-items: center; gap: 7px;">
+            <div class="ck" style="background: {{ p.c3bg }}; border: 1px solid {{ p.c3border }};">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14261C" stroke-width="3.4" style="display: {{ p.c3tick }};"><path d="M5 12l5 5L19 7"/></svg>
+            </div>
+            <span style="font-size: 12px; color: {{ p.c3text }};">任何情况跟注</span>
           </div>
           <div style="flex-grow: 1;"></div>
           <span style="font-size: 11px; color: #5F7368;">行动倒计时 15s + 时间银行 20s</span>
@@ -507,6 +600,51 @@
       </div>
     </div>
   </div>
+
+  <sc-if value="{{ g.result }}" hint-placeholder-val="{{ true }}">
+    <div class="ov">
+      <div style="width: 430px; border-radius: 18px; background: linear-gradient(180deg,#13241C,#0B1611); border: 1px solid {{ g.resBorder }}; box-shadow: 0 30px 80px rgba(0,0,0,.72); overflow: hidden;">
+        <div style="height: 4px; background: {{ g.resBar }};"></div>
+        <div style="padding: 26px 28px 24px; text-align: center;">
+          <div style="font-size: 21px; font-weight: 700; color: {{ g.resTitleColor }}; margin-bottom: 8px;">{{ g.resTitle }}</div>
+          <div style="font-size: 13px; color: #A9BDB1; line-height: 1.7; margin-bottom: 18px;">{{ g.resDetail }}</div>
+          <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <div style="flex-grow: 1; padding: 12px 10px; border-radius: 10px; background: rgba(0,0,0,.3);">
+              <div style="font-size: 10px; color: #6F8377; letter-spacing: .1em; margin-bottom: 4px;">底池</div>
+              <div class="n" style="font-size: 16px; font-weight: 600; color: #C7D4CB;">{{ g.potLabel }}</div>
+            </div>
+            <div style="flex-grow: 1; padding: 12px 10px; border-radius: 10px; background: rgba(0,0,0,.3);">
+              <div style="font-size: 10px; color: #6F8377; letter-spacing: .1em; margin-bottom: 4px;">抽水</div>
+              <div class="n" style="font-size: 16px; font-weight: 600; color: #FFB59B;">{{ g.rakeLabel }}</div>
+            </div>
+            <div style="flex-grow: 1; padding: 12px 10px; border-radius: 10px; background: rgba(0,0,0,.3);">
+              <div style="font-size: 10px; color: #6F8377; letter-spacing: .1em; margin-bottom: 4px;">净收支</div>
+              <div class="n" style="font-size: 16px; font-weight: 600; color: {{ g.netColor }};">{{ g.netLabel }}</div>
+            </div>
+          </div>
+          <div class="btn" onClick="{{ nextHand }}" style="height: 50px; border-radius: 11px; background: linear-gradient(180deg,#F2C85F,#D2A238); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #221904; box-shadow: 0 5px 18px rgba(232,185,68,.3), inset 0 1px 0 rgba(255,255,255,.45);">开始下一局</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ g.leaveOpen }}" hint-placeholder-val="{{ true }}">
+    <div class="ov">
+      <div style="width: 400px; border-radius: 18px; background: linear-gradient(180deg,#1A1412,#0E0B0A); border: 1px solid rgba(214,69,69,.4); box-shadow: 0 30px 80px rgba(0,0,0,.72); padding: 26px 28px 24px;">
+        <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(214,69,69,.14); border: 1px solid rgba(214,69,69,.4); display: flex; align-items: center; justify-content: center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EFA3A3" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+          </div>
+        </div>
+        <div style="text-align: center; font-size: 18px; font-weight: 700; margin-bottom: 8px;">确认离桌？</div>
+        <div style="text-align: center; font-size: 13px; color: #A9BDB1; line-height: 1.65; margin-bottom: 20px;">{{ g.leaveDetail }}</div>
+        <div style="display: flex; gap: 11px;">
+          <div class="btn" onClick="{{ cancelLeave }}" style="flex-grow: 1; height: 50px; border-radius: 11px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #C7D4CB;">取消</div>
+          <div class="btn" onClick="{{ cancelLeave }}" style="flex-grow: 1; height: 50px; border-radius: 11px; border: 1px solid rgba(214,69,69,.5); background: rgba(214,69,69,.16); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #EFA3A3;">确认离桌</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 </div>
 </script>
 <script type="text/template" id="tpl-Showdown">
@@ -2402,49 +2540,275 @@ DCLogic.prototype.componentWillUnmount = function () {};
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { raise: 150 };
+    this.state = this.fresh(props.fourColor !== false);
   }
+
+  fresh(four) {
+    return {
+      street: 'turn', pot: 1250, stack: 2480, myIn: 300,
+      toCall: 50, minRaise: 100, raise: 150,
+      stacks: { ds: 8405, kz: 3120, rk: 5970 },
+      bets: { ds: 50, kz: 50, rk: 50 },
+      alive: { ds: true, kz: true, rk: true },
+      note: { ds: '', kz: '', rk: '' },
+      board5: null, result: null, rake: 0,
+      log: [
+        { who: 'DeepStackNo1', act: '下注 $50', tone: 'bet' },
+        { who: 'Sofia_Vlt', act: '弃牌', tone: 'mute' },
+        { who: 'Kazuki_88', act: '跟注 $50', tone: 'bet' },
+        { who: 'RiverKing', act: '跟注 $50', tone: 'bet' }
+      ],
+      tab: 'log', seedOpen: false, setOpen: false, leaveOpen: false,
+      four: four, snd: true, ani: true,
+      pre: { c1: false, c2: false, c3: false },
+      chat: [
+        { who: 'Kazuki_88', text: 'nh', mine: false },
+        { who: 'DeepStackNo1', text: '这河牌太脏了', mine: false }
+      ]
+    };
+  }
+
+  NAME(k) { return { ds: 'DeepStackNo1', kz: 'Kazuki_88', rk: 'RiverKing' }[k]; }
+  M(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  push(s, who, act, tone) { s.log.push({ who: who, act: act, tone: tone || 'mute' }); }
+
+  commit() { this.setState({}); }
+
+  // ---------- 牌局流程 ----------
+  dealRiver(s) {
+    s.street = 'river';
+    s.board5 = { rank: '3', suit: '♣', type: 'c' };
+    s.toCall = 0; s.minRaise = 10; s.raise = Math.min(120, s.stack);
+    s.bets = { ds: 0, kz: 0, rk: 0 };
+    this.push(s, '—', '发出河牌 3♣', 'sys');
+    ['ds', 'kz', 'rk'].forEach(function (k) {
+      if (s.alive[k]) { s.note[k] = '过牌'; }
+    }, this);
+    ['ds', 'kz', 'rk'].forEach(function (k) {
+      if (s.alive[k]) this.push(s, this.NAME(k), '过牌', 'mute');
+    }, this);
+    this.applyPre(s);
+  }
+
+  showdown(s) {
+    this.push(s, '—', '摊牌', 'sys');
+    if (s.alive.rk) this.push(s, 'RiverKing', '一对 K', 'mute');
+    s.rake = Math.min(Math.floor(s.pot * 0.05), 30);
+    s.stack += s.pot - s.rake;
+    s.result = 'win';
+    s.street = 'done';
+  }
+
+  advance(s) {
+    if (s.street === 'turn') this.dealRiver(s); else this.showdown(s);
+  }
+
+  applyPre(s) {
+    if (s.pre.c3) { this.push(s, '—', '预选执行 · 任何情况跟注', 'sys'); this.act(s, 'call'); return; }
+    if (s.pre.c2 && s.toCall > 0) { this.push(s, '—', '预选执行 · 有注则弃', 'sys'); this.act(s, 'fold'); return; }
+    if (s.pre.c1 && s.toCall === 0) { this.push(s, '—', '预选执行 · 自动过牌', 'sys'); this.act(s, 'call'); return; }
+  }
+
+  act(s, kind) {
+    if (s.street === 'done') return;
+    if (kind === 'fold') {
+      this.push(s, '你', '弃牌', 'mute');
+      s.result = 'fold'; s.street = 'done'; s.rake = 0;
+      return;
+    }
+    if (kind === 'call') {
+      if (s.toCall > 0) {
+        var c = Math.min(s.toCall, s.stack);
+        s.pot += c; s.stack -= c; s.myIn += c;
+        this.push(s, '你', '跟注 ' + this.M(c), 'bet');
+      } else {
+        this.push(s, '你', '过牌', 'mute');
+      }
+      this.advance(s);
+      return;
+    }
+    if (kind === 'raise') {
+      var n = s.raise;
+      if (n < s.minRaise || n > s.stack) return;
+      s.pot += n; s.stack -= n; s.myIn += n;
+      this.push(s, '你', (s.toCall > 0 ? '加注至 ' : '下注 ') + this.M(n), 'bet');
+      if (s.alive.ds) { s.alive.ds = false; s.note.ds = '弃牌'; s.bets.ds = 0; this.push(s, 'DeepStackNo1', '弃牌', 'mute'); }
+      if (s.alive.kz) { s.alive.kz = false; s.note.kz = '弃牌'; s.bets.kz = 0; this.push(s, 'Kazuki_88', '弃牌', 'mute'); }
+      if (s.alive.rk) {
+        var r = Math.min(n, s.stacks.rk);
+        s.pot += r; s.stacks.rk -= r; s.bets.rk = r; s.note.rk = '';
+        this.push(s, 'RiverKing', '跟注 ' + this.M(r), 'bet');
+      }
+      this.advance(s);
+      return;
+    }
+  }
+
+  // ---------- 渲染 ----------
   renderVals() {
-    var four = this.props.fourColor !== false;
-    var accent = this.props.accent || '#E8B944';
-    var POT = 1250, STACK = 2480, MINR = 100;
-    var v = this.state.raise;
-    var ok = v >= MINR;
-    var self = this;
-    var set = function (n) {
-      return function () {
-        self.setState({ raise: Math.max(20, Math.min(STACK, Math.round(n / 10) * 10)) });
+    var self = this, s = this.state;
+    var four = s.four;
+    var c = { s: '#141414', h: '#C62F2F', c: four ? '#1F7A4C' : '#141414', d: four ? '#2C6FCC' : '#C62F2F' };
+    var live = s.street !== 'done';
+    var n = s.raise, ok = n >= s.minRaise && n <= s.stack;
+    var pct = Math.round(((n - 20) / (s.stack - 20)) * 100);
+    var fill = ok ? '#E8B944' : '#D64545';
+
+    var seat = function (k, tone) {
+      var bet = s.bets[k] || 0;
+      return {
+        dim: s.alive[k] ? '1' : '.42',
+        cards: s.alive[k] ? 'flex' : 'none',
+        showCards: (s.street === 'done' && s.result === 'win' && k === 'rk' && s.alive.rk) ? 'flex' : 'none',
+        chips: self.M(s.stacks[k]),
+        betShow: bet > 0 ? 'block' : 'none',
+        status: bet > 0 ? self.M(bet) : (s.note[k] || ''),
+        statusColor: bet > 0 ? '#FFB59B' : '#6F8377'
       };
     };
-    var pct = Math.round(((v - 20) / (STACK - 20)) * 100);
-    var fill = ok ? accent : '#D64545';
+
+    var toneMap = { bet: '#FFB59B', mute: '#7E9488', sys: '#8FA69A', win: '#5FD08A' };
+    var logRows = s.log.slice(-9).map(function (r) {
+      return {
+        who: r.who, act: r.act,
+        whoColor: r.who === '你' ? '#E4D9B8' : (r.tone === 'sys' ? '#5F7368' : '#9FB3A6'),
+        actColor: toneMap[r.tone] || '#7E9488'
+      };
+    });
+
+    var net = s.result === 'win' ? (s.pot - s.rake - s.myIn) : (s.result === 'fold' ? -s.myIn : -s.myIn);
+    var sw = function (on) {
+      return {
+        bg: on ? '#E8B944' : 'rgba(0,0,0,.3)',
+        border: on ? '#E8B944' : 'rgba(232,185,68,.3)',
+        tick: on ? 'block' : 'none'
+      };
+    };
+    var f = sw(s.four), sd = sw(s.snd), an = sw(s.ani);
+    var k1 = sw(s.pre.c1), k2 = sw(s.pre.c2), k3 = sw(s.pre.c3);
+
+    var set = function (v) {
+      return function () { s.raise = Math.max(20, Math.min(s.stack, Math.round(v / 10) * 10)); self.commit(); };
+    };
+    var run = function (kind) { return function () { self.act(s, kind); self.commit(); }; };
+    var flip = function (path) {
+      return function () {
+        var parts = path.split('.'), o = s;
+        for (var i = 0; i < parts.length - 1; i++) o = o[parts[i]];
+        o[parts[parts.length - 1]] = !o[parts[parts.length - 1]];
+        self.commit();
+      };
+    };
+    var tabTo = function (v) { return function () { s.tab = v; self.commit(); }; };
+    var tab = function (v) {
+      var on = s.tab === v;
+      return { W: on ? '600' : '400', C: on ? '#E8B944' : '#7E9488', B: on ? '#E8B944' : 'transparent' };
+    };
+    var tl = tab('log'), th = tab('hud'), tc = tab('chat');
+
     return {
-      c: {
-        s: '#141414',
-        h: '#C62F2F',
-        c: four ? '#1F7A4C' : '#141414',
-        d: four ? '#2C6FCC' : '#C62F2F'
+      c: c,
+      g: {
+        balance: '$12,840.00',
+        potLabel: this.M(s.pot),
+        stackLabel: this.M(s.stack),
+        rakeLabel: s.rake ? this.M(s.rake) : '—',
+        netLabel: (net >= 0 ? '+' : '-') + this.M(Math.abs(net)),
+        netColor: net >= 0 ? '#5FD08A' : '#FF8A65',
+        streetLabel: s.street === 'turn' ? 'TURN · 河牌待发' : (s.street === 'river' ? 'RIVER · 最后一轮' : '本局结束'),
+        handName: s.street === 'done' && s.result === 'win' ? '两对 A / Q · K 踢脚' : '两对 A / Q',
+        equityPct: s.street === 'turn' ? '68%' : '100%',
+        equityLabel: s.street === 'turn' ? '胜率 68.4%' : '已成牌',
+        b5: s.board5 ? {
+          bg: 'linear-gradient(170deg,#FFFDF7,#EFE8D6)', border: 'none',
+          shadow: '0 8px 20px rgba(0,0,0,.5)', show: 'block', hide: 'none',
+          rank: s.board5.rank, suit: s.board5.suit, color: c[s.board5.type]
+        } : {
+          bg: 'rgba(0,0,0,.16)', border: '1px dashed rgba(232,185,68,.26)',
+          shadow: 'none', show: 'none', hide: 'block', rank: '', suit: '', color: '#000'
+        },
+        meBorder: live ? '#FFD966' : 'rgba(232,185,68,.28)',
+        meShadow: live ? '0 0 0 4px rgba(255,217,102,.1), 0 0 28px rgba(255,217,102,.22)' : '0 8px 22px rgba(0,0,0,.5)',
+        meNameColor: live ? '#FFD966' : '#E9EFEA',
+        timerShow: live ? 'block' : 'none',
+        log: logRows,
+        gearBg: s.setOpen ? 'rgba(232,185,68,.14)' : 'rgba(255,255,255,.03)',
+        gearBorder: s.setOpen ? 'rgba(232,185,68,.42)' : 'rgba(255,255,255,.09)',
+        gearIcon: s.setOpen ? '#F0C863' : '#A9BDB1',
+        setOpen: s.setOpen, seedOpen: s.seedOpen, leaveOpen: s.leaveOpen,
+        leaveDetail: live ? '本局尚未结束，离桌将视为弃牌，已投入的 ' + this.M(s.myIn) + ' 不予退回。' : '本局已结束，可安全离桌。筹码将转回主账户。',
+        seedReveal: s.street === 'done' ? 'a71c4e9082fd36b5e814c7a290db63f5' : '牌局结束后揭示',
+        fourBg: f.bg, fourBorder: f.border, fourTick: f.tick,
+        sndBg: sd.bg, sndBorder: sd.border, sndTick: sd.tick,
+        aniBg: an.bg, aniBorder: an.border, aniTick: an.tick,
+        result: !!s.result,
+        resTitle: s.result === 'win' ? '你赢得底池' : '你已弃牌',
+        resTitleColor: s.result === 'win' ? '#5FD08A' : '#E99A9A',
+        resDetail: s.result === 'win' ? '两对 A / Q · K 踢脚 —— 击败 RiverKing 的一对 K' : '本局结束，底池由其余玩家争夺。已投入筹码不予退回。',
+        resBorder: s.result === 'win' ? 'rgba(95,208,138,.45)' : 'rgba(214,69,69,.4)',
+        resBar: s.result === 'win' ? 'linear-gradient(90deg,#5FD08A,#3E9C68)' : 'linear-gradient(90deg,#D64545,#8E2A2A)',
+        hud: [
+          { name: '你', vpip: '24', pfr: '19', af: '2.8', color: '#E4D9B8', afColor: '#C7D4CB' },
+          { name: 'RiverKing', vpip: '41', pfr: '12', af: '4.6', color: '#9FB3A6', afColor: '#FF8A65' },
+          { name: 'DeepStackNo1', vpip: '18', pfr: '15', af: '2.1', color: '#9FB3A6', afColor: '#C7D4CB' },
+          { name: 'Kazuki_88', vpip: '33', pfr: '9', af: '1.4', color: '#9FB3A6', afColor: '#8FE0B2' },
+          { name: 'Sofia_Vlt', vpip: '22', pfr: '17', af: '2.5', color: '#9FB3A6', afColor: '#C7D4CB' }
+        ],
+        chat: s.chat.map(function (m) {
+          return { who: m.who, text: m.text, color: m.mine ? '#E4D9B8' : '#7E9488' };
+        })
       },
-      hi: '#FFD966',
-      r: {
-        val: v,
-        label: '$' + v.toLocaleString('en-US'),
+      s: { ds: seat('ds'), kz: seat('kz'), rk: seat('rk'), sf: {}, mt: {} },
+      t: {
+        isLog: s.tab === 'log', isHud: s.tab === 'hud', isChat: s.tab === 'chat',
+        logW: tl.W, logC: tl.C, logB: tl.B,
+        hudW: th.W, hudC: th.C, hudB: th.B,
+        chatW: tc.W, chatC: tc.C, chatB: tc.B
+      },
+      a: {
+        val: n, min: 20, max: Math.max(40, s.stack),
+        raiseWord: s.toCall > 0 ? '加注至' : '下注',
+        label: this.M(n),
         tone: ok ? '#F0C863' : '#EFA3A3',
         track: 'linear-gradient(to right, ' + fill + ' 0%, ' + fill + ' ' + pct + '%, rgba(255,255,255,.12) ' + pct + '%, rgba(255,255,255,.12) 100%)',
-        hint: ok ? '最小加注 $100 · 上一加注增量 $50' : '低于最小加注额，最小加注额为 $100',
+        hint: ok ? ('最小' + (s.toCall > 0 ? '加注' : '下注') + ' ' + this.M(s.minRaise) + (s.toCall > 0 ? ' · 上一加注增量 $50' : '')) : ('低于最小额，须 ≥ ' + this.M(s.minRaise)),
         hintTone: ok ? '#5F7368' : '#EFA3A3',
-        btnLabel: ok ? '加注至 $' + v.toLocaleString('en-US') : '加注不可用',
+        callLabel: s.toCall > 0 ? '跟注 ' + this.M(s.toCall) : '过牌',
+        btnLabel: ok ? (s.toCall > 0 ? '加注至 ' : '下注 ') + this.M(n) : '金额不足',
         btnBg: ok ? 'linear-gradient(180deg,#F2C85F,#D2A238)' : 'rgba(255,255,255,.03)',
         btnBorder: ok ? '#F2C85F' : 'rgba(255,255,255,.08)',
         btnText: ok ? '#221904' : '#5F7368',
         btnSub: ok ? 'rgba(34,25,4,.55)' : '#3E4F46',
-        btnShadow: ok ? '0 6px 20px rgba(232,185,68,.3), inset 0 1px 0 rgba(255,255,255,.45)' : 'none'
+        btnShadow: ok ? '0 6px 20px rgba(232,185,68,.3), inset 0 1px 0 rgba(255,255,255,.45)' : 'none',
+        foldBg: 'linear-gradient(180deg, rgba(214,69,69,.14), rgba(214,69,69,.05))',
+        foldBorder: 'rgba(214,69,69,.42)',
+        foldText: '#EFA3A3',
+        enabled: live ? '1' : '.4'
       },
-      onSlide: function (e) { self.setState({ raise: Number(e.target.value) }); },
-      q1: set(POT / 3),
-      q2: set(POT / 2),
-      q3: set(POT),
-      q4: set(STACK)
+      p: {
+        c1bg: k1.bg, c1border: k1.border, c1tick: k1.tick, c1text: s.pre.c1 ? '#E4D9B8' : '#8FA69A',
+        c2bg: k2.bg, c2border: k2.border, c2tick: k2.tick, c2text: s.pre.c2 ? '#E4D9B8' : '#8FA69A',
+        c3bg: k3.bg, c3border: k3.border, c3tick: k3.tick, c3text: s.pre.c3 ? '#E4D9B8' : '#8FA69A'
+      },
+      onSlide: function (e) { s.raise = Number(e.target.value); self.commit(); },
+      q1: set(s.pot / 3), q2: set(s.pot / 2), q3: set(s.pot), q4: set(s.stack),
+      doFold: run('fold'), doCall: run('call'), doRaise: run('raise'),
+      pre1: flip('pre.c1'), pre2: flip('pre.c2'), pre3: flip('pre.c3'),
+      tabLog: tabTo('log'), tabHud: tabTo('hud'), tabChat: tabTo('chat'),
+      toggleSettings: flip('setOpen'), toggleSeed: flip('seedOpen'),
+      toggleFour: flip('four'), toggleSound: flip('snd'), toggleAnim: flip('ani'),
+      askLeave: function () { s.leaveOpen = true; self.commit(); },
+      cancelLeave: function () { s.leaveOpen = false; self.commit(); },
+      sendChat: function () {
+        s.chat.push({ who: '你', text: ['gg', 'nh', '这把打得不错', '下一把继续'][s.chat.length % 4], mine: true });
+        self.commit();
+      },
+      nextHand: function () {
+        var keep = { tab: s.tab, four: s.four, snd: s.snd, ani: s.ani };
+        self.state = self.fresh(keep.four);
+        self.state.tab = keep.tab; self.state.snd = keep.snd; self.state.ani = keep.ani;
+        self.commit();
+      }
     };
   }
 }
@@ -2691,22 +3055,44 @@ return Component;
 })();</script>
 
 <script>
-var META = [{"name":"Main","title":"Web · 牌桌主界面（可互动）","page":"核心牌局","w":1440,"h":900,"interactive":true,"props":{"fourColor":true,"accent":"#E8B944"},"hint":"拖曳下注滑杆，或点四个快捷档位。金额低于 $100 会触发最小加注校验：数字转红、按钮置灰、提示具体金额。"},{"name":"Showdown","title":"Web · 摊牌与多边池分层派彩（可互动）","page":"核心牌局","w":1440,"h":900,"interactive":true,"props":{},"hint":"点右上「下一层」，依序展开主池 → 边池 1 → 边池 2，每层标注金额与有权争夺玩家。"},{"name":"HeadsUp","title":"Web · 单挑桌行动顺位反转（可互动）","page":"核心牌局","w":1440,"h":900,"interactive":true,"props":{},"hint":"切换「翻前 / 翻后」，看单挑桌的行动顺位如何反转，右侧对照表会同步高亮。"},{"name":"WapTable","title":"WAP · 牌桌","page":"核心牌局","w":390,"h":844,"interactive":false,"props":{},"hint":"静态画面。展示拇指热区布局与弃牌／跟注的 16px 防误触隔离。"},{"name":"WapRaise","title":"WAP · 加注面板（长按全下可互动）","page":"核心牌局","w":390,"h":844,"interactive":true,"props":{"accent":"#E8B944"},"hint":"按住红色「长按全下」不放 0.8 秒才会触发，中途放开即取消。滑杆同样会校验最小加注。"},{"name":"WapStates","title":"WAP · 关键状态三连","page":"核心牌局","w":1340,"h":1000,"interactive":false,"props":{},"hint":"静态画面。三个状态：按住查看隐私模式、大池弃牌二次确认、断线托管与重连倒计时。"},{"name":"RunItTwice","title":"发多次牌 Run It Twice（可互动）","page":"特色机制与信任","w":1440,"h":900,"interactive":true,"props":{},"hint":"点「模拟双方同意」，确认弹窗关闭后两条 Board 才依序翻开，下方显示净结果与抽水只收一次。"},{"name":"EVCashout","title":"EV Cashout 折现与界面隔离（可互动）","page":"特色机制与信任","w":1440,"h":900,"interactive":true,"props":{},"hint":"拖右上角胜率滑杆。降到 60% 以下时，左侧折现面板会整个消失换成「未达触发门槛」。"},{"name":"HandDetail","title":"牌局详情 · 抽水明细与可证明公平（可互动）","page":"特色机制与信任","w":1440,"h":900,"interactive":true,"props":{},"hint":"点绿色「一键验证本局发牌」，会经过验证中再跳到「牌堆未被任何篡改」。"},{"name":"MultiTable","title":"Web · 多桌管理","page":"效率·状态·后台","w":1440,"h":900,"interactive":false,"props":{},"hint":"静态画面。四桌平铺，待行动桌自动置顶高亮，右侧说明剩余 5 秒强制置顶机制。"},{"name":"Timebank","title":"行动倒计时与时间银行","page":"效率·状态·后台","w":1400,"h":820,"interactive":false,"props":{},"hint":"静态画面。倒计时四段状态与断线托管的完整流转。"},{"name":"RiskAdmin","title":"运营后台 · 风控处置中枢","page":"效率·状态·后台","w":1440,"h":900,"interactive":false,"props":{},"hint":"静态画面。运营后台的伙牌预警工单与三层防线命中情况。"},{"name":"Benchmark","title":"四大竞品交互对标矩阵","page":"竞品对标","w":1400,"h":880,"interactive":false,"props":{},"hint":"静态画面。六个交互维度拆解四大竞品，并说明本专案的取舍依据。"}];
+var META = [{"name":"Main","title":"Web · 牌桌主界面（可互动）","page":"核心牌局","w":1440,"h":900,"interactive":true,"props":{"fourColor":true},"hint":"完整可玩：弃牌／跟注／加注都会真正推进牌局 —— 发河牌、对手响应、摊牌结算、抽水计算。右栏三个分页、设置、离桌、预选下注全部可点。"},{"name":"Showdown","title":"Web · 摊牌与多边池分层派彩（可互动）","page":"核心牌局","w":1440,"h":900,"interactive":true,"props":{},"hint":"点右上「下一层」，依序展开主池 → 边池 1 → 边池 2，每层标注金额与有权争夺玩家。"},{"name":"HeadsUp","title":"Web · 单挑桌行动顺位反转（可互动）","page":"核心牌局","w":1440,"h":900,"interactive":true,"props":{},"hint":"切换「翻前 / 翻后」，看单挑桌的行动顺位如何反转，右侧对照表会同步高亮。"},{"name":"WapTable","title":"WAP · 牌桌","page":"核心牌局","w":390,"h":844,"interactive":false,"props":{},"hint":"静态画面。展示拇指热区布局与弃牌／跟注的 16px 防误触隔离。"},{"name":"WapRaise","title":"WAP · 加注面板（长按全下可互动）","page":"核心牌局","w":390,"h":844,"interactive":true,"props":{"accent":"#E8B944"},"hint":"按住红色「长按全下」不放 0.8 秒才会触发，中途放开即取消。滑杆同样会校验最小加注。"},{"name":"WapStates","title":"WAP · 关键状态三连","page":"核心牌局","w":1340,"h":1000,"interactive":false,"props":{},"hint":"静态画面。三个状态：按住查看隐私模式、大池弃牌二次确认、断线托管与重连倒计时。"},{"name":"RunItTwice","title":"发多次牌 Run It Twice（可互动）","page":"特色机制与信任","w":1440,"h":900,"interactive":true,"props":{},"hint":"点「模拟双方同意」，确认弹窗关闭后两条 Board 才依序翻开，下方显示净结果与抽水只收一次。"},{"name":"EVCashout","title":"EV Cashout 折现与界面隔离（可互动）","page":"特色机制与信任","w":1440,"h":900,"interactive":true,"props":{},"hint":"拖右上角胜率滑杆。降到 60% 以下时，左侧折现面板会整个消失换成「未达触发门槛」。"},{"name":"HandDetail","title":"牌局详情 · 抽水明细与可证明公平（可互动）","page":"特色机制与信任","w":1440,"h":900,"interactive":true,"props":{},"hint":"点绿色「一键验证本局发牌」，会经过验证中再跳到「牌堆未被任何篡改」。"},{"name":"MultiTable","title":"Web · 多桌管理","page":"效率·状态·后台","w":1440,"h":900,"interactive":false,"props":{},"hint":"静态画面。四桌平铺，待行动桌自动置顶高亮，右侧说明剩余 5 秒强制置顶机制。"},{"name":"Timebank","title":"行动倒计时与时间银行","page":"效率·状态·后台","w":1400,"h":820,"interactive":false,"props":{},"hint":"静态画面。倒计时四段状态与断线托管的完整流转。"},{"name":"RiskAdmin","title":"运营后台 · 风控处置中枢","page":"效率·状态·后台","w":1440,"h":900,"interactive":false,"props":{},"hint":"静态画面。运营后台的伙牌预警工单与三层防线命中情况。"},{"name":"Benchmark","title":"四大竞品交互对标矩阵","page":"竞品对标","w":1400,"h":880,"interactive":false,"props":{},"hint":"静态画面。六个交互维度拆解四大竞品，并说明本专案的取舍依据。"}];
 var BY_NAME = {};
 META.forEach(function (m) { BY_NAME[m.name] = m; });
 
-function resolve(vals, expr) {
-  var parts = expr.trim().split('.');
-  var cur = vals;
+function resolve(scope, expr) {
+  var parts = expr.trim().split(".");
+  var cur = scope;
   for (var i = 0; i < parts.length; i++) {
     if (cur == null) return undefined;
     cur = cur[parts[i]];
   }
   return cur;
 }
+function holes(str, scope) {
+  return str.replace(/{{([^}]+)}}/g, function (m, e) {
+    var v = resolve(scope, e);
+    return (v === undefined || typeof v === "function") ? "" : String(v);
+  });
+}
+function soleHole(str) {
+  var m = /^s*{{([^}]+)}}s*$/.exec(str || "");
+  return m ? m[1] : null;
+}
 
-var EV_ATTR = { onClick: 'click', onChange: 'change', onMouseDown: 'mousedown', onMouseUp: 'mouseup', onMouseLeave: 'mouseleave' };
+var EV_ATTR = { onclick: "click", onchange: "change", onmousedown: "mousedown", onmouseup: "mouseup", onmouseleave: "mouseleave" };
 var dragEl = null;
+
+function morphChildren(from, to) {
+  var fc = [], tc = [], c;
+  for (c = from.firstChild; c; c = c.nextSibling) fc.push(c);
+  for (c = to.firstChild; c; c = c.nextSibling) tc.push(c);
+  var max = Math.max(fc.length, tc.length);
+  for (var i = 0; i < max; i++) {
+    if (i >= tc.length) { fc[i].remove(); continue; }
+    if (i >= fc.length) { from.appendChild(tc[i]); continue; }
+    morph(fc[i], tc[i]);
+  }
+}
 
 function morph(from, to) {
   if (from.nodeType !== to.nodeType || from.nodeName !== to.nodeName) { from.replaceWith(to); return; }
@@ -2714,50 +3100,98 @@ function morph(from, to) {
   if (from.nodeType !== 1) return;
   var i, a;
   for (i = from.attributes.length - 1; i >= 0; i--) {
-    var n = from.attributes[i].name;
-    if (!to.hasAttribute(n)) from.removeAttribute(n);
+    var nm = from.attributes[i].name;
+    if (!to.hasAttribute(nm)) from.removeAttribute(nm);
   }
   for (i = 0; i < to.attributes.length; i++) {
     a = to.attributes[i];
     if (from.getAttribute(a.name) === a.value) continue;
     from.setAttribute(a.name, a.value);
-    if (a.name === 'value' && from.tagName === 'INPUT' && from !== dragEl) from.value = a.value;
+    if (a.name === "value" && from.tagName === "INPUT" && from !== dragEl) from.value = a.value;
   }
-  var fc = [], tc = [], c;
-  for (c = from.firstChild; c; c = c.nextSibling) fc.push(c);
-  for (c = to.firstChild; c; c = c.nextSibling) tc.push(c);
-  var max = Math.max(fc.length, tc.length);
-  for (i = 0; i < max; i++) {
-    if (i >= tc.length) { fc[i].remove(); continue; }
-    if (i >= fc.length) { from.appendChild(tc[i]); continue; }
-    morph(fc[i], tc[i]);
+  morphChildren(from, to);
+}
+
+function walk(parent, scope, handlers) {
+  var kids = [], c;
+  for (c = parent.firstChild; c; c = c.nextSibling) kids.push(c);
+  for (var i = 0; i < kids.length; i++) {
+    var node = kids[i];
+    if (node.nodeType === 3) { node.nodeValue = holes(node.nodeValue, scope); continue; }
+    if (node.nodeType !== 1) continue;
+    var tag = node.tagName.toLowerCase();
+
+    if (tag === "sc-if") {
+      var on = resolve(scope, soleHole(node.getAttribute("value")) || "");
+      if (on) {
+        walk(node, scope, handlers);
+        var frag = document.createDocumentFragment();
+        while (node.firstChild) frag.appendChild(node.firstChild);
+        node.parentNode.replaceChild(frag, node);
+      } else { node.remove(); }
+      continue;
+    }
+
+    if (tag === "sc-for") {
+      var list = resolve(scope, soleHole(node.getAttribute("list")) || "");
+      var as = node.getAttribute("as") || "item";
+      var out = document.createDocumentFragment();
+      if (list && list.length) {
+        for (var j = 0; j < list.length; j++) {
+          var sub = Object.create(scope);
+          sub[as] = list[j];
+          sub.$index = j;
+          var box = document.createElement("div");
+          for (var c2 = node.firstChild; c2; c2 = c2.nextSibling) box.appendChild(c2.cloneNode(true));
+          walk(box, sub, handlers);
+          while (box.firstChild) out.appendChild(box.firstChild);
+        }
+      }
+      node.parentNode.replaceChild(out, node);
+      continue;
+    }
+
+    var attrs = [];
+    for (var k = 0; k < node.attributes.length; k++) attrs.push(node.attributes[k]);
+    for (var k2 = 0; k2 < attrs.length; k2++) {
+      var at = attrs[k2], low = at.name.toLowerCase();
+      if (EV_ATTR[low]) {
+        var fn = resolve(scope, soleHole(at.value) || "");
+        node.removeAttribute(at.name);
+        if (typeof fn === "function") {
+          handlers.push(fn);
+          node.setAttribute("data-ev-" + EV_ATTR[low], handlers.length - 1);
+        }
+        continue;
+      }
+      if (at.value.indexOf("{{") !== -1) node.setAttribute(at.name, holes(at.value, scope));
+    }
+    walk(node, scope, handlers);
   }
 }
 
 function renderScreen(host) {
   var vals = host.inst && host.inst.renderVals ? host.inst.renderVals() : {};
+  var scope = {};
+  for (var key in vals) scope[key] = vals[key];
   var handlers = [];
-  var html = host.tpl.replace(/(on(?:Click|Change|MouseDown|MouseUp|MouseLeave))="\{\{([^}]+)\}\}"/g, function (m, attr, expr) {
-    var fn = resolve(vals, expr);
-    if (typeof fn !== 'function') return '';
-    var idx = handlers.push(fn) - 1;
-    return 'data-ev-' + EV_ATTR[attr] + '="' + idx + '"';
-  });
-  html = html.replace(/\{\{([^}]+)\}\}/g, function (m, expr) {
-    var v = resolve(vals, expr);
-    return (v === undefined || typeof v === 'function') ? '' : String(v);
-  });
+  var work = document.createElement("div");
+  work.appendChild(host.tpl.content.cloneNode(true));
+  walk(work, scope, handlers);
   host.handlers = handlers;
-  var next = document.createElement('div');
-  next.innerHTML = html;
-  if (!host.el.firstElementChild) { host.el.innerHTML = html; }
-  else { morph(host.el, next); }
+  if (!host.el.firstElementChild) {
+    while (work.firstChild) host.el.appendChild(work.firstChild);
+  } else {
+    morphChildren(host.el, work);
+  }
 }
 
 function callEv(el, type, e) {
-  var idx = el.getAttribute('data-ev-' + type);
+  var idx = el.getAttribute("data-ev-" + type);
   if (idx === null) return;
-  var host = HOSTS[el.closest('.screen').id.replace('screen-', '')];
+  var sc = el.closest(".screen");
+  if (!sc) return;
+  var host = HOSTS[sc.id.replace("screen-", "")];
   var fn = host && host.handlers && host.handlers[Number(idx)];
   if (fn) fn(e);
 }
@@ -2766,7 +3200,9 @@ var HOSTS = {};
 META.forEach(function (m) {
   var el = document.getElementById('screen-' + m.name);
   var tplEl = document.getElementById('tpl-' + m.name);
-  HOSTS[m.name] = { name: m.name, el: el, tpl: tplEl.textContent, inst: null, handlers: [], ready: false };
+  var t = document.createElement("template");
+  t.innerHTML = tplEl.textContent;
+  HOSTS[m.name] = { name: m.name, el: el, tpl: t, inst: null, handlers: [], ready: false };
 });
 
 function activate(name) {
