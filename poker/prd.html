@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>德州扑克系统产品需求文档 (PRD)</title>
+  
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #2563eb;
+      --primary-bg: #eff6ff;
+      --accent-gold: #b45309;
+      --accent-gold-bg: #fef3c7;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --accent-red: #b91c1c;
+      --accent-red-bg: #fee2e2;
+      --text-title: #0f172a;
+      --text-main: #334155;
+      --text-muted: #64748b;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --border: #cbd5e1;
+      --border-light: #e2e8f0;
+      --table-th: #f1f5f9;
+      --code-bg: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.75;
+      color: var(--text-main);
+      background-color: var(--bg-body);
+      display: flex;
+    }
+
+    /* 左侧目录导航 */
+    nav.toc {
+      width: 280px;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      border-right: 1px solid var(--border-light);
+      padding: 24px 16px;
+      overflow-y: auto;
+      flex-shrink: 0;
+      font-size: 13.5px;
+    }
+    .toc-brand {
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+    .toc-brand h3 {
+      font-size: 15px;
+      color: var(--text-title);
+      font-weight: 700;
+    }
+    .toc-brand span {
+      font-size: 11px;
+      color: var(--primary-light);
+      font-weight: 600;
+    }
+    nav.toc ul { list-style: none; }
+    nav.toc li { margin-bottom: 4px; }
+    nav.toc a {
+      color: var(--text-muted);
+      text-decoration: none;
+      display: block;
+      padding: 7px 10px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      font-weight: 500;
+    }
+    nav.toc a:hover {
+      background: var(--primary-bg);
+      color: var(--primary-light);
+    }
+
+    /* 正文主体 */
+    main.content {
+      flex: 1;
+      max-width: 1020px;
+      padding: 40px 60px 100px;
+      background: #ffffff;
+      min-height: 100vh;
+      margin: 0 auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.03);
+    }
+
+    /* 文档头部元数据 */
+    .doc-header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+    h1.doc-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border-light);
+    }
+
+    /* 章节与标题 */
+    h2 {
+      font-size: 21px;
+      color: var(--text-title);
+      margin-top: 48px;
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      scroll-margin-top: 24px;
+    }
+    h2 .sec-badge {
+      background: var(--primary-light);
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 16.5px;
+      color: #1e293b;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    h3::before {
+      content: "▪";
+      color: var(--primary-light);
+      font-size: 18px;
+    }
+    p, ul, ol {
+      margin-bottom: 16px;
+      font-size: 14.5px;
+      color: #334155;
+    }
+    ul, ol { padding-left: 24px; }
+    li { margin-bottom: 6px; }
+
+    /* 表格设计 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 24px;
+      font-size: 13.5px;
+    }
+    th, td {
+      border: 1px solid var(--border-light);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: var(--table-th);
+      font-weight: 700;
+      color: #1e293b;
+      border-bottom: 2px solid var(--border);
+    }
+    tr:nth-child(even) { background-color: #fbfcfe; }
+    tr:hover { background-color: #f1f5f9; }
+
+    /* 原生流程图与架构图组件 (完全纯 CSS / HTML，无第三方脚本，零报错) */
+    .flow-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 20px 0 26px;
+    }
+    .flow-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* 横向步骤流 */
+    .steps-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .step-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--primary-light);
+      padding: 12px 14px;
+      border-radius: 6px;
+      flex: 1;
+      min-width: 110px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .step-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-light);
+      margin-bottom: 4px;
+    }
+    .step-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .step-arrow {
+      color: #94a3b8;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* 决策树/分支图 */
+    .decision-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .decision-node {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .decision-node.center {
+      text-align: center;
+      border-left: 4px solid var(--primary-light);
+      font-weight: 600;
+    }
+    .branches-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .branch-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .branch-card.green {
+      border-top: 3px solid var(--accent-green);
+    }
+    .branch-card.gray {
+      border-top: 3px solid #64748b;
+    }
+    .branch-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .branch-tag.green {
+      background: var(--accent-green-bg);
+      color: var(--accent-green);
+    }
+    .branch-tag.gray {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    /* 时序流列表 */
+    .timeline-list {
+      list-style: none;
+      padding-left: 0;
+      position: relative;
+    }
+    .timeline-item {
+      position: relative;
+      padding-left: 32px;
+      margin-bottom: 16px;
+    }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 6px;
+      bottom: -16px;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .timeline-item:last-child::before {
+      display: none;
+    }
+    .timeline-bullet {
+      position: absolute;
+      left: 3px;
+      top: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .timeline-content {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+    }
+
+    /* 提示信息框 */
+    .callout {
+      border-left: 4px solid var(--primary-light);
+      background: var(--primary-bg);
+      padding: 14px 18px;
+      margin: 18px 0;
+      font-size: 13.5px;
+      color: #1e3a8a;
+      border-radius: 0 6px 6px 0;
+    }
+    .callout-warning {
+      border-left-color: #d97706;
+      background: var(--accent-gold-bg);
+      color: #92400e;
+    }
+
+    /* 代码与算法框 */
+    pre {
+      background: var(--code-bg);
+      color: #f8fafc;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      line-height: 1.6;
+    }
+    code.inline {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 12.5px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* UI 布局示意图 */
+    .ui-wireframe-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .table-layout-preview {
+      background: #0f3822;
+      border: 8px solid #3d2f21;
+      border-radius: 90px;
+      height: 240px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+      margin: 14px 0;
+    }
+    .table-layout-preview .pot-indicator {
+      background: rgba(0,0,0,0.7);
+      border: 1px solid #e5b33d;
+      padding: 4px 16px;
+      border-radius: 16px;
+      font-size: 13px;
+      color: #e5b33d;
+      font-weight: 700;
+    }
+    .table-layout-preview .seat-node {
+      position: absolute;
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #f8fafc;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+
+    /* 打印适配 */
+    @media print {
+      nav.toc { display: none; }
+      main.content { max-width: 100%; padding: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 左侧目录导航 -->
+  <nav class="toc">
+    <div class="toc-brand">
+      <h3>德州扑克系统 PRD</h3>
+      <span>ENTERPRISE SPEC v1.0</span>
+    </div>
+    <ul>
+      <li><a href="#sec-1">1. 专案概述与商业目标</a></li>
+      <li><a href="#sec-2">2. 全球四大标杆竞品对标</a></li>
+      <li><a href="#sec-3">3. 核心玩法规则与生命周期</a></li>
+      <li><a href="#sec-4">4. 底池拆分与牌型结算算法</a></li>
+      <li><a href="#sec-5">5. 抽水模型与商业化结算</a></li>
+      <li><a href="#sec-6">6. 特色机制 (RIT & EV Cashout)</a></li>
+      <li><a href="#sec-7">7. 可证明公平 RNG 架构</a></li>
+      <li><a href="#sec-8">8. 运营风控与 AI 反作弊</a></li>
+      <li><a href="#sec-9">9. Web 与 WAP 双端交互规范</a></li>
+      <li><a href="#sec-10">10. 研发协作与验收标准</a></li>
+    </ul>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <main class="content">
+
+    <!-- 头部文档属性 -->
+    <div class="doc-header">
+      <h1 class="doc-title">德州扑克综合系统产品需求文档 (PRD)</h1>
+      <div class="doc-meta">
+        <div><strong>文档版本：</strong> v1.0.0 (正式评审版)</div>
+        <div><strong>制定日期：</strong> 2026-06-15</div>
+        <div><strong>负责人：</strong> Teddy Yu (Lead Product Manager)</div>
+        <div><strong>密级说明：</strong> 核心业务规格书 / 面试展示</div>
+      </div>
+    </div>
+
+    <!-- 1. 专案概述与商业目标 -->
+    <section id="sec-1">
+      <h2><span class="sec-badge">SEC 01</span> 专案概述与商业目标 (Context & KPIs)</h2>
+      <p>德州扑克（Texas Hold'em）作为全球竞技深度最强、商业变现与流动性极高的棋牌品类，线上产品正向<strong>“极速娱乐化”、“社群私局化”与“Web3 可信透明”</strong>三大维度演化。本专案旨在打造一套高并发、低延迟、深度还原专业竞技同时具备高留存特色玩法的综合系统，支持 B 端商户包网接入与 C 端跨端体验。</p>
+
+      <h3>1.1 专案系统全景功能矩阵</h3>
+      <div class="flow-card">
+        <div class="flow-title">图 1-1：系统四大功能矩阵分布</div>
+        <div class="branches-grid">
+          <div class="branch-card green">
+            <span class="branch-tag green">1. 核心玩法引擎</span>
+            <ul style="padding-left:18px; margin-bottom:0; font-size:13px;">
+              <li>标准 NLH 无限注德州扑克</li>
+              <li>6+ 短牌德州 (Short-Deck)</li>
+              <li>主池与多重边池动态拆分算法</li>
+            </ul>
+          </div>
+          <div class="branch-card green">
+            <span class="branch-tag green">2. 赛制与房间体系</span>
+            <ul style="padding-left:18px; margin-bottom:0; font-size:13px;">
+              <li>Cash 现金常规桌 (6-Max / 9-Max)</li>
+              <li>Fast-Fold 极速秒换桌 (弃牌即换桌)</li>
+              <li>俱乐部熟人私局与联盟多层级分润</li>
+            </ul>
+          </div>
+          <div class="branch-card green">
+            <span class="branch-tag green">3. 创新特色机制</span>
+            <ul style="padding-left:18px; margin-bottom:0; font-size:13px;">
+              <li>EV Cashout 全下期望值折现</li>
+              <li>Run It Twice / Multi-Times 多次发牌</li>
+              <li>看兔牌 (Rabbit Hunting) 与 3D 互动道具</li>
+            </ul>
+          </div>
+          <div class="branch-card green">
+            <span class="branch-tag green">4. 底层技术与风控</span>
+            <ul style="padding-left:18px; margin-bottom:0; font-size:13px;">
+              <li>可证明公平 RNG (HMAC-SHA256)</li>
+              <li>Actor 内存无锁模型 & 500ms 重连补帧</li>
+              <li>AI 关系图谱防伙牌与筹码对倒拦截</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3>1.2 核心业务与技术 KPI 指标</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th>指标项</th>
+            <th>目标值</th>
+            <th>说明与业务价值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>并发性能</strong></td>
+            <td>单集群在线 (CCU)</td>
+            <td><strong>100,000+</strong></td>
+            <td>采用 Actor 内存模型，桌台行动网络往返 (RTT) $\le 50\text{ms}$，断线补帧 $\le 500\text{ms}$。</td>
+          </tr>
+          <tr>
+            <td><strong>桌台效率</strong></td>
+            <td>极速桌局率 (HPH)</td>
+            <td><strong>200~250 手/小时</strong></td>
+            <td>相较传统桌台（60~80手）提升 300%，弃牌即秒换桌，大幅提高平台流水。</td>
+          </tr>
+          <tr>
+            <td><strong>抽水留存</strong></td>
+            <td>净抽水留存 (Net Rake)</td>
+            <td><strong>3% ~ 5%</strong></td>
+            <td>严格执行 No Flop No Drop 原则与阶梯 Cap 封顶机制，兼顾平台盈利与生态健康。</td>
+          </tr>
+          <tr>
+            <td><strong>安全风控</strong></td>
+            <td>反作弊误报率</td>
+            <td><strong>&lt; 0.01%</strong></td>
+            <td>AI 关系图谱与毫秒级拆桌策略，伙牌团伙识别时效 &lt; 3 局。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2. 全球四大标杆竞品对标 -->
+    <section id="sec-2">
+      <h2><span class="sec-badge">SEC 02</span> 全球四大标杆竞品对标 (Benchmark Matrix)</h2>
+      <p>为确立本产品的差异化竞争壁垒，我们深度拆解了全球 4 大行业标杆，明确融合优势与自研落地策略：</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th>GGPoker (娱乐化霸主)</th>
+            <th>PokerStars (传统竞技标杆)</th>
+            <th>PPPoker (私局联盟模式)</th>
+            <th>CoinPoker (Web3 去中心化)</th>
+            <th>★ 本专案落地策略 (Best-of-Breed)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>核心定位</strong></td>
+            <td>年轻娱乐化、重交互、高爆发</td>
+            <td>严肃竞技、老牌锦标赛之王</td>
+            <td>熟人社群、多层级代理公会</td>
+            <td>去中心化、透明公平、极速</td>
+            <td><strong>GG 娱乐交互 + Stars 严谨底座 + PPPoker 联盟 + Web3 链上信任</strong></td>
+          </tr>
+          <tr>
+            <td><strong>特色创新</strong></td>
+            <td>EV Cashout、发多次、盲抓</td>
+            <td>Zoom 极速换桌、自定义下注滑块</td>
+            <td>自定义前注/盲注、房卡金币双轨</td>
+            <td>链上可验证真随机 (RNG)</td>
+            <td><strong>标配：</strong>EV 保险折现 + 发多次 + 极速换桌 + 链上真随机验证</td>
+          </tr>
+          <tr>
+            <td><strong>游戏氛围</strong></td>
+            <td>丢西红柿道具、SnapCam、看兔牌</td>
+            <td>纯文字/基础表情、专注多桌平铺</td>
+            <td>实时语音聊天、战绩海报分享</td>
+            <td>极简匿名交互</td>
+            <td>打造 3D 骨骼微表情、互动道具、看兔牌、亮单张心理战（兼顾氛围与防打扰）</td>
+          </tr>
+          <tr>
+            <td><strong>反作弊与风控</strong></td>
+            <td>封杀三方 HUD、内置 Smart HUD</td>
+            <td>严格 Hand History 审计与风控</td>
+            <td>GPS/IP 强制限制、人工审核</td>
+            <td>链上种子加盐可验证算法</td>
+            <td><strong>内置轻量 HUD + 毫秒级 AI 伙牌识别 + 可证明公平发牌</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. 核心玩法规则与生命周期 -->
+    <section id="sec-3">
+      <h2><span class="sec-badge">SEC 03</span> 核心玩法规则与牌局生命周期 (Gameplay & Lifecycle)</h2>
+
+      <h3>3.1 桌位结构与行动顺位</h3>
+      <p>标准德州扑克支持 2 人（单挑 Heads-Up）、6 人（6-Max，核心推荐）与 9 人（满员桌 Full-Ring）。</p>
+      <ul>
+        <li><strong>BTN (Button / 庄家位)：</strong>翻前倒数第 3 位行动（若无 Straddle）；翻后所有轮次最后行动（核心位置优势）。</li>
+        <li><strong>SB (Small Blind / 小盲位)：</strong>强制投入指定小盲注（如 $0.5\times BB$），翻后第一行动顺位。</li>
+        <li><strong>BB (Big Blind / 大盲位)：</strong>强制投入大盲注（$1\times BB$），翻前拥有最终 Option（选择权）。</li>
+        <li><strong>UTG (Under The Gun / 枪口位)：</strong>翻前第一行动顺位。</li>
+      </ul>
+
+      <div class="callout callout-warning">
+        <strong>⚠️ 单挑桌 (Heads-Up) 特例规则（研发与测试极易出错的 P0 分支）：</strong><br>
+        当桌上仅剩 <strong>2 位玩家</strong> 时，规则发生重大反转：<br>
+        1. <strong>BTN 兼任 SB：</strong>同一玩家同时担任庄家与小盲位。<br>
+        2. <strong>翻前首位行动：</strong><strong>BTN/SB 先行表态</strong>，BB 最后行动（持 Option）。<br>
+        3. <strong>翻后首位行动：</strong><strong>BB 先行表态</strong>，BTN/SB 持位置优势最后行动。<br>
+        <em>注：与多人桌 BTN 全程最后说话形成反差，必须独立编写分支状态机！</em>
+      </div>
+
+      <h3>3.2 牌局全生命周期五大轮次</h3>
+      <div class="flow-card">
+        <div class="flow-title">图 3-1：牌局生命周期线性流转</div>
+        <div class="steps-row">
+          <div class="step-item">
+            <div class="step-num">STEP 1</div>
+            <div class="step-text">Pre-Flop (翻前)</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">下盲注 · 各发2张底牌</div>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step-item">
+            <div class="step-num">STEP 2</div>
+            <div class="step-text">Flop (翻牌圈)</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">销1张 · 发3张公牌</div>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step-item">
+            <div class="step-num">STEP 3</div>
+            <div class="step-text">Turn (转牌圈)</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">销1张 · 发第4张公牌</div>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step-item">
+            <div class="step-num">STEP 4</div>
+            <div class="step-text">River (河牌圈)</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">销1张 · 发第5张公牌</div>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step-item">
+            <div class="step-num">STEP 5</div>
+            <div class="step-text">Showdown (摊牌)</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">7选5最优牌型 · 派彩</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 底池拆分与牌型结算算法 -->
+    <section id="sec-4">
+      <h2><span class="sec-badge">SEC 04</span> 底池拆分与牌型结算算法 (Pot Splitting & Showdown)</h2>
+
+      <h3>4.1 牌型评估等级阶梯 (Hand Ranking)</h3>
+      <p>从 7 张牌（2 张底牌 + 5 张公牌）中选取组合出最大的 5 张牌，共 $C_7^5 = 21$ 种组合。等级从 Rank 10（皇家同花顺）降序至 Rank 01（高牌单张）：</p>
+      
+      <div class="flow-card">
+        <div class="flow-title">图 4-1：牌型大小降序阶梯 (Rank 10 ~ Rank 01)</div>
+        <div class="steps-row" style="gap:6px;">
+          <div class="step-item" style="border-top-color:#b45309;"><div class="step-num">R10</div><div class="step-text" style="font-size:12px;">皇家同花顺</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R09</div><div class="step-text" style="font-size:12px;">同花顺</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R08</div><div class="step-text" style="font-size:12px;">四条/金刚</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R07</div><div class="step-text" style="font-size:12px;">葫芦/满堂红</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R06</div><div class="step-text" style="font-size:12px;">同花</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R05</div><div class="step-text" style="font-size:12px;">顺子</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R04</div><div class="step-text" style="font-size:12px;">三条</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R03</div><div class="step-text" style="font-size:12px;">两对</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R02</div><div class="step-text" style="font-size:12px;">一对</div></div>
+          <div class="step-arrow" style="font-size:12px;">&gt;</div>
+          <div class="step-item"><div class="step-num">R01</div><div class="step-text" style="font-size:12px;">高牌</div></div>
+        </div>
+      </div>
+
+      <h3>4.2 多重主池与边池动态拆分核心算法</h3>
+      <p>当多名筹码不同的玩家发生 All-in 时，系统根据每位玩家的总投入贡献，按阶梯切分为主池（Main Pot）与多个边池（Side Pots 1..N）：</p>
+
+      <pre><code>// 生产级主边池拆分算法实现逻辑
+function calculatePots(playersContribution) {
+  let pots = [];
+  // 过滤投入金额大于0的玩家
+  let active = playersContribution.filter(p => p.amount > 0);
+
+  while (active.length > 0) {
+    // 获取当前未结算筹码中的最小下注值
+    let minBet = Math.min(...active.map(p => p.amount));
+    let currentPotAmount = 0;
+    let eligibleContenders = [];
+
+    // 每个玩家向当前池贡献 minBet
+    for (let p of active) {
+      currentPotAmount += minBet;
+      p.amount -= minBet;
+      if (!p.isFolded) {
+        eligibleContenders.push(p.id); // 只有未弃牌玩家有资格瓜分
+      }
+    }
+
+    pots.push({
+      potIndex: pots.length,
+      potType: pots.length === 0 ? "Main Pot" : `Side Pot ${pots.length}`,
+      amount: currentPotAmount,
+      eligiblePlayers: eligibleContenders
+    });
+
+    active = active.filter(p => p.amount > 0);
+  }
+  return pots; // 派彩时从最后一个边池向前依序比牌派发
+}</code></pre>
+    </section>
+
+    <!-- 5. 抽水模型与商业化结算 -->
+    <section id="sec-5">
+      <h2><span class="sec-badge">SEC 05</span> 抽水模型与商业化结算 (Rake & Monetization)</h2>
+
+      <h3>5.1 核心三大抽水准则</h3>
+      <ol>
+        <li><strong>No Flop No Drop（未见翻牌不抽水）：</strong>行业铁律。若牌局在翻牌圈前结束（如翻前全员弃牌给盲注），平台<strong>一律不抽取任何抽水</strong>，保护激进翻前打法，确保桌台周转。</li>
+        <li><strong>未跟注筹码先行剔除 (Uncalled Bet Deduction)：</strong>超额下注且无对手跟注的筹码，属于从未发生争夺的死筹，先行退回原玩家，不计入抽水基数。</li>
+        <li><strong>向下取整至最小货币单位 (Rounding Floor)：</strong>抽水一律向下取整（如保留至 1 分），舍入误差让利给玩家，严禁向上取整导致暗抽合规风险。</li>
+      </ol>
+
+      <h3>5.2 费率与封顶阶梯矩阵 (Cap Ladder)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>盲注级别</th>
+            <th>抽水比例</th>
+            <th>2 人桌封顶 (Cap)</th>
+            <th>3~4 人桌封顶 (Cap)</th>
+            <th>5 人及以上封顶 (Cap)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>微额 (NL2 ~ NL10)</td>
+            <td>5.0%</td>
+            <td>1.0 × BB</td>
+            <td>1.5 × BB</td>
+            <td>2.0 × BB</td>
+          </tr>
+          <tr>
+            <td>小额 (NL25 ~ NL100)</td>
+            <td>5.0%</td>
+            <td>1.0 × BB</td>
+            <td>2.0 × BB</td>
+            <td>3.0 × BB</td>
+          </tr>
+          <tr>
+            <td>中额 (NL200 ~ NL500)</td>
+            <td>4.5%</td>
+            <td>1.0 × BB</td>
+            <td>1.5 × BB</td>
+            <td>2.0 × BB</td>
+          </tr>
+          <tr>
+            <td>高额 (NL1000+)</td>
+            <td>3.0%</td>
+            <td>0.5 × BB</td>
+            <td>1.0 × BB</td>
+            <td>1.5 × BB</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 6. 特色机制 (RIT & EV Cashout) -->
+    <section id="sec-6">
+      <h2><span class="sec-badge">SEC 06</span> 特色创新机制需求 (RIT & EV Cashout)</h2>
+
+      <h3>6.1 发多次牌机制 (Run It Twice / Multi-Times)</h3>
+      <p>当至少 2 名玩家 All-in 且下注轮锁定后，系统弹出 5 秒确认框。全体同意后，剩余公牌连续发 2 次（或 3 次），底池按次数均分独立比牌结算。</p>
+      <div class="callout">
+        <strong>★ 销牌一致性铁律：</strong>发多次牌必须使用<strong>同一副牌的剩余牌堆</strong>（严禁重新洗牌），且每一次发牌轮次<strong>必须严格销一张牌（Burn Card）</strong>。若跳过销牌将破坏 RNG 序列的可验证性。
+      </div>
+
+      <h3>6.2 全下 EV 保险折现 (EV Cashout)</h3>
+      <div class="flow-card">
+        <div class="flow-title">图 6-1：EV Cashout 业务决策流</div>
+        <div class="decision-container">
+          <div class="decision-node center">
+            多人 All-in 锁定底池 ➔ 校验玩家手牌胜率 (Equity) 是否 ≥ 60%
+          </div>
+          <div class="branches-grid">
+            <div class="branch-card green">
+              <span class="branch-tag green">分支 A：胜率 ≥ 60% 触发折现</span>
+              <p style="font-size:13px; color:#334155; margin-bottom:8px;">
+                1. 弹出 8 秒倒计时折现选择框<br>
+                2. 扣除 1% 平台服务手续费<br>
+                3. 折现筹码立即打入玩家余额入袋为安<br>
+                4. 玩家退出底池争夺，底池后续胜负由平台资金池接管
+              </p>
+            </div>
+            <div class="branch-card gray">
+              <span class="branch-tag gray">分支 B：未达到门槛 / 玩家拒绝</span>
+              <p style="font-size:13px; color:#334155; margin-bottom:8px;">
+                1. 胜率 &lt; 60% 不触发保护<br>
+                2. 玩家点击拒绝或 8 秒超时<br>
+                3. 正常打完剩余发牌流程<br>
+                4. 依最终公共牌摊牌比牌，胜者全拿，负者出局
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p><strong>数学公式：</strong> $\text{Cashout Amount} = (\text{Total Pot} - \text{Rake}) \times \text{Equity} \times (1 - 1\%)$</p>
+    </section>
+
+    <!-- 7. 可证明公平 RNG 架构 -->
+    <section id="sec-7">
+      <h2><span class="sec-badge">SEC 07</span> 可证明公平 RNG 技术架构 (Provably Fair)</h2>
+      <p>为消除线上扑克“后台控牌、杀大赔小”的信任痛点，系统采用<strong>密码学可证明公平体系</strong>：</p>
+
+      <div class="flow-card">
+        <div class="flow-title">图 7-1：Provably Fair 发牌与验牌全时序流程</div>
+        <div class="timeline-list">
+          <div class="timeline-item">
+            <div class="timeline-bullet">1</div>
+            <div class="timeline-content">
+              <strong>开局前哈希承诺：</strong>服务端生成高强度的随机 <code class="inline">Server Seed</code>，并将其 SHA-256 哈希值广播给桌上玩家（明文严格保密，哈希防篡改）。
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-bullet">2</div>
+            <div class="timeline-content">
+              <strong>多方种子加盐：</strong>收集桌上存活玩家上报的客户端随机种子 <code class="inline">Client Seeds</code> 与本局全局自增 <code class="inline">Nonce</code>。
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-bullet">3</div>
+            <div class="timeline-content">
+              <strong>洗牌算法执行：</strong>服务端计算 <code class="inline">HMAC_SHA256(ServerSeed, ClientSeeds + Nonce)</code>，以此伪随机哈希流驱动 Fisher-Yates 算法确定性洗牌发牌。
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-bullet">4</div>
+            <div class="timeline-content">
+              <strong>局后公开验牌：</strong>牌局结算完成后，系统公开明文 <code class="inline">Server Seed</code>。玩家可在前端输入种子即时重算验证牌堆序列，100% 杜绝换牌！
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 运营风控与 AI 反作弊 -->
+    <section id="sec-8">
+      <h2><span class="sec-badge">SEC 08</span> 运营风控与 AI 反作弊监控中枢 (Anti-Cheat & Risk)</h2>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>风险类型</th>
+            <th>典型作弊与风险特征</th>
+            <th>AI 监控模型与判定阈值</th>
+            <th>处置响应机制</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>伙牌作弊 (Collusion)</strong></td>
+            <td>多人协同围剿散户、同桌率 &gt; 40%、互相过牌 (Soft Play)、夹击抬注 (Squeeze)</td>
+            <td>牌局决策偏离度模型（EV Loss 指数）+ 社交图谱关联聚类，误报率 &lt; 0.01%</td>
+            <td>毫秒级动态拆桌分流、暂时冻结涉及账户出金权限、人工二次审计</td>
+          </tr>
+          <tr>
+            <td><strong>筹码对倒 (Chip Dumping)</strong></td>
+            <td>垃圾牌高频 All-in 刻意输给关联账户、非活跃时间段双人异常对倒</td>
+            <td>筹码流向单向集中度模型 + 账户出入金流水审计</td>
+            <td>截断洗钱提现通道、没收非法转移筹码、拉黑设备指纹与关联钱包</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 9. Web 与 WAP 双端交互规范 -->
+    <section id="sec-9">
+      <h2><span class="sec-badge">SEC 09</span> Web 与 WAP 双端差异化交互规范 (UI/UX)</h2>
+      
+      <div class="ui-wireframe-box">
+        <div style="font-size: 12px; color: var(--text-muted); font-weight: 700; margin-bottom: 8px;">桌面 Web 牌桌界面布局原型示意 (Wireframe)</div>
+        <div class="table-layout-preview">
+          <div class="pot-indicator">Total Pot: $1,450.00</div>
+          <div class="seat-node" style="top: 10px; left: 20%;">Seat 1: Shark_007 ($3,420)</div>
+          <div class="seat-node" style="top: 10px; right: 20%;">Seat 2 (D): HighRoller ($2,180)</div>
+          <div class="seat-node" style="bottom: 10px; left: 20%;">Seat 3: FoldMaster ($850)</div>
+          <div class="seat-node" style="bottom: 10px; right: 20%;">Seat 4: AggroKid ($1,620)</div>
+          <div class="seat-node" style="bottom: -15px; left: 50%; transform: translateX(-50%); border-color: #e5b33d; background: #0f172a;">
+            ★ YOU (Teddy) - $2,940 [A♠ K♥]
+          </div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>设计维度</th>
+            <th>Web 桌面端 (多桌效率流)</th>
+            <th>WAP / 移动端 (单手触控流)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>第一原则 (P0)</strong></td>
+            <td><strong>信息密度最大化：</strong>支持 4 桌平铺多开、全键盘快捷键绑定、内置 Smart HUD。</td>
+            <td><strong>触控安全性最大化：</strong>大按钮热区、All-in 需<strong>长按 0.8 秒确认</strong>，杜绝误触。</td>
+          </tr>
+          <tr>
+            <td><strong>下注控制</strong></td>
+            <td>精确数字输入框 + 自定义 2.2x / 3x / Pot 快捷键 + 鼠标滚轮微调。</td>
+            <td>底部半屏抽屉滑块面板 + 步进加减按钮 + 盲注倍数预设。</td>
+          </tr>
+          <tr>
+            <td><strong>无障碍与色盲</strong></td>
+            <td colspan="2" style="text-align: center; color: var(--accent-gold); font-weight: 600;">
+              满足 WCAG AA 级对比度 + <strong>四色牌 (♠黑 ♥红 ♣绿 ♦蓝)</strong> + 摊牌最终获胜 5 张自动高亮
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 10. 研发协作与验收标准 -->
+    <section id="sec-10">
+      <h2><span class="sec-badge">SEC 10</span> 研发协作规范与验收标准 (DoD & Testing)</h2>
+      <ul>
+        <li><strong>Done 的定义 (Definition of Done)：</strong>必须覆盖主边池拆分与单挑特例单元测试、压测达到 100,000 CCU、通过第三方 RNG 统计随机性检验。</li>
+        <li><strong>边界测试矩阵：</strong>极端断线补帧、翻前全员弃牌零抽水、三人同点数奇数分筹（Odd Chip）分配等 20+ 极端测试用例。</li>
+        <li><strong>配套高保真原型：</strong>专案配套 13 画面完整网页版交互原型（位于 <code class="inline">07_UIUX设计规范/原型网页版/index.html</code>），支持直接打开体验。</li>
+      </ul>
+    </section>
+
+  </main>
+
+</body>
+</html>
