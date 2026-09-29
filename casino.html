@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 
 <head>
@@ -203,6 +203,13 @@
         }
 
         /* --- BRAND NAVIGATION BAR (demo style) --- */
+        /* Sticky header wrapper: navbar + hover drawer travel together */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
         .brand-navbar {
             background: var(--bg-white);
             height: 72px;
@@ -211,9 +218,8 @@
             justify-content: space-between;
             padding: 0 40px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-            position: sticky;
-            top: 0;
-            z-index: 9;
+            position: relative;
+            z-index: 2;
         }
 
         .demo-logo {
@@ -1750,8 +1756,18 @@
             background: #ffffff;
             border-bottom: 0px solid transparent;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            position: relative;
-            z-index: 8;
+            /* Overlay under the navbar: opening it must not reflow the page,
+               otherwise a scrollbar appearing/disappearing retriggers hover. */
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hot-extension-bar.show {
+            pointer-events: auto;
         }
 
         .hot-extension-bar.show {
@@ -2028,68 +2044,78 @@
                 <button class="top-link-btn" onclick="showToast('語系切換：已為您即時翻譯繁體中文')">繁體中文 ▾</button>
             </div>
 
-            <!-- WHITE NAVIGATION BAR -->
-            <nav class="brand-navbar">
-                <div class="demo-logo" onclick="switchTab('lobby')">demo</div>
+            <!-- STICKY HEADER: NAV + HOVER DRAWER -->
+            <div class="site-header" id="siteHeader">
 
-                <div class="demo-navbar-menu">
-                    <button class="nav-tab-link active" id="tab-btn-lobby" onclick="switchTab('lobby')">首頁</button>
-                    <button class="nav-tab-link" id="tab-btn-hot" onclick="toggleHotExtension()">熱門</button>
-                    <button class="nav-tab-link" id="tab-btn-sports" onclick="switchTab('sports')">體育賽事</button>
-                    <button class="nav-tab-link" id="tab-btn-live" onclick="switchTab('live')">真人娛樂</button>
-                    <button class="nav-tab-link" id="tab-btn-lottery" onclick="switchTab('lottery')">彩票</button>
-                    <button class="nav-tab-link" id="tab-btn-slots" onclick="switchTab('slots')">老虎機</button>
-                    <button class="nav-tab-link" id="tab-btn-fishing" onclick="switchTab('fishing')">捕魚機</button>
-                    <button class="nav-tab-link" id="tab-btn-cards" onclick="switchTab('cards')">棋牌遊戲</button>
-                    <button class="nav-tab-link" id="tab-btn-promos" onclick="switchTab('promos')">優惠中心</button>
-                </div>
-            </nav>
+                <!-- WHITE NAVIGATION BAR -->
+                <nav class="brand-navbar">
+                    <div class="demo-logo" onclick="switchTab('lobby')">demo</div>
 
-            <!-- HOT GAMES SUB-LOBBY EXTENSION DRAWER -->
-            <div id="hotExtensionBar" class="hot-extension-bar">
-                <div class="hot-ext-container">
-                    <button class="hot-ext-arrow left" onclick="scrollHotExt(-1)">❮</button>
-                    <div class="hot-ext-track" id="hotExtTrack">
-                        <!-- 1. 賽特II -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特 II', '96.5%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #ffd700, #ff8c00)">🔱
-                            </div>
-                            <div class="hot-ext-name">賽特II: 覺醒之力</div>
-                        </div>
-                        <!-- 2. 雷神之錘 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘', '96.8%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #00bfff, #1e90ff)">⚡
-                            </div>
-                            <div class="hot-ext-name">雷神之錘</div>
-                        </div>
-                        <!-- 3. 雷神之錘 II -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘 II', '97.2%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #8a2be2, #4b0082)">🔨
-                            </div>
-                            <div class="hot-ext-name">雷神之錘 II: 雷霆風暴</div>
-                        </div>
-                        <!-- 4. 麻將胡了 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('麻將胡了', '97.4%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #32cd32, #228b22)">🀄
-                            </div>
-                            <div class="hot-ext-name">麻將胡了</div>
-                        </div>
-                        <!-- 5. 戰神賽特 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特', '97.8%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #ff4500, #ff8c00)">👑
-                            </div>
-                            <div class="hot-ext-name">戰神賽特</div>
-                        </div>
-                        <!-- 6. 魔龍傳奇 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('魔龍傳奇', '95.9%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #ff1493, #8b0000)">🐉
-                            </div>
-                            <div class="hot-ext-name">魔龍傳奇</div>
-                        </div>
+                    <div class="demo-navbar-menu">
+                        <button class="nav-tab-link active" id="tab-btn-lobby" onclick="switchTab('lobby')">首頁</button>
+                        <button class="nav-tab-link" id="tab-btn-hot" onclick="toggleHotExtension()">熱門</button>
+                        <button class="nav-tab-link" id="tab-btn-sports" onclick="switchTab('sports')">體育賽事</button>
+                        <button class="nav-tab-link" id="tab-btn-live" onclick="switchTab('live')">真人娛樂</button>
+                        <button class="nav-tab-link" id="tab-btn-lottery" onclick="switchTab('lottery')">彩票</button>
+                        <button class="nav-tab-link" id="tab-btn-slots" onclick="switchTab('slots')">老虎機</button>
+                        <button class="nav-tab-link" id="tab-btn-fishing" onclick="switchTab('fishing')">捕魚機</button>
+                        <button class="nav-tab-link" id="tab-btn-cards" onclick="switchTab('cards')">棋牌遊戲</button>
+                        <button class="nav-tab-link" id="tab-btn-promos" onclick="switchTab('promos')">優惠中心</button>
                     </div>
-                    <button class="hot-ext-arrow right" onclick="scrollHotExt(1)">❯</button>
+                </nav>
+
+                <!-- HOT GAMES SUB-LOBBY EXTENSION DRAWER -->
+                <div id="hotExtensionBar" class="hot-extension-bar">
+                    <div class="hot-ext-container">
+                        <button class="hot-ext-arrow left" onclick="scrollHotExt(-1)">❮</button>
+                        <div class="hot-ext-track" id="hotExtTrack">
+                            <!-- 1. 賽特II -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特 II', '96.5%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #ffd700, #ff8c00)">🔱
+                                </div>
+                                <div class="hot-ext-name">賽特II: 覺醒之力</div>
+                            </div>
+                            <!-- 2. 雷神之錘 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘', '96.8%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #00bfff, #1e90ff)">⚡
+                                </div>
+                                <div class="hot-ext-name">雷神之錘</div>
+                            </div>
+                            <!-- 3. 雷神之錘 II -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘 II', '97.2%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #8a2be2, #4b0082)">🔨
+                                </div>
+                                <div class="hot-ext-name">雷神之錘 II: 雷霆風暴</div>
+                            </div>
+                            <!-- 4. 麻將胡了 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('麻將胡了', '97.4%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #32cd32, #228b22)">🀄
+                                </div>
+                                <div class="hot-ext-name">麻將胡了</div>
+                            </div>
+                            <!-- 5. 戰神賽特 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特', '97.8%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #ff4500, #ff8c00)">👑
+                                </div>
+                                <div class="hot-ext-name">戰神賽特</div>
+                            </div>
+                            <!-- 6. 魔龍傳奇 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('魔龍傳奇', '95.9%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #ff1493, #8b0000)">🐉
+                                </div>
+                                <div class="hot-ext-name">魔龍傳奇</div>
+                            </div>
+                        </div>
+                        <button class="hot-ext-arrow right" onclick="scrollHotExt(1)">❯</button>
+                    </div>
                 </div>
-            </div>
+            </div><!-- /.site-header -->
 
             <!-- CANVAS BODY -->
             <div class="canvas-body">
@@ -3222,6 +3248,8 @@
                     return;
                 }
 
+                closeDrawerInstant();
+
                 document.querySelectorAll('.view-view-panel').forEach(panel => {
                     panel.classList.remove('active');
                 });
@@ -3346,6 +3374,14 @@
                     clearDrawerTimeout();
                 });
 
+                // The navbar and drawer form one hover region; only leaving the
+                // whole header closes it, so the gaps between tabs don't flicker.
+                const header = document.getElementById('siteHeader');
+                if (header) {
+                    header.addEventListener('mouseenter', clearDrawerTimeout);
+                    header.addEventListener('mouseleave', startDrawerCloseTimeout);
+                }
+
                 const links = [
                     { id: 'lobby', hasSub: false },
                     { id: 'hot', hasSub: true },
@@ -3371,9 +3407,9 @@
                         }
                     });
 
-                    btn.addEventListener('mouseleave', () => {
-                        startDrawerCloseTimeout();
-                    });
+                    // No per-button mouseleave: moving across the gaps between
+                    // tabs would otherwise start a close timer. The header-level
+                    // mouseleave handles closing.
                 });
             }
 
@@ -3384,6 +3420,9 @@
 
                 const data = drawerData[tabId];
                 if (!data) return;
+
+                // Already showing this tab: don't rebuild (rebuilding flickers)
+                if (activeDrawerTab === tabId && ext.classList.contains('show')) return;
 
                 activeDrawerTab = tabId;
                 track.innerHTML = '';
@@ -4226,6 +4265,7 @@
                 }, 2000);
             });
         </script>
+    </div><!-- /.proto-frame -->
 </body>
 
 </html>
