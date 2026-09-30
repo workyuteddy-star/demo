@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 
 <head>
@@ -2047,68 +2047,74 @@
             <!-- STICKY HEADER: NAV + HOVER DRAWER -->
             <div class="site-header" id="siteHeader">
 
-            <!-- WHITE NAVIGATION BAR -->
-            <nav class="brand-navbar">
-                <div class="demo-logo" onclick="switchTab('lobby')">demo</div>
+                <!-- WHITE NAVIGATION BAR -->
+                <nav class="brand-navbar">
+                    <div class="demo-logo" onclick="switchTab('lobby')">demo</div>
 
-                <div class="demo-navbar-menu">
-                    <button class="nav-tab-link active" id="tab-btn-lobby" onclick="switchTab('lobby')">首頁</button>
-                    <button class="nav-tab-link" id="tab-btn-hot" onclick="toggleHotExtension()">熱門</button>
-                    <button class="nav-tab-link" id="tab-btn-sports" onclick="switchTab('sports')">體育賽事</button>
-                    <button class="nav-tab-link" id="tab-btn-live" onclick="switchTab('live')">真人娛樂</button>
-                    <button class="nav-tab-link" id="tab-btn-lottery" onclick="switchTab('lottery')">彩票</button>
-                    <button class="nav-tab-link" id="tab-btn-slots" onclick="switchTab('slots')">老虎機</button>
-                    <button class="nav-tab-link" id="tab-btn-fishing" onclick="switchTab('fishing')">捕魚機</button>
-                    <button class="nav-tab-link" id="tab-btn-cards" onclick="switchTab('cards')">棋牌遊戲</button>
-                    <button class="nav-tab-link" id="tab-btn-promos" onclick="switchTab('promos')">優惠中心</button>
-                </div>
-            </nav>
-
-            <!-- HOT GAMES SUB-LOBBY EXTENSION DRAWER -->
-            <div id="hotExtensionBar" class="hot-extension-bar">
-                <div class="hot-ext-container">
-                    <button class="hot-ext-arrow left" onclick="scrollHotExt(-1)">❮</button>
-                    <div class="hot-ext-track" id="hotExtTrack">
-                        <!-- 1. 賽特II -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特 II', '96.5%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #ffd700, #ff8c00)">🔱
-                            </div>
-                            <div class="hot-ext-name">賽特II: 覺醒之力</div>
-                        </div>
-                        <!-- 2. 雷神之錘 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘', '96.8%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #00bfff, #1e90ff)">⚡
-                            </div>
-                            <div class="hot-ext-name">雷神之錘</div>
-                        </div>
-                        <!-- 3. 雷神之錘 II -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘 II', '97.2%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #8a2be2, #4b0082)">🔨
-                            </div>
-                            <div class="hot-ext-name">雷神之錘 II: 雷霆風暴</div>
-                        </div>
-                        <!-- 4. 麻將胡了 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('麻將胡了', '97.4%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #32cd32, #228b22)">🀄
-                            </div>
-                            <div class="hot-ext-name">麻將胡了</div>
-                        </div>
-                        <!-- 5. 戰神賽特 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特', '97.8%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #ff4500, #ff8c00)">👑
-                            </div>
-                            <div class="hot-ext-name">戰神賽特</div>
-                        </div>
-                        <!-- 6. 魔龍傳奇 -->
-                        <div class="hot-ext-card" onclick="launchSlotSimulator('魔龍傳奇', '95.9%')">
-                            <div class="hot-ext-cover" style="background: linear-gradient(135deg, #ff1493, #8b0000)">🐉
-                            </div>
-                            <div class="hot-ext-name">魔龍傳奇</div>
-                        </div>
+                    <div class="demo-navbar-menu">
+                        <button class="nav-tab-link active" id="tab-btn-lobby" onclick="switchTab('lobby')">首頁</button>
+                        <button class="nav-tab-link" id="tab-btn-hot" onclick="toggleHotExtension()">熱門</button>
+                        <button class="nav-tab-link" id="tab-btn-sports" onclick="switchTab('sports')">體育賽事</button>
+                        <button class="nav-tab-link" id="tab-btn-live" onclick="switchTab('live')">真人娛樂</button>
+                        <button class="nav-tab-link" id="tab-btn-lottery" onclick="switchTab('lottery')">彩票</button>
+                        <button class="nav-tab-link" id="tab-btn-slots" onclick="switchTab('slots')">老虎機</button>
+                        <button class="nav-tab-link" id="tab-btn-fishing" onclick="switchTab('fishing')">捕魚機</button>
+                        <button class="nav-tab-link" id="tab-btn-cards" onclick="switchTab('cards')">棋牌遊戲</button>
+                        <button class="nav-tab-link" id="tab-btn-promos" onclick="switchTab('promos')">優惠中心</button>
                     </div>
-                    <button class="hot-ext-arrow right" onclick="scrollHotExt(1)">❯</button>
+                </nav>
+
+                <!-- HOT GAMES SUB-LOBBY EXTENSION DRAWER -->
+                <div id="hotExtensionBar" class="hot-extension-bar">
+                    <div class="hot-ext-container">
+                        <button class="hot-ext-arrow left" onclick="scrollHotExt(-1)">❮</button>
+                        <div class="hot-ext-track" id="hotExtTrack">
+                            <!-- 1. 賽特II -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特 II', '96.5%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #ffd700, #ff8c00)">🔱
+                                </div>
+                                <div class="hot-ext-name">賽特II: 覺醒之力</div>
+                            </div>
+                            <!-- 2. 雷神之錘 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘', '96.8%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #00bfff, #1e90ff)">⚡
+                                </div>
+                                <div class="hot-ext-name">雷神之錘</div>
+                            </div>
+                            <!-- 3. 雷神之錘 II -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('雷神之錘 II', '97.2%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #8a2be2, #4b0082)">🔨
+                                </div>
+                                <div class="hot-ext-name">雷神之錘 II: 雷霆風暴</div>
+                            </div>
+                            <!-- 4. 麻將胡了 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('麻將胡了', '97.4%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #32cd32, #228b22)">🀄
+                                </div>
+                                <div class="hot-ext-name">麻將胡了</div>
+                            </div>
+                            <!-- 5. 戰神賽特 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('戰神賽特', '97.8%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #ff4500, #ff8c00)">👑
+                                </div>
+                                <div class="hot-ext-name">戰神賽特</div>
+                            </div>
+                            <!-- 6. 魔龍傳奇 -->
+                            <div class="hot-ext-card" onclick="launchSlotSimulator('魔龍傳奇', '95.9%')">
+                                <div class="hot-ext-cover"
+                                    style="background: linear-gradient(135deg, #ff1493, #8b0000)">🐉
+                                </div>
+                                <div class="hot-ext-name">魔龍傳奇</div>
+                            </div>
+                        </div>
+                        <button class="hot-ext-arrow right" onclick="scrollHotExt(1)">❯</button>
+                    </div>
                 </div>
-            </div>
             </div><!-- /.site-header -->
 
             <!-- CANVAS BODY -->
